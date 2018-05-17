@@ -1,0 +1,394 @@
+
+html {
+    height: 100%;
+    background-color: white;
+}
+
+body {
+    font-family: "Century Gothic","Apple Gothic",AppleGothic,"URW Gothic L","Avant Garde",Futura,sans-serif;
+    font-size: 170%;
+    color: black;
+}
+
+
+section.main {
+    margin: 40px 20px 0 20px;
+}
+
+select {
+    text-align: center;
+}
+
+form table tr{
+    border-bottom: 2px solid #fff0;
+}
+
+form table td:first-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+form table .username {
+    font-size: 18px;
+}
+
+th, td {
+    padding: 8px 15px;
+}
+
+form.leave-application input {
+    width: 100%;
+}
+
+.container.bigger {
+    max-width: 95%;
+}
+
+input[type="date"],input[type="file"] {
+    height: 38px;
+    padding: 6px 10px;
+    background-color: #fff;
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+    box-shadow: none;
+    box-sizing: border-box;
+}
+
+th, td {
+    padding: 5px 5px;
+}
+
+tr.dataTR:hover {
+    cursor: pointer;
+    background-color: #b8daff;
+}
+
+h6 {
+    font-size: 1.9rem;
+}
+
+.one.columns-sm {
+    width: 4.66666666667%;
+    display: inline-block;
+    margin: 0 .5%;
+    float: left;
+}
+
+.login-body {
+    /*background: rgb(242,246,248); !* Old browsers *!*/
+    /*background: -moz-linear-gradient(top, rgba(242,246,248,1) 17%, rgba(216,225,231,1) 49%, rgba(224,239,249,1) 100%); !* FF3.6-15 *!*/
+    /*background: -webkit-linear-gradient(top, rgba(242,246,248,1) 17%,rgba(216,225,231,1) 49%,rgba(224,239,249,1) 100%); !* Chrome10-25,Safari5.1-6 *!*/
+    /*background: linear-gradient(to bottom, rgba(242,246,248,1) 17%,rgba(216,225,231,1) 49%,rgba(224,239,249,1) 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9',GradientType=0 ); !* IE6-9 *!*/
+}
+
+.loginform {
+    margin-top: 10%;
+}
+
+.form-container {
+    padding: 50px;
+    /* border: 1px solid gray; */
+    box-shadow: -13px 19px 20px -10px #888888;
+}
+
+.error-message {
+    margin-top: 50px;
+    position: relative;
+    padding: 15px;
+    border-radius: 4px;
+
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.header {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1071;
+    min-height: 2rem;
+    background-color: #007bff;
+    padding: 0 50px 0 10px;
+}
+
+.button-sm {
+    padding: .5rem .75rem;
+    font-size:.875rem;
+    line-height:1.5;
+    border-radius:.2rem;
+    height: 2.3rem;
+    margin-bottom: 0;
+}
+
+button.button-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+button.button-danger:hover {
+    background-color: #d6616c;
+}
+
+.user-name {
+    color: #fff;
+    text-decoration: none;
+}
+
+.user-name:hover {
+    color: #fff;
+}
+
+.left-nav {
+    border-right: 1px solid #eee;
+    margin-bottom: 40px;
+
+}
+
+.left-nav a {
+    margin-bottom: 0;
+    min-width: 85%;
+    border-radius: 0;
+    background-color: #f8f9fa;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #dedede;
+}
+.left-nav a.active {
+    min-width: 90%;
+    background-color: #dae0e5;
+    border-top-right-radius: 25px !important;
+    border-bottom-right-radius: 25px !important;
+}
+.left-nav a:hover {
+    text-align: left;
+    background-color: #dae0e5;
+}
+.left-nav a.active {
+    text-align: left;
+}
+
+.main-content {
+    background-color: white;
+    border: 1px solid #eee;
+    padding: 1rem 1rem 1rem 1rem;
+    /*margin: 0 2rem 0 2rem;*/
+    border-radius: 4px;
+ }
+
+.pagination {
+    text-align: center;
+}
+
+.pagination a {
+    border-radius: 1.2rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.pagination .active {
+    background-color: #007bff;
+    cursor: default;
+}
+
+.pagination .active:hover {
+    background-color: #007bff;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    padding: 10px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown button on hover & focus */
+.dropdown:hover, .dropdown:focus {
+    background-color: #2980B9;
+}
+
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 170px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+
+.absolute-nav {
+    position: absolute;
+    top: 70px;
+    right: 50px;
+}
+
+.absolute-nav a{
+    font-size: 15px;
+    padding: 10px;
+    background-color: #f2f6f8;
+}
+
+.absolute-nav a:hover {
+    background-color: #fbfbfb;
+    padding-top: 15px;
+}
+
+.absolute-nav .active {
+    background-color: white;
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    padding-top: 15px;
+    cursor: default;
+}
+
+.absolute-nav a{
+    text-decoration: none;
+}
+
+.others-reason-style {
+    opacity: 0.1;
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -ms-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+}
+
+table.accounts td{
+    margin-top: 2px;
+}
+
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    animation-name: animatetop;
+    animation-duration: 0.6s;
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@keyframes animatetop {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+.float-left {
+    float: left;
+}
+
+
+/* Media Queries */
+
+/*@media (min-width: 550px) and (max-width: 1024px){*/
+/**/
+/*}*/
+
+/*@media (max-width: 549px) {*/
+/*.main-content {*/
+/*margin: 0 2rem 0 0 !important;*/
+/*}*/
+/*}*/
+
+
+/* Tester  Stylesheet */
+
+@media (max-width: 550px) {
+    body {
+        font-size: 130%;
+    }
+
+    .section.main {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .absolute-nav a{
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .modal-content {
+        width: 80%;
+    }
+}
+
+
