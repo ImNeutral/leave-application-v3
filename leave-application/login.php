@@ -30,8 +30,6 @@
         </div>
     </div>
 </section>
-
-
 <script src="assets/js/login.js"></script>
 <script>
     (function(){
@@ -43,18 +41,8 @@
             $loginForm.attachEvent('onsubmit', login);            //Old IE
         }
         document.body.className += 'login-body';
-
-
-
-
-//        function updateOnlineStatus(event) {
-//            var condition = navigator.onLine ? "online" : "offline";
-//            console.log();
-//        }
-//
-//        window.addEventListener('online',  updateOnlineStatus);
-//        window.addEventListener('offline', updateOnlineStatus);
-
     })();
 </script>
-<?php include ('layouts/footer.php');?>
+
+</body>
+</html>

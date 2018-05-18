@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/skeleton.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/functions.js"></script>
+    <script src="assets/js/loginChecker.js"></script>
 </head>
-
 <body>

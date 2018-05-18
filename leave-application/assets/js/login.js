@@ -7,43 +7,35 @@ function login() {
     var password = $password.value;
     var username = document.getElementById('username').value;
 
-    var url = "http://localhost/leave-application-api-capstone/AccountAPI.php?username=" + username + "&password=" + password;
+    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?username=" + username + "&password=" + password;
 
     fetchAccount(url);
 
     function fetchAccount() {
-        var FetchAction = fetch(url)
+        var FetchAction = fetch(url);
         FetchAction.then(function(response) {
             if (response.ok) {
                 response.json().then(function (jsonRes) {
-                    var account  = jsonRes[0];
-                    var employee = jsonRes[1];
-                    console.log(account, employee);
+                    if(jsonRes) {
+                        var account  = jsonRes[0];
+                        var employee = jsonRes[1];
+
+                        localStorage.setItem('account', JSON.stringify(account));
+                        localStorage.setItem('employee', JSON.stringify(employee));
+
+                        $errorMessage.style.display = 'none';
+                        $successMessage.style.display = 'block';
+
+                        isAllowed(account.account_type_id);
+                    } else {
+                        $errorMessage.style.display = 'block';
+                        $password.value = "";
+                        $submitButton.innerHTML = "Login";
+                    }
                 });
-                return true;
             } else {
-                return false;
+                console.log("Could not connect to server!");
             }
         });
     }
-
-    // var xmlhttp = new XMLHttpRequest();
-    // xmlhttp.onreadystatechange = function() {
-    //     if (this.readyState == 4 && this.status == 200) {
-    //         var result = JSON.parse(this.responseText);
-    //         if(result) {
-    //             $errorMessage.style.display = 'none';
-    //             $successMessage.style.display = 'block';
-    //             window.location.assign("/leave-application/manage-accounts.php");
-    //         } else {
-    //             $errorMessage.style.display = 'block';
-    //             $password.value = "";
-    //             $submitButton.innerHTML = "Login";
-    //         }
-    //     }
-    // };
-    //
-    // xmlhttp.open("GET", "http://localhost/leave-application-api-capstone/AccountAPI.php?username=" + username + "&password=" + password, true);
-    // xmlhttp.setRequestHeader("Content-type","application/json");
-    // xmlhttp.send();
 }

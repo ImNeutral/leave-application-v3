@@ -1,5 +1,8 @@
-
 <script>
+
+    (function () {
+         $id('fullNameDisplay').text = fullName;
+    })();
 
     function dropdownFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
@@ -19,6 +22,7 @@
             }
         }
     }
+
 </script>
 </body>
 </html>

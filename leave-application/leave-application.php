@@ -1,5 +1,3 @@
-<?php require_once ("Controllers/LeaveApplicationController.php"); ?>
-
 <?php include ('layouts/header.php'); ?>
 <?php include ('layouts/top-navigation.php'); ?>
 
@@ -10,13 +8,11 @@
             <?php include('layouts/absolute-nav-user.php'); ?>
             <h5 class="header">Leave Application</h5>
             <hr>
-            <?php if(!$successApplication) { ?>
             <div class="row">
                 <form action="" method="POST" class="leave-application" enctype="multipart/form-data">
                     <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         Date Filed:
                     </strong>
-                        <?php echo date('M d, Y'); ?>
                     <br><br>
                     <div class="row container bigger">
                         <div class="seven columns">
@@ -44,9 +40,9 @@
                                 <div class="nine columns">
                                     <strong>Effective From (y-m-d):</strong>
                                     <div class="ten columns offset-by-two">
-                                        <?php $y = date('Y');?>
+
                                         <select name="date_from_year" id="date_from_year" class="four columns columns-sm">
-                                            <option value="<?php echo $y; ?>"><?php echo $y; ?></option>
+                                            <option value=""></option>
                                         </select>
                                         <select name="date_from_month" id="date_from_month" class="four columns columns-sm" onchange="monthChangedFrom()">
                                             <option value="1">January</option>
@@ -113,10 +109,9 @@
 
                             <div class="twelve columns">
                                 <br>
-                                <strong>Attachments:</strong>
-                                <br>
-                                <button id="loadFileXml" onclick="document.getElementById('fileToUpload').click()" class="three columns">Add Attachments</button>
-                                <input type="file" style="display:none;" id="fileToUpload" name="attachment" accept="image/*" multiple/>
+                                <strong style="float: left;">Attachment:</strong>
+                                <button id="loadFileXml" onclick="document.getElementById('fileToUpload').click()" class="three columns">Add Attachment</button>
+                                <input type="file" style="display:none;" id="fileToUpload" name="attachment" accept="image/*"/>
                             </div>
 
                         </section>
@@ -127,14 +122,13 @@
                     </div>
             
                 </form>
- 
+
             </div>
-            <?php } else { ?>
-                <div class="error-message four columns offset-by-four" style="margin-top: 5px;">
-                    <p style="color: black;">Leave Application Sent!</p>
-                    <a href="previous-applications.php" class="button button-primary u-pull-right">View Application History</a>
-                </div>
-            <?php } ?>
+
+            <div class="error-message four columns offset-by-four" style="margin-top: 5px;">
+                <p style="color: black;">Leave Application Sent!</p>
+                <a href="previous-applications.php" class="button button-primary u-pull-right">View Application History</a>
+            </div>
         </div>
     </div>
 

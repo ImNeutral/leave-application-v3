@@ -5,4 +5,4 @@ define("DB_NAME"    ,   "capstone_deped_bayugan");
 define("USERNAME"   ,   "root");
 define("PASSWORD"   ,   "");
 
-define("SERVICE_HOST", "localhost");
+define("SERVICE_HOST", "localhost/leave-application-v3");
