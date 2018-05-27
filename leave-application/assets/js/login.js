@@ -12,12 +12,14 @@ function login() {
     fetchAccount(url);
 
     function fetchAccount() {
-        var FetchAction = fetch(url);
+        var FetchAction = fetch(url, {
+            method: 'GET'
+        });
         FetchAction.then(function(response) {
             if (response.ok) {
                 response.json().then(function (jsonRes) {
-                    if(jsonRes) {
-                        var account  = jsonRes[0];
+                    if (jsonRes) {
+                        var account = jsonRes[0];
                         var employee = jsonRes[1];
 
                         localStorage.setItem('account', JSON.stringify(account));
@@ -32,6 +34,8 @@ function login() {
                         $password.value = "";
                         $submitButton.innerHTML = "Login";
                     }
+                }).catch(function (error) {
+                    console.log("The Error:", error);
                 });
             } else {
                 console.log("Could not connect to server!");

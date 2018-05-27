@@ -1,6 +1,4 @@
 <?php
-
-require_once ("Connection.php");
 require_once ("Connection.php");
 
 class DBQueries {

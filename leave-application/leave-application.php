@@ -9,8 +9,10 @@
             <h5 class="header">Leave Application</h5>
             <hr>
             <div class="row">
-                <form action="" method="POST" class="leave-application" enctype="multipart/form-data">
-                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <form action="" method="POST" class="leave-application" id="leave-application-form">
+                    <input type="hidden" name="account_id" id="account_id">
+                    <input type="hidden" name="school_id" id="school_id">
+                    <strong style="margin-left: 10%;">
                         Date Filed:
                     </strong>
                     <br><br>
@@ -41,8 +43,11 @@
                                     <strong>Effective From (y-m-d):</strong>
                                     <div class="ten columns offset-by-two">
 
+                                        <?php $y = date('Y');?>
                                         <select name="date_from_year" id="date_from_year" class="four columns columns-sm">
-                                            <option value=""></option>
+                                            <option value="<?php echo $y-1; ?>"><?php echo $y-1; ?></option>
+                                            <option value="<?php echo $y; ?>" selected><?php echo $y; ?></option>
+                                            <option value="<?php echo $y+1; ?>"><?php echo $y+1; ?></option>
                                         </select>
                                         <select name="date_from_month" id="date_from_month" class="four columns columns-sm" onchange="monthChangedFrom()">
                                             <option value="1">January</option>
@@ -109,115 +114,28 @@
 
                             <div class="twelve columns">
                                 <br>
-                                <strong style="float: left;">Attachment:</strong>
-                                <button id="loadFileXml" onclick="document.getElementById('fileToUpload').click()" class="three columns">Add Attachment</button>
-                                <input type="file" style="display:none;" id="fileToUpload" name="attachment" accept="image/*"/>
+                                <strong style="float: left;">Image Attachment:</strong>
+<!--                                <label for="fileToUpload"><u style="margin-left:15px; cursor: pointer;">Upload Image</u></label>-->
+                                <input type="file"  id="fileToUpload" style="margin-left:15px; cursor: pointer;" class="four columns" name="attachment" accept="image/*"/>
                             </div>
 
                         </section>
 
                         <div class="two columns u-pull-right">
-                            <input type="submit" class="button-primary" name="submit" value="Submit">
+                            <input type="submit" class="button-primary" name="leave_submit" value="Submit">
                         </div>
                     </div>
-            
                 </form>
 
             </div>
 
-            <div class="error-message four columns offset-by-four" style="margin-top: 5px;">
-                <p style="color: black;">Leave Application Sent!</p>
-                <a href="previous-applications.php" class="button button-primary u-pull-right">View Application History</a>
-            </div>
+<!--            <div class="error-message four columns offset-by-four" style="margin-top: 5px;">-->
+<!--                <p style="color: black;">Leave Application Sent!</p>-->
+<!--                <a href="previous-applications.php" class="button button-primary u-pull-right">View Application History</a>-->
+<!--            </div>-->
         </div>
     </div>
 
-
 </section>
-<script>
-    document.title = "Leave Application | Application Form";
-    document.getElementById('leave-application').className = 'active';
-
-    $typeOfLeave        = document.getElementById('type_of_leave');
-    $othersReason       = document.getElementById('others_reason_holder');
-    $othersReasonInput  = document.getElementById('others_reason');
-    $whereLeaveBeSpend  = document.getElementById('where_leave_be_spend_holder');
-    $vacationPlace      = document.getElementById('vacation_leave_place_holder');
-    $daysAppliedHolder  = document.getElementById('days_applied_holder');
-    $daysApplied        = document.getElementById('days_applied');
-    $sickPlace          = document.getElementById('sick_leave_place_holder');
-
-    $dateFromYear       = document.getElementById('date_from_year');
-    $dateFromMonth      = document.getElementById('date_from_month');
-    $dateFromDay        = document.getElementById('date_from_day');
-
-    var typeOfLeave = 'Sick';
-    selectDateNow($dateFromMonth, $dateFromDay);
-
-    function selectTypeOfLeave () {
-        typeOfLeave = $typeOfLeave.value;
-        if(typeOfLeave == 'others' || typeOfLeave == 'vacation-others') {
-            $othersReasonInput.removeAttribute('disabled')
-            $othersReason.style.opacity = '1';
-        } else {
-            $othersReasonInput.setAttribute('disabled', 'true');
-            $othersReason.style.opacity = '.1';
-        }
-
-        if(typeOfLeave == 'Sick' || typeOfLeave == 'vacation-employment' || typeOfLeave == 'vacation-others') {
-            $whereLeaveBeSpend.style.display = 'block';
-            
-            if(typeOfLeave == 'Sick') {
-                $sickPlace.style.display = 'block';
-                $vacationPlace.style.display = 'none';
-            }
-
-            if(typeOfLeave == 'vacation-employment' || typeOfLeave == 'vacation-others') {
-                $vacationPlace.style.display = 'block';
-                $sickPlace.style.display = 'none';
-            }
-
-        } else {
-            $whereLeaveBeSpend.style.display = 'none';
-        }
-
-        if(typeOfLeave == 'Maternity') {
-            $daysAppliedHolder.style.display = 'none';
-            $daysApplied.setAttribute('disabled', 'true');
-        } else {
-            $daysAppliedHolder.style.display = 'block';
-            $daysApplied.removeAttribute('disabled');
-        }
-
-    }
-
-    function monthChangedFrom() {
-        setDayValue($dateFromYear.value, $dateFromMonth.value, $dateFromDay);
-    }
-
-    function setDayValue(year, month, $day){
-        var daysVal     = [31,( (year%4 > 0)? 28: 29 ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        var $optionElement = document.createElement('option');
-
-        while($day.childNodes[0]) {
-            $day.removeChild($day.childNodes[0]);
-        }
-
-        for(var i = 1; i <= daysVal[month-1]; i++) {
-            var $textNode = document.createTextNode(i);
-            var $optionElementClone = $optionElement.cloneNode(true);
-            $optionElement.value = i;
-            $optionElementClone.appendChild($textNode);
-            $day.appendChild($optionElementClone)
-        }
-    }
-
-    function selectDateNow($month, $day) {
-        var dateNow     = new Date();
-        $month.value = dateNow.getMonth() + 1;
-        monthChangedFrom();
-        $day.value = dateNow.getDate();
-    }
-
-</script>
+<script src="assets/js/leave-application.js"></script>
 <?php include ('layouts/footer.php');?>

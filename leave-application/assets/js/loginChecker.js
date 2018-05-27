@@ -6,6 +6,7 @@ if(isLoggedIn()) {
     var accountUsername     = loginDetails[0].username;
 
     var employeeID          = loginDetails[1].id;
+    var schoolID            = loginDetails[1].school_id;
     var employeeFirstName   = toTitleCase( loginDetails[1].first_name );
     var employeeMiddleName  = toTitleCase( loginDetails[1].middle_name );
     var employeeLastName    = toTitleCase( loginDetails[1].last_name );
