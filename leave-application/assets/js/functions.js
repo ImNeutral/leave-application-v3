@@ -49,3 +49,11 @@ function isAllowed(id) {
         window.location.assign(defaultRoutes[id]);
     }
 }
+
+function modalIn(element) {
+    element.style.display = 'block';
+}
+
+function modalOut(element) {
+    element.style.display = 'none';
+}

@@ -20,12 +20,13 @@ $schoolID               = $id('school_id');
 $leaveApplicationForm   = $id('leave-application-form');
 $fileToUpload           = $id('fileToUpload');
 
+$confirmModal           = $id('confirmModal');
+
 var typeOfLeave = 'Sick';
 selectDateNow($dateFromMonth, $dateFromDay);
 
 initValues();
 selectTypeOfLeave();
-
 
 var fileDataURI = '';
 
@@ -41,7 +42,15 @@ $fileToUpload.addEventListener('change', function (e) {
 
 $leaveApplicationForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    POST(this, fileDataURI);
+    POST(this, fileDataURI).then(function(response){
+        return response.json();
+    }).then(function (responseJson) {
+        if(responseJson) {
+            modalIn($confirmModal);
+        } else {
+            alert("Failed to submit application.");
+        }
+    });
 });
 
 function initValues() {
@@ -125,8 +134,7 @@ function POST($form, fileDataURI) {
         headers: new Headers({
         }),
         body: data
-    };
-    console.log(data);
+    }; 
     return fetch(url, init);
 }
 
@@ -144,6 +152,17 @@ function toJSONString( form, fileDataURI ) {
     }
 
     obj[ 'fileDataURI' ] = fileDataURI;
+    if( document.querySelector('input[name="place"]:checked') ) {
+        obj[ 'place' ] = document.querySelector('input[name="place"]:checked').value;
+    } else {
+        obj[ 'place' ] = '';
+    }
+
+    if( document.querySelector('input[name="commutation_requested"]:checked') ) {
+        obj[ 'commutation_requested' ] = document.querySelector('input[name="commutation_requested"]:checked').value;
+    } else {
+        obj[ 'commutation_requested' ] = '0';
+    }
 
     return JSON.stringify( obj );
 }

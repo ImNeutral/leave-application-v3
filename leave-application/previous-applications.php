@@ -1,8 +1,3 @@
-<?php
-require_once ("Controllers/PreviousApplicationsController.php");
-?>
-
-
 <?php include ('layouts/header.php'); ?>
 <?php include ('layouts/top-navigation.php'); ?>
 
@@ -22,33 +17,21 @@ require_once ("Controllers/PreviousApplicationsController.php");
                         <th width="25%">Type</th>
                         <th width="10%">Days</th>
                         <th width="15%">Start</th>
-                        <th width="10%">Processing</th>
+                        <th width="10%">Currently in</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($leaveApplications as $leaveApplication) { ?>
+<!--                    loop for each leave application-->
                         <tr class="dataTR">
-                            <td><?php echo ++$tableNumber; ?></td>
-                            <td><?php echo ucfirst($leaveApplication->type_of_leave); ?></td>
-                            <td><?php echo $leaveApplication->number_days_applied; ?></td>
-                            <td><?php echo $leaveApplication->getFormattedDate(); ?></td>
+                            <td>1</td>
+                            <td>Sick Leave</td>
+                            <td>3</td>
+                            <td>April 12, 2019</td>
                             <td>HRO</td>
                         </tr>
-                    <?php } ?>
                     </tbody>
                 </table>
-                <div class="pagination">
-                    <?php if($page > 1) {?>
-                        <a href="<?php echo '?page=' . ($page - 1); ?>" class="button button-primary button-sm"> << </a>
-                    <?php } ?>
-                    <?php for($roll=1; $roll <= $pagesCount; $roll++){ ?>
-                        <a href="<?php echo "?page=" . $roll; ?>" class="button button-primary button-sm <?php echo $page==$roll? 'active' : ''; ?>"> <?php echo $roll; ?> </a>
-                    <?php } ?>
 
-                    <?php if($page < $pagesCount) { ?>
-                        <a href="<?php echo '?page=' . ($page + 1); ?>" class="button button-primary button-sm"> >> </a>
-                    <?php } ?>
-                </div>
             </div>
         </div>
     </div>

@@ -4,7 +4,8 @@ require_once ("Functions.php");
 
 class LeaveApplication extends DBQueries {
     public static $table        = "leave_applications";
-    public static $table_fields = array('id', 'account_id', 'office', 'school_id', 'date_filed', 'type_of_leave', 'number_days_applied', 'from_date');
+    public static $table_fields = array('id', 'account_id', 'office', 'school_id', 'date_filed', 'type_of_leave', 'number_days_applied',
+                                        'place_stay', 'place_stay_specify', 'commutation_requested', 'from_date', 'filename', 'cancelled');
 
     public $id;
     public $account_id;
@@ -13,6 +14,11 @@ class LeaveApplication extends DBQueries {
     public $date_filed;
     public $type_of_leave;
     public $number_days_applied;
+    public $place_stay;
+    public $place_stay_specify;
+    public $filename;
+    public $cancelled;
+    public $commutation_requested;
 
     public static function submit($data) {
         $thisModel = new LeaveApplication();

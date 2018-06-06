@@ -137,5 +137,24 @@
     </div>
 
 </section>
+
+<section class="modal-section">
+    <div id="confirmModal" class="modal">
+        <div class="modal-content" style="margin-top: 10%; height: 150px;">
+            <span class="close" id="close-cc"></span>
+            <h5 class="text-center modal-title" id="cc-operation">Successfully Submitted Application!</h5>
+
+            <div class="modal-inside">
+                <div style="text-align: center;">
+                    <hr>
+                    <div style="float:right;">
+                        <a href="previous-applications.php" id="cc-cancel" class="button button-primary">View Previous Applications</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <script src="assets/js/leave-application.js"></script>
 <?php include ('layouts/footer.php');?>
