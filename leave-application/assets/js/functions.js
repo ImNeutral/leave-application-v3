@@ -1,5 +1,20 @@
+
 function $id(el) {
     return document.getElementById(el);
+}
+
+function $class(el) {
+    return document.getElementsByClassName(el);
+}
+
+function closeModal(target) {
+    var $modalContainer = findAncestor(target, 'modal');
+    $modalContainer.style.display = "none";
+}
+
+function findAncestor (el, cls) {
+    while ((el = el.parentElement) && !el.classList.contains(cls));
+    return el;
 }
 
 function getHost() {

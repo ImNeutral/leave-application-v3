@@ -1,7 +1,7 @@
 <script>
 
     (function () {
-         $id('fullNameDisplay').text = fullName;
+        $id('fullNameDisplay').text = fullName;
     })();
 
     function dropdownFunction() {
@@ -21,7 +21,8 @@
                 }
             }
         }
-    }
+    };
+
 
 </script>
 </body>

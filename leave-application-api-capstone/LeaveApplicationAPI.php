@@ -37,7 +37,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
 
         $daysApplied    = $input->days_applied;
         if($typeOfLeave == 'Maternity') {
-            $daysApplied = 0;
+            $daysApplied = 60;
         }
 
         $dateFromYear   = $input->date_from_year;

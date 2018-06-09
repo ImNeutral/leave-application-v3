@@ -1,34 +1,40 @@
 document.title = "Leave Application | Application Form";
 $id('leave-application').className = 'active';
 
-$typeOfLeave            = $id('type_of_leave');
-$othersReason           = $id('others_reason_holder');
-$othersReasonInput      = $id('others_reason');
-$whereLeaveBeSpend      = $id('where_leave_be_spend_holder');
-$vacationPlace          = $id('vacation_leave_place_holder');
-$daysAppliedHolder      = $id('days_applied_holder');
-$daysApplied            = $id('days_applied');
-$sickPlace              = $id('sick_leave_place_holder');
+var $typeOfLeave            = $id('type_of_leave');
+var $othersReason           = $id('others_reason_holder');
+var $othersReasonInput      = $id('others_reason');
+var $whereLeaveBeSpend      = $id('where_leave_be_spend_holder');
+var $vacationPlace          = $id('vacation_leave_place_holder');
+var $daysAppliedHolder      = $id('days_applied_holder');
+var $daysApplied            = $id('days_applied');
+var $sickPlace              = $id('sick_leave_place_holder');
 
-$dateFromYear           = $id('date_from_year');
-$dateFromMonth          = $id('date_from_month');
-$dateFromDay            = $id('date_from_day');
+var $dateFromYear           = $id('date_from_year');
+var $dateFromMonth          = $id('date_from_month');
+var $dateFromDay            = $id('date_from_day');
 
-$accountID              = $id('account_id');
-$schoolID               = $id('school_id');
+var $accountID              = $id('account_id');
+var $schoolID               = $id('school_id');
 
-$leaveApplicationForm   = $id('leave-application-form');
-$fileToUpload           = $id('fileToUpload');
+var $leaveApplicationForm   = $id('leave-application-form');
+var $fileToUpload           = $id('fileToUpload');
 
-$confirmModal           = $id('confirmModal');
+var $confirmModal           = $id('confirmModal');
+var $confirmSubmitModal     = $id('confirmSubmitModal');
+var $confirmSubmitOk        = $id('confirmSubmit_Ok');
 
-var typeOfLeave = 'Sick';
+var submitted               = false;
+var typeOfLeave             = 'Sick';
+var fileDataURI             = '';
+var formContent             = '';
+
+
 selectDateNow($dateFromMonth, $dateFromDay);
 
 initValues();
 selectTypeOfLeave();
 
-var fileDataURI = '';
 
 $fileToUpload.addEventListener('change', function (e) {
     var file  = $fileToUpload.files[0];
@@ -42,15 +48,24 @@ $fileToUpload.addEventListener('change', function (e) {
 
 $leaveApplicationForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    POST(this, fileDataURI).then(function(response){
-        return response.json();
-    }).then(function (responseJson) {
-        if(responseJson) {
-            modalIn($confirmModal);
-        } else {
-            alert("Failed to submit application.");
-        }
-    });
+    formContent = this;
+    submitted = true;
+    modalIn($confirmSubmitModal);
+});
+
+$confirmSubmitOk.addEventListener('click',function (e) {
+    if(submitted) {
+        POST(formContent, fileDataURI).then(function(response){
+            return response.json();
+        }).then(function (responseJson) {
+            if(responseJson) {
+                modalOut($confirmSubmitModal);
+                modalIn($confirmModal);
+            } else {
+                alert("Failed to submit application.");
+            }
+        });
+    }
 });
 
 function initValues() {
@@ -166,28 +181,3 @@ function toJSONString( form, fileDataURI ) {
 
     return JSON.stringify( obj );
 }
-
-/*
-function submit(e, form){
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php";
-    e.preventDefault();
-    fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({
-            id: 4
-        }),
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        })
-    }).then(function(response) {
-        return response.json();
-    }).then(function(data) {
-        console.log(data);
-        //Success code goes here
-        alert('form submited')
-    // }).catch(function(err) {
-    //     //Failure
-    //     alert('Error')
-    });
-}
-*/
