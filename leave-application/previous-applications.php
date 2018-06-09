@@ -1,5 +1,6 @@
 <?php include ('layouts/header.php'); ?>
 <?php include ('layouts/top-navigation.php'); ?>
+<?php include ('layouts/top-navigation.php'); ?>
 
 <section class="section main">
     <div class="row">
@@ -10,25 +11,25 @@
 
             <hr>
             <div class="">
-                <table class="u-full-width accounts">
+                <table class="u-full-width accounts" >
                     <thead>
                     <tr>
                         <th width="10%">#</th>
                         <th width="25%">Type</th>
                         <th width="10%">Days</th>
                         <th width="15%">Start</th>
-                        <th width="10%">Currently in</th>
+                        <th width="10%">Status</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="previous-applications-list">
 <!--                    loop for each leave application-->
-                        <tr class="dataTR">
-                            <td>1</td>
-                            <td>Sick Leave</td>
-                            <td>3</td>
-                            <td>April 12, 2019</td>
-                            <td>HRO</td>
-                        </tr>
+<!--                        <tr class="dataTR">-->
+<!--                            <td>1</td>-->
+<!--                            <td>Sick Leave</td>-->
+<!--                            <td>3</td>-->
+<!--                            <td>April 12, 2019</td>-->
+<!--                            <td class="primary-font">Rejected</td>-->
+<!--                        </tr>-->
                     </tbody>
                 </table>
 
@@ -77,16 +78,6 @@
     var modal           = document.getElementById('myModal');
     var span            = document.getElementsByClassName("close")[0];
     var modalTitle      = document.getElementById("modal-title");
-    $tr                 = document.querySelectorAll("tr.dataTR");
-    $tr.forEach(function ($eachTr) {
-        $eachTr.addEventListener("click", function (e) {
-            var element = this;
-            console.log(element.children[1].textContent);
-            modalTitle.textContent = element.children[1].textContent + " Leave";
-            modal.style.display = "block";
-        });
-    });
-
 
     span.onclick = function() {
         modal.style.display = "none";
@@ -100,4 +91,6 @@
 
 
 </script>
+
+<script src="assets/js/previous-application.js"></script>
 <?php include ('layouts/footer.php');?>

@@ -11,7 +11,7 @@ function login() {
 
     fetchAccount(url);
 
-    function fetchAccount() {
+    function fetchAccount(url) {
         var FetchAction = fetch(url, {
             method: 'GET'
         });
@@ -27,7 +27,6 @@ function login() {
 
                         $errorMessage.style.display = 'none';
                         $successMessage.style.display = 'block';
-
                         isAllowed(account.account_type_id);
                     } else {
                         $errorMessage.style.display = 'block';

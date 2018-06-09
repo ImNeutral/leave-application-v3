@@ -1,8 +1,24 @@
 <?php
 require_once ("LeaveApplication.php");
 
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
-    echo json_encode( LeaveApplication::get($_GET['id']) );
+    if(isset($_GET['id'])) {
+        echo json_encode( LeaveApplication::get($_GET['id']) );
+    } else if( isset($_GET['page']) ) {
+        $page = $_GET['page'];
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+        $leaveApplications = LeaveApplication::getAllPaginated($limit, $offset);
+        foreach ($leaveApplications as $leaveApplication) {
+            $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $leaveApplication->id . "&&status=true");
+            $status = json_decode($status);
+            $leaveApplication->status = $status;
+        }
+        echo json_encode( $leaveApplications );
+    }
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
     $input = json_decode( file_get_contents("php://input") );

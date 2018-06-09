@@ -19,6 +19,7 @@ class LeaveApplication extends DBQueries {
     public $filename;
     public $cancelled;
     public $commutation_requested;
+    public $status;
 
     public static function submit($data) {
         $thisModel = new LeaveApplication();

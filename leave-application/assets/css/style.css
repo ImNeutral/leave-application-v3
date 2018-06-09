@@ -356,6 +356,21 @@ table.accounts td{
     float: left;
 }
 
+.primary-font {
+    color: blue;
+}
+
+.danger-font {
+    color: red;
+}
+
+.info-font {
+    color: green;
+}
+
+.warning-font {
+    color: orange;
+}
 
 /* Media Queries */
 
