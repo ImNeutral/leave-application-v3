@@ -1,6 +1,9 @@
 <?php
 require_once ("DBQueries.php");
 require_once ("Functions.php");
+require_once ("CertificationOfLeaveCredits.php");
+require_once ("OSDSAction.php");
+require_once ("Recommendation.php");
 
 class ActionOnApplication extends DBQueries {
     public static $table        = "action_on_applications";
@@ -14,7 +17,7 @@ class ActionOnApplication extends DBQueries {
 
     public static function getByLeaveApplicationId($id) {
         $id = self::escapeValue($id);
-        $sql = " SELECT * FROM " . self::$table;
+        $sql = " SELECT id FROM " . self::$table;
         $sql .= " WHERE leave_application_id='" . $id . "' LIMIT 1";
 
         $result  = self::getByQuery($sql);
@@ -35,5 +38,17 @@ class ActionOnApplication extends DBQueries {
         } else {
             return 'Rejected';
         }
+    }
+
+    public function CertificationOfLeaveCredits() {
+        return CertificationOfLeaveCredits::getByActionOnApplicationsId($this->id);
+    }
+
+    public function OSDSAction() {
+        return OSDSAction::getByActionOnApplicationsId($this->id);
+    }
+
+    public function Recommendation() {
+        return Recommendation::getByActionOnApplicationsId($this->id);
     }
 }

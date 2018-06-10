@@ -5,8 +5,22 @@ header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
-    if(isset($_GET['id'])) {
-        echo json_encode( ActionOnApplication::get($_GET['id']) );
+    if(isset($_GET['id']) && isset($_GET['allData'])) {
+        $actionOnApplication = ActionOnApplication::get( $_GET['id']);
+        $allData = [];
+        if($actionOnApplication->school_head_approved != null) {
+            $allData['school_head_approved'] = $actionOnApplication->recommendation();
+        }
+        if($actionOnApplication->hr_approved != null) {
+            $allData['hr_approved'] = $actionOnApplication->CertificationOfLeaveCredits();
+        }
+        if($actionOnApplication->division_head_approved != null) {
+            $allData['division_head_approved'] = $actionOnApplication->OSDSAction();
+        }
+        echo json_encode( $allData );
+
+    } else if(isset($_GET['id'])) {
+        echo json_encode( ActionOnApplication::get( $_GET['id']) );
     } else if( isset($_GET['leave_application_id']) && isset($_GET['status']) ) {
         $aoa = ActionOnApplication::getByLeaveApplicationId($_GET['leave_application_id']);
         if($aoa->id > 0) {
