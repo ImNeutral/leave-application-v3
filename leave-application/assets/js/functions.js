@@ -12,6 +12,11 @@ function closeModal(target) {
     $modalContainer.style.display = "none";
 }
 
+function closeViewPhoto(target) {
+    var $container = findAncestor(target, 'view-photo');
+    $container.style.display = "none";
+}
+
 function findAncestor (el, cls) {
     while ((el = el.parentElement) && !el.classList.contains(cls));
     return el;
@@ -71,4 +76,12 @@ function modalIn(element) {
 
 function modalOut(element) {
     element.style.display = 'none';
+}
+
+function hide(element) {
+    element.style.display = "none";
+}
+
+function show(element) {
+    element.style.display = "";
 }

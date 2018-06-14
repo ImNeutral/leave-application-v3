@@ -7,13 +7,27 @@ header('Access-Control-Allow-Origin: *');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
     if(isset($_GET['id'])) {
         echo json_encode( LeaveApplication::get($_GET['id']) );
-    } else if( isset($_GET['page']) ) {
-        $page = $_GET['page'];
-        $limit = 10;
-        $offset = ($page - 1) * $limit;
-        $leaveApplications = LeaveApplication::getAllPaginated($limit, $offset);
+    } else if( isset($_GET['page']) && isset($_GET['accountId']) ) {
+        $where              = " WHERE account_id=" . issetGetValue('accountId') . " ";
+        $page               = issetGetValue('page');
+        $limit              = 10;
+        $offset             = ($page - 1) * $limit;
+        $leaveApplications  = LeaveApplication::getAllPaginated($limit, $offset, $where);
+        if($leaveApplications){
+            foreach ($leaveApplications as $leaveApplication) {
+                $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $leaveApplication->id . "&status=true");
+                $status = json_decode($status);
+                $leaveApplication->status = $status;
+            }
+        }
+        echo json_encode( $leaveApplications );
+    } else if( isset($_GET['page'])) {
+        $page               = issetGetValue('page');
+        $limit              = 10;
+        $offset             = ($page - 1) * $limit;
+        $leaveApplications  = LeaveApplication::getAllPaginated($limit, $offset);
         foreach ($leaveApplications as $leaveApplication) {
-            $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $leaveApplication->id . "&&status=true");
+            $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $leaveApplication->id . "&status=true");
             $status = json_decode($status);
             $leaveApplication->status = $status;
         }

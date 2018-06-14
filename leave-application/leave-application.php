@@ -2,6 +2,11 @@
 <?php include ('layouts/top-navigation.php'); ?>
 <?php include ('modals/leave-application-modals.php'); ?>
 
+
+<section class="hidden">
+    <img id="hiddenImage" src="" alt="" />
+</section>
+
 <section class="section main">
     <div class="row">
 
@@ -127,17 +132,12 @@
                         </div>
                     </div>
                 </form>
-
             </div>
-
-<!--            <div class="error-message four columns offset-by-four" style="margin-top: 5px;">-->
-<!--                <p style="color: black;">Leave Application Sent!</p>-->
-<!--                <a href="previous-applications.php" class="button button-primary u-pull-right">View Application History</a>-->
-<!--            </div>-->
         </div>
     </div>
 
 </section>
+
 
 <script src="assets/js/leave-application.js"></script>
 <?php include ('layouts/footer.php');?>

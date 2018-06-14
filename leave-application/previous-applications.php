@@ -22,14 +22,6 @@
                     </tr>
                     </thead>
                     <tbody id="previous-applications-list">
-<!--                    loop for each leave application-->
-<!--                        <tr class="dataTR">-->
-<!--                            <td>1</td>-->
-<!--                            <td>Sick Leave</td>-->
-<!--                            <td>3</td>-->
-<!--                            <td>April 12, 2019</td>-->
-<!--                            <td class="primary-font">Rejected</td>-->
-<!--                        </tr>-->
                     </tbody>
                 </table>
 

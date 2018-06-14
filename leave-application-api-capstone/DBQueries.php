@@ -29,18 +29,21 @@ class DBQueries {
     }
 
 
-    public static function getAllPaginated($limit = 10, $offset = 0) {
+    public static function getAllPaginated($limit = 10, $offset = 0, $where = '') {
         $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table;
+        $sql        .= " " . $where;
         $sql        .= " LIMIT " . $limit . " OFFSET " . $offset;
         $results    = self::query($sql);
         $return     = array();
         $object     = get_called_class();
-        foreach ($results as $result) {
-            $objectInstance = new $object;
-            foreach ($object::$table_fields as $field) {
-                $objectInstance->$field = utf8_encode($result[$field]);
+        if($results) {
+            foreach ($results as $result) {
+                $objectInstance = new $object;
+                foreach ($object::$table_fields as $field) {
+                    $objectInstance->$field = utf8_encode($result[$field]);
+                }
+                $return[] = $objectInstance;
             }
-            $return[] = $objectInstance;
         }
         return $return;
     }

@@ -16,3 +16,7 @@
     <script src="assets/js/loginChecker.js"></script>
 </head>
 <body>
+
+<div id="loader-container" class="loader-container">
+    <div class="loader"></div>
+</div>

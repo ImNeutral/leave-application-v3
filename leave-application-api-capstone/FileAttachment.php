@@ -14,17 +14,22 @@ class FileAttachment {
     }
 
     public function openFile() {
-        $this->file = fopen($this->folderName . $this->fileName, "r") or '';
-        //echo fread($myfile,filesize("webdictionary.txt"));
+        $this->file = fopen($this->folderName . $this->fileName, "r") or  die("Unable to open file!");
     }
 
     public function getContent(){
         $content = "";
         while ($line = fgets($this->file)) {
             $content .= $line;
-            break;
         }
         return $content;
+    }
+
+    public function setContent($newContent) {
+        $file = fopen($this->folderName . $this->fileName, "w") or  die("Unable to open file!");
+        fwrite($file, $newContent);
+        fclose($file);
+        $this->openFile();
     }
 
     public function __destruct()
@@ -32,18 +37,3 @@ class FileAttachment {
         fclose($this->file);
     }
 }
-
-
-$file = new FileAttachment('2018-06-10 20-11-53 f1e89e0496068ad6d202d63e11cccd4a');
-
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Display Image</title>
-</head>
-<body>
-<img
-     src="<?php echo $file->getContent(); ?>" />
-</body>
-</html>

@@ -16,7 +16,6 @@ class Recommendation extends DBQueries {
         $id = self::escapeValue($id);
         $sql = " SELECT id FROM " . self::$table;
         $sql .= " WHERE action_on_applications_id='" . $id . "' LIMIT 1";
-
         $result  = self::getByQuery($sql);
         $recommendation = $result->fetch_assoc();
         return self::get($recommendation['id']);

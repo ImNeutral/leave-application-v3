@@ -24,7 +24,9 @@ var $confirmModal           = $id('confirmModal');
 var $confirmSubmitModal     = $id('confirmSubmitModal');
 var $confirmSubmitOk        = $id('confirmSubmit_Ok');
 
-var submitted               = false;
+var $loader                 = $id('loader-container');
+
+var submit                  = false;
 var typeOfLeave             = 'Sick';
 var fileDataURI             = '';
 var formContent             = '';
@@ -42,24 +44,31 @@ $fileToUpload.addEventListener('change', function (e) {
     reader.readAsDataURL(file);
 
     reader.addEventListener("load", function () {
-        fileDataURI = reader.result;
+        var $image = $id('hiddenImage');
+        $image.src = reader.result;
+        $image.addEventListener("load", function (e) {
+            $image = e.target;
+            fileDataURI = imageResizeToNewDataUri($image, $image.width/2, $image.height/2);
+        });
     }, false);
 });
 
 $leaveApplicationForm.addEventListener('submit', function (e) {
     e.preventDefault();
     formContent = this;
-    submitted = true;
+    submit = true;
     modalIn($confirmSubmitModal);
 });
 
 $confirmSubmitOk.addEventListener('click',function (e) {
-    if(submitted) {
+    if(submit) {
+        modalOut($confirmSubmitModal);
+        $loader.style.display = 'block';
         POST(formContent, fileDataURI).then(function(response){
             return response.json();
         }).then(function (responseJson) {
             if(responseJson) {
-                modalOut($confirmSubmitModal);
+                $loader.style.display = 'none';
                 modalIn($confirmModal);
             } else {
                 alert("Failed to submit application.");
@@ -180,4 +189,21 @@ function toJSONString( form, fileDataURI ) {
     }
 
     return JSON.stringify( obj );
+}
+
+function imageResizeToNewDataUri(img, width, height) {
+
+    // create an off-screen canvas
+    var canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d');
+
+    // set its dimension to target size
+    canvas.width = width;
+    canvas.height = height;
+
+    // draw source image into the off-screen canvas:
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // encode image to data-uri with base64 version of compressed image
+    return canvas.toDataURL();
 }

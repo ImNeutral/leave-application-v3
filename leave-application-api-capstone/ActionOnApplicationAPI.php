@@ -5,11 +5,12 @@ header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
-    if(isset($_GET['id']) && isset($_GET['allData'])) {
-        $actionOnApplication = ActionOnApplication::get( $_GET['id']);
+    if(isset($_GET['leave_application_id']) && isset($_GET['allData'])) {
+        $actionOnApplication = ActionOnApplication::getByLeaveApplicationId( issetGetValue('leave_application_id') );
         $allData = [];
+        $allData['action_on_application'] = $actionOnApplication;
         if($actionOnApplication->school_head_approved != null) {
-            $allData['school_head_approved'] = $actionOnApplication->recommendation();
+            $allData['school_head_approved'] = $actionOnApplication->Recommendation();
         }
         if($actionOnApplication->hr_approved != null) {
             $allData['hr_approved'] = $actionOnApplication->CertificationOfLeaveCredits();
@@ -19,15 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         }
         echo json_encode( $allData );
 
-    } else if(isset($_GET['id'])) {
-        echo json_encode( ActionOnApplication::get( $_GET['id']) );
     } else if( isset($_GET['leave_application_id']) && isset($_GET['status']) ) {
-        $aoa = ActionOnApplication::getByLeaveApplicationId($_GET['leave_application_id']);
+        $aoa = ActionOnApplication::getByLeaveApplicationId( issetGetValue('leave_application_id') );
         if($aoa->id > 0) {
             echo json_encode($aoa->getStatus());
         } else {
             echo json_encode('Not Exists!');
         }
+    } else if(isset($_GET['leave_application_id'])) {
+        echo json_encode( ActionOnApplication::get( issetGetValue('leave_application_id') ) );
     }
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT

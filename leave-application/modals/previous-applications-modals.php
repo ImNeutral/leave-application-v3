@@ -1,6 +1,6 @@
 <section class="modal-section">
     <!-- The Modal -->
-    <div id="myModal" class="modal" style="display: block; height: auto;">
+    <div id="myModal" class="modal" style="display: none; height: auto;">
 
         <!-- Modal content -->
         <div class="modal-content"  style="margin-top: 5%; width: 60%;">
@@ -20,7 +20,7 @@
                                 Number Of Days Applied:
                             </div>
                         </td>
-                        <td style="border:0;" id="days-applied">12</td>
+                        <td style="border:0;" id="number-days-applied">_</td>
                     </tr>
                     <tr>
                         <td  style="border:0;">
@@ -28,7 +28,7 @@
                                 Start Date:
                             </div>
                         </td>
-                        <td style="border:0;" id="from-date">April 12, 2019</td>
+                        <td style="border:0;" id="from-date">_</td>
                     </tr>
                     <tr>
                         <td  style="border:0;">
@@ -36,7 +36,7 @@
                                 Place Stay:
                             </div>
                         </td>
-                        <td style="border:0;" id="place-stay">In Hospital, Bayugan Doctors Hospital</td>
+                        <td style="border:0;" id="place-stay">_</td>
                     </tr>
                     <tr>
                         <td  style="border:0;">
@@ -44,41 +44,53 @@
                                 Commutation Requested:
                             </div>
                         </td>
-                        <td style="border:0;" id="commutation-requested">No</td>
+                        <td style="border:0;" id="commutation-requested">_</td>
+                    </tr>
+                    <tr id="photo-attachment-holder">
+                        <td  style="border:0;">
+                            <div class="float-right bold">
+                                Photo Attachment:
+                            </div>
+                        </td>
+                        <td style="border:0; cursor: pointer;" id="photo-attachment"><u>View</u></td>
                     </tr>
                     </tbody>
+                </table>
 
-                    <table width="100%" border="0">
+                <div id="principal" style="display: none;">
+                    <table width="100%" border="0" >
                         <thead>
                         <th width="50%"></th>
                         <th width="50%"></th>
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="2" style="border-bottom: 0;" class="bold text-center info-font" id="principal-title">
+                            <td colspan="2" style="border-bottom: 0;" class="bold text-center" id="title">
                                 Principal
                             </td>
                         </tr>
                         <tr>
                             <td style="border:0;">
                                 <div class="float-right bold">
-                                    Approved:
+                                    Action:
                                 </div>
                             </td>
-                            <td  style="border:0;" class="info-font" id="principal-approved">Yes</td>
+                            <td style="border:0;" id="action"></td>
                         </tr>
-
-                        <tr>
-                            <td style="border:0;">
+                        <tr id="reason-holder">
+                            <td style="border:0;" >
                                 <div class="float-right bold">
                                     Reason:
                                 </div>
                             </td>
-                            <td  style="border:0;" id="principal-reason">Reason show if exists. Else, show only Approved above.</td>
+                            <td style="border:0;" id="reason"></td>
                         </tr>
                         </tbody>
                     </table>
 
+                </div>
+
+                <div id="hr-department" style="display: none;">
                     <table width="100%" border="0">
                         <thead>
                         <th width="50%"></th>
@@ -86,59 +98,62 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="2" style="border-bottom: 0;" class="bold text-center danger-font" id="hr-title">
+                            <td colspan="2" style="border-bottom: 0;" class="bold text-center" id="hr-title">
                                 Human Resource Department
                             </td>
                         </tr>
                         <tr>
                             <td style="border:0;">
                                 <div class="float-right bold">
-                                    Approved:
+                                    Action:
                                 </div>
                             </td>
-                            <td  style="border:0;" class="danger-font" id="hr-approved">No</td>
+                            <td style="border:0;" id="action"></td>
                         </tr>
-                        <tr>
-                            <td style="border:0;">
+                        <tr id="reason-holder">
+                            <td style="border:0;" >
                                 <div class="float-right bold">
                                     Reason:
                                 </div>
                             </td>
-                            <td  style="border:0;" class="danger-font" id="hr-reason">Days not possible to be applied. Please Reapply using 3 days sick leave.</td>
+                            <td style="border:0;" id="reason"></td>
                         </tr>
                         </tbody>
                     </table>
+                </div>
 
-                    <table width="100%" border="0">
+                <div id="sds" style="display: none;">
+                    <table width="100%" border="0" >
                         <thead>
                         <th width="50%"></th>
                         <th width="50%"></th>
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="2" style="border-bottom: 0;" class="bold text-center danger-font" id="sds-title">
+                            <td colspan="2" style="border-bottom: 0;" class="bold text-center" id="sds-title">
                                 Division Superintendent
                             </td>
                         </tr>
                         <tr>
                             <td style="border:0;">
                                 <div class="float-right bold">
-                                    Approved:
+                                    Action:
                                 </div>
                             </td>
-                            <td  style="border:0;" class="danger-font" id="sds-approved">No</td>
+                            <td style="border:0;" id="action"></td>
                         </tr>
-                        <tr>
-                            <td style="border:0;">
+                        <tr id="reason-holder">
+                            <td style="border:0;" >
                                 <div class="float-right bold">
                                     Reason:
                                 </div>
                             </td>
-                            <td  style="border:0;" class="danger-font" id="sds-reason">Days not possible to be applied. Please Reapply using 3 days sick leave.</td>
+                            <td style="border:0;" id="reason"></td>
                         </tr>
                         </tbody>
                     </table>
-                </table>
+
+                </div>
 
             </div>
             <hr>
@@ -148,6 +163,11 @@
             </div>
         </div>
 
+    </div>
+    
+    <div class="view-photo" id="view-photo" style="display: none;">
+        <span class="close" id="close-view-photo" onclick="closeViewPhoto(this)" style="margin-right: 50px;">&times;</span>
+        <img src="" alt="Image" id="photo">
     </div>
 
 </section>

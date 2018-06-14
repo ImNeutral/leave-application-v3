@@ -1,14 +1,19 @@
 <?php
 
 function issetGetValue($getName) {
-    return isset($_GET[$getName]) ? $_GET[$getName] : '';
+    $val = isset($_GET[$getName]) ? $_GET[$getName] : '';
+    return escapeValue($val);
 }
 
 function issetPostValue($postName) {
-    return isset($_POST[$postName]) ? $_POST[$postName] : '';
+    $val = isset($_POST[$postName]) ? $_POST[$postName] : '';
+    return escapeValue($val);
 }
 
 function replaceSpaces($var) {
     return str_replace(' ', '%20', $var);
 }
 
+function escapeValue($val) {
+    return strip_tags( stripslashes($val) );
+}
