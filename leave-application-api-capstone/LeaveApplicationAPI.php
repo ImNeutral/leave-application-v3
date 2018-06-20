@@ -6,7 +6,11 @@ header('Access-Control-Allow-Origin: *');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
     if(isset($_GET['id'])) {
-        echo json_encode( LeaveApplication::get($_GET['id']) );
+        $la     = LeaveApplication::get($_GET['id']);
+        $la->status();
+        echo json_encode( $la );
+    } else if ( isset($_GET['count']) && isset($_GET['accountId']) ) {
+        echo json_encode( LeaveApplication::count("WHERE account_id=" . $_GET['accountId']) );
     } else if( isset($_GET['page']) && isset($_GET['accountId']) ) {
         $where              = " WHERE account_id=" . issetGetValue('accountId') . " ";
         $page               = issetGetValue('page');
@@ -15,9 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         $leaveApplications  = LeaveApplication::getAllPaginated($limit, $offset, $where);
         if($leaveApplications){
             foreach ($leaveApplications as $leaveApplication) {
-                $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $leaveApplication->id . "&status=true");
-                $status = json_decode($status);
-                $leaveApplication->status = $status;
+                $leaveApplication->status();
             }
         }
         echo json_encode( $leaveApplications );
@@ -104,8 +106,45 @@ else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // UPDATE
 //    parse_str(file_get_contents("php://input"), $post_vars);
 //    echo $post_vars['id'];
 
-//    $input = json_decode(file_get_contents("php://input"));
-//    echo json_encode( LeaveApplication::get( $input->id ) );
+    $input = json_decode(file_get_contents("php://input"));
+    if(isset($input->id) && isset($input->cancel)) {
+        $leaveApplication = LeaveApplication::get( $input->id );
+        $leaveApplication->cancelled = $input->cancel;
+        $leaveApplication->save();
+        echo json_encode(1);
+    } else {
+        $leaveApplication = LeaveApplication::get( $input->id );
+        if($leaveApplication->number_days_applied != $input->number_days_applied_edit) {
+            $leaveApplication->number_days_applied = $input->number_days_applied_edit;
+        }
+        if($input->date_from_month_edit < 10) {
+            $input->date_from_month_edit = '0' . $input->date_from_month_edit;
+        }
+        if($input->date_from_day_edit < 10) {
+            $input->date_from_day_edit = '0' . $input->date_from_day_edit;
+        }
+        $date = $input->date_from_year_edit . '-' . $input->date_from_month_edit . '-' . $input->date_from_day_edit;
+        $leaveApplication->from_date = $date;
+        $leaveApplication->place_stay = "";
+        $leaveApplication->place_stay_specify = $input->place_stay_specify_edit;
+        $leaveApplication->commutation_requested = $input->commutation_requested_edit;
+
+        $filename = '';
+        if($input->attachment > '' && $leaveApplication->filename > ' ') {
+            $leaveApplication->fileAttachment()->setContent($input->fileDataURI);
+        } else if($input->attachment > '') {
+            $filename = date("Y-m-d H-i-s") . " " . md5( rand()  ); // generate random string
+            $imageFile = fopen("attachments/" . $filename  , "x");
+            $fileContent = $input->fileDataURI;
+            fwrite($imageFile, $fileContent);
+            fclose($imageFile);
+            $leaveApplication->filename = $filename;
+        }
+
+        $leaveApplication->save();
+
+        echo json_encode($leaveApplication);
+    }
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') { // DELETE => use GET
     $leaveApplication = LeaveApplication::get(issetGetValue('id'));

@@ -85,3 +85,76 @@ function hide(element) {
 function show(element) {
     element.style.display = "";
 }
+
+function setDayValue(year, month, $day){
+    var daysVal     = [31,( (year%4 > 0)? 28: 29 ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var $optionElement = document.createElement('option');
+
+    while($day.childNodes[0]) {
+        $day.removeChild($day.childNodes[0]);
+    }
+
+    for(var i = 1; i <= daysVal[month-1]; i++) {
+        var $textNode = document.createTextNode(i);
+        var $optionElementClone = $optionElement.cloneNode(true);
+        $optionElementClone.value = i;
+        $optionElementClone.appendChild($textNode);
+        $day.appendChild($optionElementClone)
+    }
+}
+
+function selectDateNow($month, $day) {
+    var dateNow     = new Date();
+    $month.value = dateNow.getMonth() + 1;
+    monthChangedFrom();
+    $day.value = dateNow.getDate();
+}
+
+function formatDate(date) {
+    month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    newDate = new Date(date);
+    newDateString = month[newDate.getMonth()] + " " + newDate.getDate() + ", " + newDate.getFullYear() + " - " + dayName[newDate.getDay()];
+    return newDateString;
+}
+
+function formatDate2(strDate) {
+    var date    = new Date(strDate);
+    var month   = ['Jan','Feb','Mar','Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+}
+
+function empty($element) {
+    while ($element.firstChild) {
+        $element.removeChild($element.firstChild);
+    }
+}
+
+function createPageButton(page, elId) {
+    var $a      = document.createElement('a');
+    var $aTN    = document.createTextNode(page);
+    if(elId > ' ') {
+        $a.id       = elId;
+    }
+    $a.className = 'button button-primary button-sm pagination';
+    $a.setAttribute('data-id', page);
+    $a.appendChild($aTN);
+    return $a;
+}
+
+function imageResizeToNewDataUri(img, width, height) {
+
+    // create an off-screen canvas
+    var canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d');
+
+    // set its dimension to target size
+    canvas.width = width;
+    canvas.height = height;
+
+    // draw source image into the off-screen canvas:
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // encode image to data-uri with base64 version of compressed image
+    return canvas.toDataURL();
+}

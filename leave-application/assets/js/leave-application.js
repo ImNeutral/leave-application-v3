@@ -123,31 +123,6 @@ function monthChangedFrom() {
     setDayValue($dateFromYear.value, $dateFromMonth.value, $dateFromDay);
 }
 
-function setDayValue(year, month, $day){
-    var daysVal     = [31,( (year%4 > 0)? 28: 29 ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    var $optionElement = document.createElement('option');
-
-    while($day.childNodes[0]) {
-        $day.removeChild($day.childNodes[0]);
-    }
-
-    for(var i = 1; i <= daysVal[month-1]; i++) {
-        var $textNode = document.createTextNode(i);
-        var $optionElementClone = $optionElement.cloneNode(true);
-        $optionElement.value = i;
-        $optionElementClone.appendChild($textNode);
-        $day.appendChild($optionElementClone)
-    }
-}
-
-function selectDateNow($month, $day) {
-    var dateNow     = new Date();
-    $month.value = dateNow.getMonth() + 1;
-    monthChangedFrom();
-    $day.value = dateNow.getDate();
-}
-
-
 function POST($form, fileDataURI) {
     // var data = new FormData(form);
     var data = toJSONString($form, fileDataURI);
@@ -189,21 +164,4 @@ function toJSONString( form, fileDataURI ) {
     }
 
     return JSON.stringify( obj );
-}
-
-function imageResizeToNewDataUri(img, width, height) {
-
-    // create an off-screen canvas
-    var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
-
-    // set its dimension to target size
-    canvas.width = width;
-    canvas.height = height;
-
-    // draw source image into the off-screen canvas:
-    ctx.drawImage(img, 0, 0, width, height);
-
-    // encode image to data-uri with base64 version of compressed image
-    return canvas.toDataURL();
 }

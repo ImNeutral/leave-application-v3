@@ -1,6 +1,7 @@
 <?php
 require_once ("DBQueries.php");
 require_once ("Functions.php");
+require_once ("FileAttachment.php");
 
 class LeaveApplication extends DBQueries {
     public static $table        = "leave_applications";
@@ -32,7 +33,19 @@ class LeaveApplication extends DBQueries {
         $thisModel->number_days_applied     = $data['number_days_applied'];
 
         return $thisModel;
-//        return $thisModel->save();
+    }
+
+    public function status() {
+        $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $this->id . "&status=true");
+        $status = json_decode($status);
+        if($this->cancelled) {
+            $status = "Cancelled";
+        }
+        $this->status = $status;
+    }
+
+    public function fileAttachment() {
+        return (new FileAttachment($this->filename));
     }
 
     public function pleaseDisregard() {

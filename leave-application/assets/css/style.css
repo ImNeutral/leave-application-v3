@@ -68,6 +68,15 @@ h6 {
     font-size: 1.9rem;
 }
 
+table tr td input {
+    width: 70%;
+    min-width: 150px;
+}
+
+table tr td .input {
+    width: 70%;
+    min-width: 150px;
+}
 
 .one.columns-sm {
     width: 4.66666666667%;
@@ -145,6 +154,14 @@ button.button-danger:hover {
     background-color: #d6616c;
 }
 
+.button-primary {
+    background-color: #007bff !important;
+}
+
+.button-primary:hover {
+    background-color: #3692f5 !important;
+}
+
 .user-name {
     color: #fff;
     text-decoration: none;
@@ -157,7 +174,6 @@ button.button-danger:hover {
 .left-nav {
     border-right: 1px solid #eee;
     margin-bottom: 40px;
-
 }
 
 .left-nav a {
@@ -195,6 +211,9 @@ button.button-danger:hover {
 
 .pagination a {
     border-radius: 1.2rem;
+    margin: 0 2px;
+    height: auto !important;
+    padding: .5rem .8rem !important;
 }
 
 .text-center {
@@ -202,12 +221,12 @@ button.button-danger:hover {
 }
 
 .pagination .active {
-    background-color: #007bff;
+    background-color: #33C3F0 !important;
     cursor: default;
 }
 
 .pagination .active:hover {
-    background-color: #007bff;
+    background-color: #33C3F0 !important;
 }
 
 /* Dropdown Button */
@@ -435,6 +454,7 @@ table.accounts td{
     padding: 10px;
 }
 
+
 /* Media Queries */
 
 /*@media (min-width: 550px) and (max-width: 1024px){*/
@@ -467,7 +487,18 @@ table.accounts td{
 
     .modal-content {
         width: 90% !important;
+        margin-top: 12% !important;
+    }
+
+    #from-date-edit {
+        border-left: 1px solid lightgray !important;
+    }
+
+    .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+        padding: 0 10px !important;
+        margin: 0 5px !important;
+    }
+
+    .pagination a {
     }
 }
-
-

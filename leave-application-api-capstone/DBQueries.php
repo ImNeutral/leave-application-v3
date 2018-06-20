@@ -89,8 +89,9 @@ class DBQueries {
 
     }
 
-    public static function count() {
-        $sql = "SELECT count(id) FROM " . static::$table;
+    public static function count($where = '') {
+        $sql = "SELECT count(id) as total FROM " . static::$table;
+        $sql .= " " . self::escapeValue( $where );
         $result  = self::getByQuery($sql);
         $result = $result->fetch_assoc();
         return $result;

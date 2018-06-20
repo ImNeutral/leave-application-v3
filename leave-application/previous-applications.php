@@ -2,6 +2,11 @@
 <?php include ('layouts/top-navigation.php'); ?>
 <?php include('modals/previous-applications-modals.php'); ?>
 
+
+<section class="hidden">
+    <img id="hidden-image" src="" alt="" />
+</section>
+
 <section class="section main">
     <div class="row">
 
@@ -25,11 +30,12 @@
                     </tbody>
                 </table>
 
+                <div class="pagination" id="pagination">
+                </div>
+
             </div>
         </div>
     </div>
-
-
 </section>
 
 
@@ -49,9 +55,8 @@
             modal.style.display = "none";
         }
     }
-
-
 </script>
 
 <script src="assets/js/previous-application.js"></script>
+<script src="assets/js/edit-leave-application.js"></script>
 <?php include ('layouts/footer.php');?>

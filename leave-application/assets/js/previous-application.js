@@ -1,6 +1,6 @@
 var $leaveApplications = $id('previous-applications-list');
 var $loader            = $id('loader-container');
-
+var $pagination        = $id('pagination');
 
 // modal views
 var $numberDaysApplied      = $id('number-days-applied');
@@ -16,68 +16,87 @@ var $sds                    = $id('sds');
 
 var $viewPhoto              = $id('view-photo');
 
+var page                    = 1;
 
-var page               = 1;
+var $latestClicked;
+var $currentPage;
 
-GET('page', page, accountID).then(function (JSONresponse) {
-    var num = (page-1) * 10 + 1;
+// edit elements
+var $dateFromYearEdit       = $id('date-from-year-edit');
+var $dateFromMonthEdit      = $id('date-from-month-edit');
+var $dateFromDayEdit        = $id('date-from-day-edit');
 
-    if(JSONresponse.length <= 0) {
-        var tr_          = document.createElement('tr');
-        var td           = document.createElement('td');
-        var tdTN         = document.createTextNode("No Previous Applications!");
-        td.colSpan = 5;
-        td.className = "text-center";
-        td.appendChild(tdTN);
-        tr_.appendChild(td);
-        $leaveApplications.appendChild(tr_);
-    }
+var leaveApplicationPromise;
 
-    for(var roll = 0; roll < JSONresponse.length; roll++) {
-        var tr              = document.createElement('tr');
-        var tdLeaveId       = document.createElement('td');
-        var tdNum           = document.createElement('td');
-        var tdType          = document.createElement('td');
-        var tdDays          = document.createElement('td');
-        var tdFromDate      = document.createElement('td');
-        var tdStatus        = document.createElement('td');
+populatePreviousApplicationsTable();
+addPagination();
 
-        var tdLeaveIdTN     = document.createTextNode(JSONresponse[roll].id);
-        var tdNumTN         = document.createTextNode(num);
-        var tdTypeTN        = document.createTextNode(JSONresponse[roll].type_of_leave);
-        var tdDaysTN        = document.createTextNode(JSONresponse[roll].number_days_applied);
-        var tdFromDateTN    = document.createTextNode(JSONresponse[roll].from_date);
-        var tdStatusTN      = document.createTextNode( JSONresponse[roll].status );
+function populatePreviousApplicationsTable() {
+    empty($leaveApplications);
+    GET('page', page, accountID).then(function (JSONresponse) {
+        var num = (page-1) * 10 + 1;
 
-        if(JSONresponse[roll].status == 'Rejected') {
-            tdStatus.className = 'danger-font';
-        } else if(JSONresponse[roll].status == 'Accepted') {
-            tdStatus.className = 'primary-font';
-        } else {
-            tdStatus.className = 'info-font';
+        if(JSONresponse.length <= 0) {
+            var tr_          = document.createElement('tr');
+            var td           = document.createElement('td');
+            var tdTN         = document.createTextNode("No Previous Applications!");
+            td.colSpan = 5;
+            td.className = "text-center";
+            td.appendChild(tdTN);
+            tr_.appendChild(td);
+            $leaveApplications.appendChild(tr_);
         }
-        tdLeaveId.className = "hidden";
 
-        tdLeaveId   .appendChild(tdLeaveIdTN);
-        tdNum       .appendChild(tdNumTN);
-        tdType      .appendChild(tdTypeTN);
-        tdDays      .appendChild(tdDaysTN);
-        tdFromDate  .appendChild(tdFromDateTN);
-        tdStatus    .appendChild(tdStatusTN);
+        for(var roll = 0; roll < JSONresponse.length; roll++) {
+            var tr              = document.createElement('tr');
+            var tdLeaveId       = document.createElement('td');
+            var tdNum           = document.createElement('td');
+            var tdType          = document.createElement('td');
+            var tdDays          = document.createElement('td');
+            var tdFromDate      = document.createElement('td');
+            var tdStatus        = document.createElement('td');
 
-        tr.className = "dataTR";
-        tr.appendChild(tdLeaveId);
-        tr.appendChild(tdNum);
-        tr.appendChild(tdType);
-        tr.appendChild(tdDays);
-        tr.appendChild(tdFromDate);
-        tr.appendChild(tdStatus);
+            tdDays.id       = "days";
+            tdFromDate.id   = "from-date";
+            tdStatus.id     = "status";
 
-        $leaveApplications.appendChild(tr);
-        num++;
-    }
-    addClickEvent();
-});
+            var tdLeaveIdTN     = document.createTextNode(JSONresponse[roll].id);
+            var tdNumTN         = document.createTextNode(num);
+            var tdTypeTN        = document.createTextNode(JSONresponse[roll].type_of_leave);
+            var tdDaysTN        = document.createTextNode(JSONresponse[roll].number_days_applied);
+            var tdFromDateTN    = document.createTextNode(formatDate2( JSONresponse[roll].from_date ));
+            var tdStatusTN      = document.createTextNode( JSONresponse[roll].status );
+
+            if(JSONresponse[roll].status == 'Rejected' || JSONresponse[roll].status == 'Cancelled') {
+                tdStatus.className = 'danger-font';
+            } else if(JSONresponse[roll].status == 'Accepted') {
+                tdStatus.className = 'primary-font';
+            } else {
+                tdStatus.className = 'info-font';
+            }
+            tdLeaveId.className = "hidden";
+
+            tdLeaveId   .appendChild(tdLeaveIdTN);
+            tdNum       .appendChild(tdNumTN);
+            tdType      .appendChild(tdTypeTN);
+            tdDays      .appendChild(tdDaysTN);
+            tdFromDate  .appendChild(tdFromDateTN);
+            tdStatus    .appendChild(tdStatusTN);
+
+            tr.className = "dataTR";
+            tr.appendChild(tdLeaveId);
+            tr.appendChild(tdNum);
+            tr.appendChild(tdType);
+            tr.appendChild(tdDays);
+            tr.appendChild(tdFromDate);
+            tr.appendChild(tdStatus);
+
+            $leaveApplications.appendChild(tr);
+            num++;
+        }
+        addClickEvent();
+    });
+}
 
 function GET(type, number, accountId) {
     var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?" + type + "=" + number;
@@ -117,6 +136,18 @@ function GETLeaveApplication(id) {
     });
 }
 
+function GETLeaveApplicationCount() {
+    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?count=true&accountId=" + accountID;
+    var init = {
+        method: 'GET',
+        headers: new Headers({
+        })
+    };
+    return fetch(url, init).then(function(response){
+        return response.json();
+    });
+}
+
 function GETPhotoAttachment(filename) {
     var url = "http://" + getHost() + "/leave-application-api-capstone/FileAttachmentAPI.php?filename=" + filename;
     var init = {
@@ -131,9 +162,9 @@ function GETPhotoAttachment(filename) {
 
 function addClickEvent() {
     var $trClick    = document.querySelectorAll("tr.dataTR");
-    var leaveApplicationPromise;
     $trClick.forEach(function ($eachTr) {
         $eachTr.addEventListener("click", function (e) {
+            $latestClicked      = this;
             var element         = this;
             var applicationId   = element.children[0].textContent;
             hideActionsOnApplication();
@@ -141,6 +172,11 @@ function addClickEvent() {
             modal.style.display = "block";
             $loader.style.display = 'block';
             leaveApplicationPromise     = GETLeaveApplication(applicationId).then(function (JSONLeaveApplication) {
+                if(JSONLeaveApplication.cancelled == '1' || JSONLeaveApplication.status != 'In: Principal') {
+                    hide($id('open-edit-modal'));
+                } else {
+                    $id('open-edit-modal').style.display = "";
+                }
                 replaceContentLeaveApplication(JSONLeaveApplication);
                 return JSONLeaveApplication;
             });
@@ -177,7 +213,7 @@ function replaceContent(element, newContent) {
 function replaceContentLeaveApplication(leaveApplication) {
     replaceContent($numberDaysApplied,  leaveApplication.number_days_applied);
     replaceContent($fromDate,           formatDate(leaveApplication.from_date));
-    replaceContent($placeStay,          (placeStay(leaveApplication.place_stay) + leaveApplication.place_stay_specify) );
+    replaceContent($placeStay,          (placeStay(leaveApplication.place_stay, leaveApplication.place_stay_specify)) );
 
     if(leaveApplication.commutation_requested == '1') {
         replaceContent($commutationRequested,   'Yes');
@@ -191,14 +227,16 @@ function replaceContentLeaveApplication(leaveApplication) {
     }
 }
 
-function placeStay(placeStay){
-    if(placeStay > " ") {
+function placeStay(placeStay, placeStaySpecify){
+    if(placeStay > " " && placeStaySpecify > " ") {
         place = placeStay.split("_");
         newPlaceStay = "";
         for (roll = 0; roll < place.length; roll++) {
             newPlaceStay += place[roll][0].toUpperCase() + place[roll].slice(1) + " ";
         }
-        return newPlaceStay + ", ";
+        return newPlaceStay + ", " + placeStaySpecify;
+    } else if(placeStaySpecify > " ") {
+        return placeStaySpecify;
     } else {
         return "...";
     }
@@ -260,14 +298,6 @@ function replaceContentByOffice($element, action, approved) {
     return next;
 }
 
-function formatDate(date) {
-    month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    newDate = new Date(date);
-    newDateString = month[newDate.getMonth()] + " " + newDate.getDate() + ", " + newDate.getFullYear() + " - " + dayName[newDate.getDay()];
-    return newDateString;
-}
-
 function hideActionsOnApplication() {
     hide($principal);
     hide($hRDepartment);
@@ -277,3 +307,22 @@ function hideActionsOnApplication() {
     hide($sds.querySelector("#reason-holder"));
 }
 
+function monthChangedFrom() {
+    setDayValue($dateFromYearEdit.value, $dateFromMonthEdit.value, $dateFromDayEdit);
+}
+
+function addPagination() {
+    GETLeaveApplicationCount().then(function (result) {
+        $pagination.appendChild( createPageButton('<<', 'pagination-previous') );
+        for (var roll = 1; roll <= Math.ceil( result.total / 10 ) + 1; roll++) {
+            var $a = createPageButton(roll);
+            $pagination.appendChild( $a );
+
+            if(roll == 1) {
+                $currentPage = $a;
+                $currentPage.className = $currentPage.className + ' active';
+            }
+        }
+        $pagination.appendChild( createPageButton('>>', 'pagination-next') );
+    });
+}
