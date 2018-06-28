@@ -2,7 +2,6 @@
 require_once ("Controllers/CreateAccount.php");
 ?>
 
-
 <?php include ('layouts/header.php'); ?>
 <?php include ('layouts/top-navigation.php'); ?>
 

@@ -77,6 +77,11 @@ table tr td .input {
     min-width: 150px;
 }
 
+hr {
+    margin-top: 2rem !important;
+    margin-bottom: 2.5rem !important;
+}
+
 .one.columns-sm {
     width: 4.66666666667%;
     display: inline-block;
@@ -125,6 +130,10 @@ table tr td .input {
     margin-top: 20px;
 }
 
+.small-radius {
+    border-radius: 4px !important;
+}
+
 .top-nav {
     position: sticky;
     top: 0;
@@ -135,12 +144,23 @@ table tr td .input {
 }
 
 .button-sm {
-    padding: .5rem .75rem;
-    font-size:.875rem;
+    padding: .45rem .75rem;
+    font-size: 10px;
     line-height:1.5;
     border-radius:.2rem;
     height: 2.3rem;
     margin-bottom: 0;
+}
+
+.input-sm {
+    height: 25px !important;
+    font-size: 15px !important;
+}
+
+.select-sm {
+    height: 25px !important;
+    font-size: 15px !important;
+    padding: 0 0 !important;
 }
 
 button.button-danger {
@@ -401,6 +421,20 @@ table.accounts td{
     color: orange;
 }
 
+.button-info {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    margin-bottom: 4px !important;
+}
+
+.button-info:hover {
+    background-color: #1e7e34;
+    border-color: #1e7e34;
+    color: #fff;
+}
+
+
 .bold {
     font-weight: bold;
 }
@@ -503,5 +537,14 @@ table.accounts td{
 
     .user-name {
         font-size: 14px;
+    }
+
+    #create-account {
+        float: right;
+        margin-bottom: 5px !important;
+    }
+
+    #search {
+        width: 150px !important;
     }
 }

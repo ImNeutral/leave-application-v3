@@ -12,7 +12,7 @@
 
         <div class="twelve columns main-content">
             <?php include('layouts/absolute-nav-user.php'); ?>
-            <h5 class="header">Previous Applications</h5>
+            <h6 class="header">Previous Applications</h6>
 
             <hr>
             <div class="">

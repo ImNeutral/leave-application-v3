@@ -62,15 +62,16 @@ function isAllowed(id) {
         "login.php"                 : "0",
         "change-password.php"       : "0",
         "leave-application.php"     : "1",
-        "previous-applications.php" : "1"
+        "previous-applications.php" : "1",
+        "manage-accounts.php"       : "5"
     };
-
     var defaultRoutes = {
         "0" : "login.php",
         "1" : "leave-application.php",
         '2' : "admin-actions.php",
         '3' : "admin-actions.php",
-        '4' : "admin-actions.php"
+        '4' : "admin-actions.php",
+        '5' : "manage-accounts.php"
     };
     if(currentLoc == 'admin-actions.php' && (id == 2 || id == 3 || id == 4 ) ) {
         //do nothing...

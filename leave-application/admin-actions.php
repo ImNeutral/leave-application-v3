@@ -10,7 +10,7 @@
     <div class="row">
         <div class="twelve columns main-content">
             <?php include('layouts/absolute-nav-admin.php'); ?>
-            <h5 class="header" id="header">New Applications</h5>
+            <h6 class="header" id="header">New Applications</h6>
 
             <hr>
             <div class="">

@@ -12,7 +12,7 @@
 
         <div class="twelve columns main-content">
             <?php include('layouts/absolute-nav-user.php'); ?>
-            <h5 class="header">Leave Application</h5>
+            <h6 class="header">Leave Application</h6>
             <hr>
             <div class="row">
                 <form action="" method="POST" class="leave-application" id="leave-application-form">
