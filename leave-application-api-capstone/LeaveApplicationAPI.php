@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
     } else if ( isset($_GET['count']) && isset($_GET['accountId']) ) {
         echo json_encode( LeaveApplication::count("WHERE account_id=" . $_GET['accountId']) );
     } else if( isset($_GET['page']) && isset($_GET['accountId']) ) {
-        $where              = " WHERE account_id=" . issetGetValue('accountId') . " ";
+        $where              = " WHERE account_id=" . issetGetValue('accountId') . " ORDER BY id DESC";
         $page               = issetGetValue('page');
         $limit              = 10;
         $offset             = ($page - 1) * $limit;
@@ -58,7 +58,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
 
         $dateFromYear   = $input->date_from_year;
         $dateFromMonth  = $input->date_from_month;
-        $dateFromDay    = $input->date_from_day + 1;
+        $dateFromDay    = $input->date_from_day;
 
         $placeLeaveStay = $input->place;
         $placeLeaveStaySpecify = '';

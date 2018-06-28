@@ -16,7 +16,6 @@
                         <input type="password" class="u-full-width" id="password">
                     </div>
                     <div>
-                        <a href="forgot-password.php">&nbsp;Forgot Password?</a>
                         <button type="submit" class="button-primary u-pull-right" id="submit-button">Login</button>
                     </div>
                 </form>

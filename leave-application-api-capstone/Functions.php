@@ -15,5 +15,5 @@ function replaceSpaces($var) {
 }
 
 function escapeValue($val) {
-    return strip_tags( stripslashes($val) );
+    return addslashes(strip_tags( $val ));
 }

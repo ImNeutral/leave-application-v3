@@ -51,50 +51,53 @@ class Account extends DBQueries {
     }
 
     public static function accountOwner($employee_id) {
-        $employee_data = file_get_contents('http://' . SERVICE_HOST . '/leave-application-services/classes/Employees.php?id=' . $employee_id);
-        $employee_data = json_decode($employee_data);
-
+        $employee_data  = file_get_contents('http://' . SERVICE_HOST . '/leave-application-api-deped/EmployeeAPI.php?id=' . $employee_id);
+        $employee_data  = json_decode($employee_data);
         return ucwords(strtolower( $employee_data->first_name . ' ' . $employee_data->middle_name . ' ' . $employee_data->last_name ));
+    }
+
+    public function owner() {
+        return json_decode(file_get_contents('http://' . SERVICE_HOST . '/leave-application-api-deped/EmployeeAPI.php?id=' . $this->employee_id . '&school=true'));
     }
 
     public function getPassword() {
         return $this->encryptPassword($this->password);
     }
 
-    private function encryptPassword($password) {
+    public function encryptPassword($password) {
         return md5($password);
     }
 
-    public function save() {
-        $sql = "INSERT INTO " . self::$table;
-        $sql .= " (" . self::tableFieldsString() . ") ";
-        $sql .= "VALUES ( ";
-        $sql .= "null, ";
-        $sql .= $this->account_type_id . ", ";
-        $sql .= $this->employee_id     . ", '";
-        $sql .= self::escapeValue($this->username) . "', '";
-        $sql .= $this->getPassword() . "' ";
-        $sql .= " ) ";
+//    public function save() {
+//        $sql = "INSERT INTO " . self::$table;
+//        $sql .= " (" . self::tableFieldsString() . ") ";
+//        $sql .= "VALUES ( ";
+//        $sql .= "null, ";
+//        $sql .= $this->account_type_id . ", ";
+//        $sql .= $this->employee_id     . ", '";
+//        $sql .= self::escapeValue($this->username) . "', '";
+//        $sql .= $this->getPassword() . "' ";
+//        $sql .= " ) ";
+//
+//        if(self::getByQuery($sql)) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
 
-        if(self::getByQuery($sql)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public function update() {
-        $sql = "UPDATE " . self::$table;
-        $sql .= " SET password='" . $this->getPassword() . "' ";
-        $sql .= ", account_type_id=" . $this->account_type_id;
-        $sql .= " WHERE id=" . $this->id;
-
-        if(self::getByQuery($sql)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
+//    public function update() {
+//        $sql = "UPDATE " . self::$table;
+//        $sql .= " SET password='" . $this->getPassword() . "' ";
+//        $sql .= ", account_type_id=" . $this->account_type_id;
+//        $sql .= " WHERE id=" . $this->id;
+//
+//        if(self::getByQuery($sql)) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
 
     public function updatePassword() {
         $sql = "UPDATE " . self::$table;

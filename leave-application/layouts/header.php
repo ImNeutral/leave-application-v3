@@ -21,3 +21,9 @@
     <div class="loader"></div>
 </div>
 
+<div class="view-photo" id="view-photo" style="display: none;">
+    <span class="close" id="close-view-photo" onclick="closeViewPhoto(this)" style="margin-right: 50px;">&times;</span>
+    <img src="" alt="Image" id="photo">
+</div>
+
+<?php include ('modals/change-password-modal.php'); ?>

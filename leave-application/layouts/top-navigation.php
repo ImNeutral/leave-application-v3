@@ -6,7 +6,7 @@
             &nbsp;
             <img src="assets/images/caret-down.png" alt="" class="dropbtn" width="12px">
             <div id="myDropdown" class="dropdown-content">
-                <a href="change-password.php">Change Password</a>
+                <a onclick="showChangePasswordModal()">Change Password</a>
                 <a onclick="logout()">Logout</a>
             </div>
         </div>

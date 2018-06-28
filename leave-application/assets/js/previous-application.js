@@ -1,6 +1,7 @@
-var $leaveApplications = $id('previous-applications-list');
-var $loader            = $id('loader-container');
-var $pagination        = $id('pagination');
+var $leaveApplications      = $id('previous-applications-list');
+var $loader                 = $id('loader-container');
+
+var $pagination             = $id('pagination');
 
 // modal views
 var $numberDaysApplied      = $id('number-days-applied');
@@ -16,20 +17,66 @@ var $sds                    = $id('sds');
 
 var $viewPhoto              = $id('view-photo');
 
-var page                    = 1;
-
-var $latestClicked;
-var $currentPage;
-
 // edit elements
 var $dateFromYearEdit       = $id('date-from-year-edit');
 var $dateFromMonthEdit      = $id('date-from-month-edit');
 var $dateFromDayEdit        = $id('date-from-day-edit');
 
+
+var page                    = 1;
+
+var $latestClicked;
+var $currentPage;
+
+
 var leaveApplicationPromise;
+var leaveApplicationCountPromise;
 
 populatePreviousApplicationsTable();
 addPagination();
+
+function clickedPageButton($e) {
+
+    leaveApplicationCountPromise.then(function (result) {
+        var pages = Math.ceil( result.total / 10 );
+
+
+        if(page == pages) {
+            $id('pagination-previous').style.display = '';
+            $id('pagination-next').style.display = 'none';
+        } else if(page == 1) {
+            $id('pagination-next').style.display = '';
+            $id('pagination-previous').style.display = 'none';
+        } else {
+            $id('pagination-next').style.display = '';
+            $id('pagination-previous').style.display = '';
+        }
+        if(pages == 1) {
+            $id('pagination-next').style.display = 'none';
+            $id('pagination-previous').style.display = 'none';
+        }
+    });
+
+    $currentPage.classList.remove('active');
+    var nextPage;
+    if($e.getAttribute('data-id') != '>>' && $e.getAttribute('data-id') != '<<') {
+        $e.classList.add('active');
+        $currentPage    =   $e;
+
+    } else if($e.getAttribute('data-id') == '>>') {
+        nextPage    = parseInt( $currentPage.getAttribute('data-id') ) + 1;
+        $currentPage = $id('page-' + nextPage );
+        $currentPage.classList.add('active');
+    } else if($e.getAttribute('data-id') == '<<') {
+        nextPage    = $currentPage.getAttribute('data-id') - 1;
+        $currentPage = $id('page-' + nextPage );
+        $currentPage.classList.add('active');
+    }
+
+    page     = $currentPage.getAttribute('data-id');
+    populatePreviousApplicationsTable();
+}
+
 
 function populatePreviousApplicationsTable() {
     empty($leaveApplications);
@@ -251,7 +298,7 @@ function replaceContentActionOnApplication(actionOnApplication) {
         next = replaceContentHR(actionOnApplication['hr_approved'], actionOnApplication['action_on_application']);
     }
     if( next ) {
-        next = replaceContentSDS(actionOnApplication['division_head_approved'], actionOnApplication['action_on_application']);
+        replaceContentSDS(actionOnApplication['division_head_approved'], actionOnApplication['action_on_application']);
     }
 }
 
@@ -281,13 +328,17 @@ function replaceContentByOffice($element, action, approved) {
         if(approved == 0) {
             $element.className = "danger-font";
             $action.textContent = "Rejected!";
-            if(action.disapproval_due_to > " ") {
-                $reason.textContent = action.disapproval_due_to;
+            if(action.disapproved_due_to > " ") {
+                $reason.textContent = action.disapproved_due_to;
                 $reasonHolder.style.display = "";
             }
         } else if( approved == 1 ) {
             $element.className ="primary-font";
             $action.textContent = "Accepted!";
+            if(action.approved_for > " ") {
+                $reason.textContent = action.approved_for;
+                $reasonHolder.style.display = "";
+            }
             next = true;
         }
     } else {
@@ -312,9 +363,12 @@ function monthChangedFrom() {
 }
 
 function addPagination() {
-    GETLeaveApplicationCount().then(function (result) {
-        $pagination.appendChild( createPageButton('<<', 'pagination-previous') );
-        for (var roll = 1; roll <= Math.ceil( result.total / 10 ) + 1; roll++) {
+    leaveApplicationCountPromise = GETLeaveApplicationCount().then(function (result) {
+        var totalPages          = Math.ceil( result.total / 10 );
+        var $previous           = createPageButton('<<', 'pagination-previous');
+        $previous.style.display = "none";
+        $pagination.appendChild( $previous );
+        for (var roll = 1; roll <= totalPages; roll++) {
             var $a = createPageButton(roll);
             $pagination.appendChild( $a );
 
@@ -323,6 +377,11 @@ function addPagination() {
                 $currentPage.className = $currentPage.className + ' active';
             }
         }
-        $pagination.appendChild( createPageButton('>>', 'pagination-next') );
+        var $next   = createPageButton('>>', 'pagination-next');
+        if(totalPages <= 1) {
+            $next.style.display = 'none';
+        }
+        $pagination.appendChild( $next );
+        return result;
     });
 }

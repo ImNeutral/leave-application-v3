@@ -1,4 +1,3 @@
-
 function $id(el) {
     return document.getElementById(el);
 }
@@ -10,6 +9,12 @@ function $class(el) {
 function closeModal(target) {
     var $modalContainer = findAncestor(target, 'modal');
     $modalContainer.style.display = "none";
+}
+
+function openModal(target) {
+    var $modalContainer = findAncestor(target, 'modal');
+    console.log($modalContainer);
+    $modalContainer.style.display = "block";
 }
 
 function closeViewPhoto(target) {
@@ -62,10 +67,14 @@ function isAllowed(id) {
 
     var defaultRoutes = {
         "0" : "login.php",
-        "1" : "leave-application.php"
+        "1" : "leave-application.php",
+        '2' : "admin-actions.php",
+        '3' : "admin-actions.php",
+        '4' : "admin-actions.php"
     };
-
-    if(routes[currentLoc] != id) {
+    if(currentLoc == 'admin-actions.php' && (id == 2 || id == 3 || id == 4 ) ) {
+        //do nothing...
+    } else if (routes[currentLoc] != id) {
         window.location.assign(defaultRoutes[id]);
     }
 }
@@ -135,10 +144,14 @@ function createPageButton(page, elId) {
     var $aTN    = document.createTextNode(page);
     if(elId > ' ') {
         $a.id       = elId;
+    } else {
+        $a.id        = 'page-' + page;
     }
     $a.className = 'button button-primary button-sm pagination';
     $a.setAttribute('data-id', page);
     $a.appendChild($aTN);
+
+    $a.setAttribute('onclick', 'clickedPageButton(this)');
     return $a;
 }
 

@@ -10,7 +10,19 @@ if(isLoggedIn()) {
     var employeeFirstName   = toTitleCase( loginDetails[1].first_name );
     var employeeMiddleName  = toTitleCase( loginDetails[1].middle_name );
     var employeeLastName    = toTitleCase( loginDetails[1].last_name );
-    var fullName            = employeeFirstName + " " + employeeMiddleName + " " + employeeLastName;
+
+    var accountType = "";
+    if(accountTypeID == 2) {
+        accountType = "Principal, ";
+    } else if(accountTypeID == 3) {
+        accountType = "HR, ";
+    } else if(accountTypeID == 4) {
+        accountType = "SDS, ";
+    } else if(accountTypeID == 5) {
+        accountType = "Admin, ";
+    }
+
+    var fullName            = accountType + employeeFirstName + " " + employeeMiddleName + " " + employeeLastName;
 
     isAllowed(accountTypeID);
 } else {

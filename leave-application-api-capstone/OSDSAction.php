@@ -4,16 +4,12 @@ require_once ("Functions.php");
 
 class OSDSAction extends DBQueries {
     public static $table        = "osds_action";
-    public static $table_fields = array('id', 'action_on_applications_id', 'as_of', 'days_with_pay', 'days_without_pay',
-                                    'others_days', 'others_description', 'disapproved_due_to');
+    public static $table_fields = array('id', 'action_on_applications_id', 'as_of', 'approved_for', 'disapproved_due_to');
 
     public $id;
     public $action_on_applications_id;
     public $as_of;
-    public $days_with_pay;
-    public $days_without_pay;
-    public $others_days;
-    public $others_description;
+    public $approved_for;
     public $disapproved_due_to;
 
     public static function getByActionOnApplicationsId($id) {

@@ -25,5 +25,6 @@
 
 
 </script>
+<script src="assets/js/change-password.js"></script>
 </body>
 </html>

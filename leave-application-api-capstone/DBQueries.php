@@ -48,7 +48,6 @@ class DBQueries {
         return $return;
     }
 
-
     public static function getById($id) {
         $id         = self::escapeValue($id);
         $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table . " ";
@@ -57,7 +56,6 @@ class DBQueries {
     }
 
     public static function getByQuery($sql = "") {
-        $sql    = self::escapeValue($sql);
         $result = run()->query( $sql);
         return $result;
     }
@@ -97,7 +95,6 @@ class DBQueries {
         return $result;
     }
 
-
     public static function get($id) {
         $result = self::getById($id);
         $class = get_called_class();
@@ -112,6 +109,10 @@ class DBQueries {
             return isset($this->id)? $this->update() :$this->insert();
     }
 
+    public function secureString($str) {
+        return addslashes( strip_tags($str) );
+    }
+
     public function update() {
         $sql  = "UPDATE " . $this->getTable() . " SET ";
         $counter = 0;
@@ -120,12 +121,10 @@ class DBQueries {
                 if($counter++) {
                     $sql .= ", ";
                 }
-                $sql .= $field . "='" . $this->$field . "' ";
+                $sql .= $field . "='" . $this->secureString($this->$field) . "' ";
             }
-
         }
         $sql .= " WHERE id=" . $this->id;
-
         if(self::getByQuery($sql)) {
             return 1;
         } else {
@@ -139,7 +138,7 @@ class DBQueries {
         $sql .= " VALUES (";
         $fieldValues = array();
         foreach ($this->getTableFields() as $field) {
-            array_push($fieldValues, "'" . $this->$field . "'");
+            array_push($fieldValues, "'" . $this->secureString($this->$field) . "'");
         }
         $sql .= join(",", $fieldValues);
         $sql .= " ) ";

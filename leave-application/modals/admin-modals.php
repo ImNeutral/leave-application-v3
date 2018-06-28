@@ -1,19 +1,44 @@
 <section class="modal-section">
-    <!-- The Modal -->
-    <div id="myModal" class="modal" style="display: none;">
+    <div id="application-action" class="modal" style="display: none;">
 
         <!-- Modal content -->
         <div class="modal-content"  style="margin-top: 5%; width: 60%;">
             <span class="close" onclick="closeModal(this)">&times;</span>
-            <h6 id="modal-title" class="text-center">Sick Leave</h6>
+            <br><br>
 
             <div  style="overflow: auto; max-height: 350px;">
                 <table width="100%" border="0">
                     <thead>
-                    <th width="50%"></th>
-                    <th width="50%"></th>
+                    <tr>
+                        <th width="50%"></th>
+                        <th width="50%"></th>
+                    </tr>
                     </thead>
                     <tbody>
+                    <tr>
+                        <td  style="border:0;">
+                            <div class="float-right bold">
+                                Leave Type:
+                            </div>
+                        </td>
+                        <td style="border:0;" id="application-type">_</td>
+                    </tr>
+                    <tr>
+                        <td  style="border:0;">
+                            <div class="float-right bold">
+                                Applicant Name:
+                            </div>
+                        </td>
+                        <td style="border:0;" id="applicant-name">_</td>
+                    </tr>
+                    <tr>
+                        <td  style="border:0;">
+                            <div class="float-right bold">
+                                Applicant School:
+                            </div>
+                        </td>
+                        <td style="border:0;" id="applicant-school">_</td>
+                    </tr>
                     <tr>
                         <td  style="border:0;">
                             <div class="float-right bold">
@@ -60,8 +85,10 @@
                 <div id="principal" style="display: none;">
                     <table width="100%" border="0" >
                         <thead>
-                        <th width="50%"></th>
-                        <th width="50%"></th>
+                        <tr>
+                            <th width="50%"></th>
+                            <th width="50%"></th>
+                        </tr>
                         </thead>
                         <tbody>
                         <tr>
@@ -93,8 +120,10 @@
                 <div id="hr-department" style="display: none;">
                     <table width="100%" border="0">
                         <thead>
-                        <th width="50%"></th>
-                        <th width="50%"></th>
+                        <tr>
+                            <th width="50%"></th>
+                            <th width="50%"></th>
+                        </tr>
                         </thead>
                         <tbody>
                         <tr>
@@ -125,8 +154,10 @@
                 <div id="sds" style="display: none;">
                     <table width="100%" border="0" >
                         <thead>
-                        <th width="50%"></th>
-                        <th width="50%"></th>
+                        <tr>
+                            <th width="50%"></th>
+                            <th width="50%"></th>
+                        </tr>
                         </thead>
                         <tbody>
                         <tr>
@@ -158,131 +189,102 @@
             </div>
             <hr>
             <div style="text-align: center;">
-                <button class="button-primary" onclick="openEditModal(this)" id="open-edit-modal">Edit Application</button>
+                <button class="button-danger" onclick="openReverseActionModal()" id="open-reverse-action" >Reverse Action</button>
+                <button class="button-primary" onclick="openRespondModal()" id="open-edit-modal">Repond to Application</button>
                 <button class="" onclick="closeModal(this)">Close</button>
             </div>
         </div>
-
     </div>
 
-
-    <div id="leave-application-edit-modal" class="modal" style="display: none;">
+    <div id="respond-modal" class="modal" style="display: none;">
         <!-- Modal content -->
-        <div class="modal-content"  style="margin-top: 5%; width: 70%;">
+        <div class="modal-content"  style="margin-top: 5%; width: 60%;">
             <span class="close" onclick="closeModal(this)">&times;</span>
-            <h6 id="modal-title" class="text-center">Edit Leave Application</h6>
+            <h6 class="text-center">Respond to Application</h6>
 
-            <form id="edit-leave-application-form">
+            <div  style="overflow: auto; max-height: 350px;">
                 <table width="100%" border="0">
                     <thead>
-                    <th width="50%"></th>
-                    <th width="50%"></th>
+                    <tr>
+                        <th width="50%"></th>
+                        <th width="50%"></th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td  style="border:0;">
                             <div class="float-right bold">
-                                Type Of Leave:
+                                Response:
                             </div>
                         </td>
-                        <td style="border:0;" id="type-of-leave">
-                            Type of Leave
-                        </td>
-                    </tr>
-                    <tr>
-                        <td  style="border:0;">
-                            <div class="float-right bold">
-                                Number Of Days Applied:
-                            </div>
-                        </td>
-                        <td style="border:0;" id="number-days-applied-edit-holder">
-                            <input type="number" name="number_days_applied_edit" id="number-days-applied-edit" min="1" max="60" placeholder="1-15" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td  style="border:0;">
-                            <div class="float-right bold">
-                                Start Date:
-                            </div>
-                        </td>
-                        <td style="border:0;" id="from-date-edit-holder">
-                            <div class="input">
-                                <?php $y = date('Y');?>
-                                <select name="date_from_year_edit" id="date-from-year-edit" class="four columns columns-sm">
-                                    <option value="<?php echo $y-1; ?>"><?php echo $y-1; ?></option>
-                                    <option value="<?php echo $y; ?>" selected><?php echo $y; ?></option>
-                                    <option value="<?php echo $y+1; ?>"><?php echo $y+1; ?></option>
-                                </select>
-                                <select name="date_from_month_edit" id="date-from-month-edit" class="five columns columns-sm" onchange="monthChangedFrom()">
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                                <select name="date_from_day_edit" id="date-from-day-edit" class="three columns columns-sm">
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td  style="border:0;">
-                            <div class="float-right bold">
-                                Place Stay:
-                            </div>
-                        </td>
-                        <td style="border:0;" id="place-stay-edit-holder">
-                            <input type="text" name="place_stay_specify_edit" id="place-stay-specify-edit" placeholder="Where will you spend your leave?">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td  style="border:0;">
-                            <div class="float-right bold">
-                                Commutation Requested:
-                            </div>
-                        </td>
-                        <td style="border:0;" id="commutation-requested-edit-holder">
-                            <select name="commutation_requested_edit" id="commutation-requested-edit">
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
+                        <td style="border:0;" id="response">
+                            <select name="" id="response-type">
+                                <option value="1">Accept</option>
+                                <option value="0">Reject</option>
                             </select>
                         </td>
                     </tr>
-                    <tr id="photo-attachment-holder">
+                    <tr>
                         <td  style="border:0;">
                             <div class="float-right bold">
-                                Photo Attachment:
+                                For:
                             </div>
                         </td>
-                        <td style="border:0; cursor: pointer;" id="photo-attachment-edit-holder">
-                            <input type="file"  id="file-to-upload-edit" style="margin-left:15px; cursor: pointer;" name="attachment" accept="image/*"/>
+                        <td style="border:0;" >
+                            <input type="text" id="response-reason" placeholder="...">
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <hr>
-                <div style="text-align: center;">
-                    <button class="button-primary" type="submit">Save Changes</button>
-                    <button class="button-danger" id="cancel-leave-application" type="button">Cancel Application</button>
-                    <button class="" onclick="closeModal(this)" type="button">Close</button>
-                </div>
-
-            </form>
+            </div>
+            <hr>
+            <div style="text-align: center;">
+                <button class="button-primary" id="submit-response">Submit</button>
+                <button class="" onclick="closeModal(this)">Close</button>
+            </div>
         </div>
     </div>
 
-    <div id="info-modal" class="modal" style="display: none;">
+
+    <div id="confirm-action-modal" class="modal" style="display: none;">
         <div class="modal-content" style="margin-top: 10%; height: 150px;">
             <span class="close" id="close-cc"></span>
-            <h5 class="text-center info-modal-title" id="info-modal-title">Successfully Cancelled Application!</h5>
+            <h5 class="text-center info-modal-title" id="confirm-modal-title">Submit Response?</h5>
+
+            <div class="modal-inside">
+                <div style="text-align: center;">
+                    <hr>
+                    <div style="float:right;">
+                        <button class="button-danger"  id="confirm-action">Confirm</button>
+                        <button class="button-primary" onclick="closeModal(this)">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="reverse-action-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="margin-top: 10%; height: 150px;">
+            <span class="close" id="close-cc"></span>
+            <h5 class="text-center info-modal-title" >Reverse Action on this application?</h5>
+
+            <div class="modal-inside">
+                <div style="text-align: center;">
+                    <hr>
+                    <div style="float:right;">
+                        <button class="button-danger"  id="confirm-reverse-action">Confirm</button>
+                        <button class="button-primary" onclick="closeModal(this)">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reverse-success-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="margin-top: 10%; height: 150px;">
+            <span class="close" id="close-cc"></span>
+            <h5 class="text-center info-modal-title" id="info-modal-title">Action Successfully Reversed!</h5>
 
             <div class="modal-inside">
                 <div style="text-align: center;">
@@ -295,27 +297,10 @@
         </div>
     </div>
 
-    <div id="confirm-cancel-modal" class="modal" style="display: none;">
+    <div id="respond-success-modal" class="modal" style="display: none;">
         <div class="modal-content" style="margin-top: 10%; height: 150px;">
             <span class="close" id="close-cc"></span>
-            <h5 class="text-center info-modal-title" id="confirm-modal-title">Cancel this application?</h5>
-
-            <div class="modal-inside">
-                <div style="text-align: center;">
-                    <hr>
-                    <div style="float:right;">
-                        <button class="button-danger"  id="confirm-cancel-application">Confirm</button>
-                        <button class="button-primary" onclick="closeModal(this)">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="update-success-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="margin-top: 10%; height: 150px;">
-            <span class="close" id="close-cc"></span>
-            <h5 class="text-center info-modal-title" id="info-modal-title">Successfully Updated Application!</h5>
+            <h5 class="text-center info-modal-title" id="info-modal-title">Response Sent!</h5>
 
             <div class="modal-inside">
                 <div style="text-align: center;">
@@ -329,4 +314,3 @@
     </div>
 
 </section>
-
