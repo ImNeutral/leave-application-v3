@@ -1,5 +1,6 @@
 <?php include ('layouts/header.php'); ?>
 <?php include ('layouts/top-navigation.php'); ?>
+<?php include ('modals/manage-account-modals.php'); ?>
 
 <section class="section main">
     <div class="row">
@@ -17,24 +18,16 @@
                             <option value="school">By School</option>
                             <option value="username">By Username</option>
                         </select>
-                        <input type="text" class="input-sm" placeholder="Search By School" id="search" list="schools">
-                        <button class="button-primary button-sm small-radius">Search</button>
+                        <input type="text" class="input-sm" placeholder="Search By School" id="search" list="schools" autocomplete="off">
+                        <button class="button-primary button-sm small-radius" id="search-go">Search</button>
                     </div>
                 </div>
 
-                <div class="float-right info-font" style="display: none;">
-                    <p>Showing results for "search".</p>
+                <div class="float-right info-font">
+                    <p id="search-message">Showing results for "search".</p>
                 </div>
             </div>
             <br><br>
-<!--            <div class="twelve columns">-->
-<!--                <input type="text" class="input-sm" list="schools" id="search-school" placeholder="Search By School">-->
-<!--                <button class="button-info button-sm small-radius">Users</button>-->
-<!--                <button class="button-info button-sm small-radius">Principal</button>-->
-<!--                <button class="button-info button-sm small-radius">Human Resource</button>-->
-<!--                <button class="button-info button-sm small-radius">Division Superintendent</button>-->
-<!--                <button class="button-info button-sm small-radius">Admin</button>-->
-<!--            </div>-->
             <div class="">
                 <table class="u-full-width accounts">
                     <thead>
@@ -47,13 +40,13 @@
                     </thead>
                     <tbody id="accounts-list">
                     <tr>
-                        <td>1</td>
-                        <td>Christian Garillo</td>
-                        <td>chgar</td>
-                        <td>User</td>
+                        <td colspan="4" class="text-center">Please use the search box.</td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="pagination" id="pagination">
             </div>
         </div>
     </div>
@@ -61,6 +54,10 @@
 
 <datalist id="schools">
 </datalist>
+
+<datalist id="employees">
+</datalist>
+
 <script>
     document.title = "Manage Accounts";
     document.getElementById('manage-accounts').className = 'active';

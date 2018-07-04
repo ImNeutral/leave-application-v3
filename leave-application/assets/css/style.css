@@ -6,7 +6,7 @@ html {
 body {
     line-height: 1.4 !important;
     font-family: "Century Gothic","Apple Gothic",AppleGothic,"URW Gothic L","Avant Garde",Futura,sans-serif;
-    font-size: 170%;
+    font-size: 160%;
     color: black;
 }
 
@@ -26,6 +26,10 @@ form table tr{
 form table td:first-child {
     text-align: right;
     font-weight: bold;
+}
+
+form table td div {
+    padding-bottom: 15px;
 }
 
 form table .username {
@@ -491,6 +495,11 @@ table.accounts td{
     cursor: pointer !important;
 }
 
+#search-message {
+    font-size: 15px;
+    display: none;
+}
+
 /* Media Queries */
 
 /*@media (min-width: 550px) and (max-width: 1024px){*/
@@ -508,7 +517,7 @@ table.accounts td{
 
 @media (max-width: 550px) {
     body {
-        font-size: 130%;
+        font-size: 125%;
     }
 
     .section.main {

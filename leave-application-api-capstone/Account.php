@@ -12,7 +12,7 @@ class Account extends DBQueries {
     public $password;
 
     public static function getByUsername($username, $password) {
-        $username = self::escapeValue($username);
+        $username = self::secureString($username);
         $sql = " SELECT * FROM " . self::$table;
         $sql .= " WHERE username='" . $username . "' LIMIT 1";
 
@@ -39,6 +39,27 @@ class Account extends DBQueries {
                 return false;
             }
         }
+    }
+
+    public static function searchByUsername($username) {
+        $username = self::secureString($username);
+        $sql = " SELECT * FROM " . self::$table;
+        $sql .= " WHERE username LIKE '%" . $username . "%' ORDER BY username";
+        $results = array();
+        foreach (Account::getByQuery($sql) as $account) {
+            $results[] = [$account, Account::accountOwner($account['employee_id'])];
+        }
+        return $results;
+    }
+
+    public static function getByEmployeeId($employee_id) {
+        $sql = "SELECT * FROM " . self::$table;
+        $sql .= " WHERE employee_id=" . $employee_id;
+        $results = array();
+        foreach (Account::getByQuery($sql) as $account) {
+            $results[] = $account;
+        }
+        return $results;
     }
 
     public static function isUsernameExist($username) {
@@ -121,6 +142,5 @@ class Account extends DBQueries {
         } else {
             return 0;
         }
-
     }
 }

@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/functions.js"></script>
     <script src="assets/js/loginChecker.js"></script>
+    <script>
+        if (typeof NodeList !== "undefined" && NodeList.prototype && !NodeList.prototype.forEach) {
+            // Yes, there's really no need for `Object.defineProperty` here
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }
+    </script>
 </head>
 <body>
 

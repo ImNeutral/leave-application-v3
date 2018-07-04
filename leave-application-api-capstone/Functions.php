@@ -17,3 +17,9 @@ function replaceSpaces($var) {
 function escapeValue($val) {
     return addslashes(strip_tags( $val ));
 }
+
+function secureString($str) {
+    return addslashes( strip_tags($str) );
+}
+
+

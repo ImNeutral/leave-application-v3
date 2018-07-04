@@ -15,8 +15,9 @@ class DBQueries {
 //        return $return;
 //    }
 
-    public static function getAll() {
-        $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table;
+    public static function getAll($where = "") {
+        $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table . " ";
+        $sql        .= $where;
         $results    = self::query($sql);
         $return     = array();
         $object     = get_called_class();
@@ -31,8 +32,9 @@ class DBQueries {
     }
 
 
-    public static function getAllPaginated($limit = 10, $offset = 0) {
-        $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table;
+    public static function getAllPaginated($limit = 10, $offset = 0, $where="") {
+        $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table . " ";
+        $sql        .= $where;
         $sql        .= " LIMIT " . $limit . " OFFSET " . $offset;
         $results    = self::query($sql);
         $return     = array();
@@ -74,6 +76,9 @@ class DBQueries {
         return strip_tags( stripslashes($val) );
     }
 
+    public function secureString($str) {
+        return addslashes( strip_tags($str) );
+    }
 
     public function getTable() {
         $class = get_called_class();

@@ -12,3 +12,8 @@ function replaceSpaces($var) {
     return str_replace(' ', '%20', $var);
 }
 
+function secureString($str) {
+    return addslashes( strip_tags($str) );
+}
+
+

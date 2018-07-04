@@ -352,7 +352,6 @@ function GETLeaveApplicationCount() {
     });
 }
 
-
 function submitApplicationAction(leaveApplicationId) {
     var $obj = {
         leave_application_id    : leaveApplicationId,

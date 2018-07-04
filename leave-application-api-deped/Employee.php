@@ -1,4 +1,5 @@
 <?php
+require_once ("Functions.php");
 require_once ("DBQueries.php");
 
 class Employee extends DBQueries {
@@ -12,13 +13,20 @@ class Employee extends DBQueries {
     public $last_name;
 
     public static function searchByName ($firstName, $lastName) {
-        $firstName = self::escapeValue($firstName);
-        $lastName = self::escapeValue($lastName);
-        $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table;
-        $sql        .= " WHERE first_name='" . $firstName . "' AND last_name='" . $lastName . "'";
+        $firstName      = self::escapeValue($firstName);
+        $lastName       = self::escapeValue($lastName);
+        $sql            = "SELECT " . self::tableFieldsString() . " FROM " . static::$table;
+        $sql            .= " WHERE first_name='" . $firstName . "' AND last_name='" . $lastName . "'";
 
-        $result  = self::getByQuery($sql);
-        $result = $result->fetch_assoc();
+        $result         = self::getByQuery($sql);
+        $result         = $result->fetch_assoc();
         return $result;
+    }
+
+    public static function searchByFullName ($name) {
+        $name           = secureString($name);
+        $where          = 'WHERE concat(first_name, " ", middle_name, " ", last_name) like "%' . $name . '%"';
+        return Employee::getAll($where);
+//        SELECT * FROM employees WHERE concat(first_name, " ", middle_name, " ", last_name) like "%marian%"
     }
 }

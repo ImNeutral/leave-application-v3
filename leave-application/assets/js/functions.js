@@ -50,6 +50,11 @@ function logout() {
     window.location.assign("login.php");
 }
 
+function getAccountType($accountTypeId) {
+    $accountTypes = ['', 'User', 'Principal', 'HR', 'SDS', 'Admin'];
+    return $accountTypes[$accountTypeId];
+}
+
 function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt){
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -110,6 +115,22 @@ function setDayValue(year, month, $day){
         $optionElementClone.value = i;
         $optionElementClone.appendChild($textNode);
         $day.appendChild($optionElementClone)
+    }
+}
+
+function showMessage($el, type, message) {
+    var $br             = document.createElement('br');
+    $el.className       = 'error-message ' + type;
+    $el.innerText       = "";
+    for(var roll = 0; roll < message.length; roll++) {
+        if($el.innerText += message[roll]) {
+            $el.appendChild($br);
+        }
+    }
+    if(message.length > 0) {
+        $el.style.display = "block";
+    } else {
+        $el.style.display = "none";
     }
 }
 
