@@ -58,6 +58,10 @@ input[type="date"]{
     box-sizing: border-box;
 }
 
+input[type='radio'] {
+    transform: scale(1.4);
+}
+
 th, td {
     padding: 5px 5px;
 }
@@ -563,6 +567,13 @@ table.accounts td{
 
     #search {
         width: 150px !important;
+    }
+
+    input[type='radio'] {
+        transform: scale(1.6);
+        margin-bottom: 10px !important;
+        margin-top: 3px !important;
+        margin-right: 5px !important;
     }
 }
 

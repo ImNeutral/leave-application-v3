@@ -220,7 +220,7 @@ function populateApplicationsTable(applications) {
         end = applications.length;
     }
     for (var roll = start; roll < end; roll++) {
-        $applicationsList.appendChild( createTR(applications[roll]), roll );
+        $applicationsList.appendChild( createTR(applications[roll], roll) );
     }
 }
 
@@ -235,7 +235,7 @@ function dayDefault() {
     var $optionElementClone         = $optionElement.cloneNode(true);
     $optionElementClone.selected    = 'true';
     $optionElementClone.appendChild($textNode);
-    $day.appendChild($optionElementClone)
+    $day.appendChild($optionElementClone);
 }
 
 function GETLeaveApplications(year, month) {

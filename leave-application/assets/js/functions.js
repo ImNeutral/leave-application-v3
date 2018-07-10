@@ -28,7 +28,9 @@ function findAncestor (el, cls) {
 }
 
 function getHost() {
-    return "localhost/leave-application-v3";
+    return window.location.hostname + '/leave-application-v3';
+    // return "localhost/leave-application-v3";
+
 }
 
 function getLoginDetails() {

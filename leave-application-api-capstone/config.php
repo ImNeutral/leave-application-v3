@@ -6,7 +6,7 @@ define("USERNAME"   ,   "root");
 define("PASSWORD"   ,   "");
 
 define("TIMEZONE"   ,   "Asia/Manila");
-define("SERVICE_HOST", "localhost/leave-application-v3");
+define("SERVICE_HOST",  $_SERVER['HTTP_HOST'] . "/leave-application-v3");
 
 
 date_default_timezone_set(TIMEZONE);
