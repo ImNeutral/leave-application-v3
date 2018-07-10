@@ -13,8 +13,9 @@ class DBQueries {
 //        return $return;
 //    }
 
-    public static function getAll() {
+    public static function getAll($where) {
         $sql        = "SELECT " . self::tableFieldsString() . " FROM " . static::$table;
+        $sql        .= " " . $where;
         $results    = self::query($sql);
         $return     = array();
         $object     = get_called_class();

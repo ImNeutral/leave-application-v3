@@ -68,7 +68,8 @@ function isAllowed(id) {
         "change-password.php"       : "0",
         "leave-application.php"     : "1",
         "previous-applications.php" : "1",
-        "manage-accounts.php"       : "5"
+        "manage-accounts.php"       : "5",
+        "application-reports.php"   : "5"
     };
     var defaultRoutes = {
         "0" : "login.php",
@@ -142,10 +143,10 @@ function selectDateNow($month, $day) {
 }
 
 function formatDate(date) {
-    month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    newDate = new Date(date);
-    newDateString = month[newDate.getMonth()] + " " + newDate.getDate() + ", " + newDate.getFullYear() + " - " + dayName[newDate.getDay()];
+    var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var newDate = new Date(date);
+    var newDateString = month[newDate.getMonth()] + " " + newDate.getDate() + ", " + newDate.getFullYear() + " - " + dayName[newDate.getDay()];
     return newDateString;
 }
 

@@ -2,6 +2,7 @@
 require_once ("DBQueries.php");
 require_once ("Functions.php");
 require_once ("FileAttachment.php");
+require_once ("Account.php");
 
 class LeaveApplication extends DBQueries {
     public static $table        = "leave_applications";
@@ -48,48 +49,32 @@ class LeaveApplication extends DBQueries {
         return (new FileAttachment($this->filename));
     }
 
-    public function pleaseDisregard() {
-//        $typeOfLeave = issetPostValue('type_of_leave');
-//
-//        if($typeOfLeave == 'others') {
-//            $typeOfLeave = issetPostValue('others_reason');
-//        } else if ($typeOfLeave == 'vacation-others') {
-//            $typeOfLeave = 'Vacation - ' . issetPostValue('others_reason');
-//        }
-//        $accountID  = $_SESSION['account_id'];
-//        $schoolID   = $_SESSION['school_id'];
-//
-//        $daysApplied    = issetPostValue('days_applied');
-//        if($typeOfLeave == 'Maternity') {
-//            $daysApplied = 0;
-//        }
-//
-//        $dateFromYear   = issetPostValue('date_from_year');
-//        $dateFromMonth  = issetPostValue('date_from_month');
-//        $dateFromDay    = issetPostValue('date_from_day');
-//
-//        $placeLeaveStay = issetPostValue('place');
-//        $placeLeaveStaySpecify = '';
-//        if($placeLeaveStay == 'within_philippines') {
-//            $placeLeaveStaySpecify = "Within Philippines";
-//        } else if($placeLeaveStay == 'abroad') {
-//            $placeLeaveStaySpecify = issetPostValue('abroad_specify');
-//        } else if($placeLeaveStay == 'in_hospital') {
-//            $placeLeaveStaySpecify = issetPostValue('in_hospital_specify');
-//        } else if($placeLeaveStay == 'out_patient') {
-//            $placeLeaveStaySpecify = issetPostValue('out_patient_specify');
-//        }
-//
-//        $commutationRequested = issetPostValue('commutation_requested');
-//
-//        $leaveApplication = new LeaveApplication();
-//        $leaveApplication->account_id = $accountID;
-//        $leaveApplication->school_id = $schoolID;
-//        $leaveApplication->date_filed = date('Y-m-d');
-//        $leaveApplication->type_of_leave = $typeOfLeave;
-//        $leaveApplication->number_days_applied = $daysApplied;
-//        $leaveApplication->from_date = $dateFromYear . '-' . $dateFromMonth . '-' . $dateFromDay;
-//
-//        $leaveApplication->save();
+    public function getOwner() {
+        $account    = Account::get($this->account_id);
+        return $account->accountOwner($account->employee_id);
+    }
+
+    public static function getAllByYearMonth($year, $month) {
+        $where  = " WHERE id IN (SELECT leave_application_id FROM `action_on_applications` WHERE division_head_approved=1) ";
+        $where .= " AND EXTRACT(MONTH FROM from_date) = " . $month;
+        $where .= " AND EXTRACT(YEAR FROM from_date) = " . $year;
+        $where .= " AND cancelled = 0 ORDER BY from_date ASC";
+
+        $leaveApplications       = LeaveApplication::getAll($where);
+        $leaveApplicationsList   = [];
+        $employeeApplication     = [];
+
+        foreach ($leaveApplications as $leaveApplication) {
+            $employeeApplication['id']                      = $leaveApplication->id;
+            $employeeApplication['date_filed']              = $leaveApplication->date_filed;
+            $employeeApplication['type_of_leave']           = $leaveApplication->type_of_leave;
+            $employeeApplication['number_days_applied']     = $leaveApplication->number_days_applied;
+            $employeeApplication['commutation_requested']   = $leaveApplication->commutation_requested;
+            $employeeApplication['from_date']               = $leaveApplication->from_date;
+            $employeeApplication['applicant_name']          = $leaveApplication->getOwner();
+
+            array_push($leaveApplicationsList, $employeeApplication);
+        }
+        return $leaveApplicationsList;
     }
 }

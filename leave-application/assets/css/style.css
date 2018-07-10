@@ -67,6 +67,10 @@ tr.dataTR:hover {
     background-color: #b8daff;
 }
 
+tr:nth-child(even) {
+    background-color:  #f8f8f8;
+}
+
 h6 {
     font-size: 1.9rem;
 }
@@ -183,6 +187,10 @@ button.button-danger:hover {
 
 .button-primary:hover {
     background-color: #3692f5 !important;
+}
+
+.cursor-default {
+    cursor: default !important;
 }
 
 .user-name {
@@ -556,4 +564,27 @@ table.accounts td{
     #search {
         width: 150px !important;
     }
+}
+
+@media print {
+    table {
+        width: 100%;
+        font-size: .8rem;
+    }
+
+    th, td {
+        text-align: left;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f8f8f8;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .header {
+        font-size: 1rem;
+    }
+
+    .page-break	{ display: block; page-break-after: always; }
+
 }

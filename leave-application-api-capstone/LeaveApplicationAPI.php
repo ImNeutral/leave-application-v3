@@ -34,6 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
             $leaveApplication->status = $status;
         }
         echo json_encode( $leaveApplications );
+    } else if ( isset($_GET['year']) && isset($_GET['month']) ){
+        $year  = secureString($_GET['year']);
+        $month = secureString($_GET['month']);
+
+        echo json_encode( LeaveApplication::getAllByYearMonth( $year, $month ) );
     }
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
