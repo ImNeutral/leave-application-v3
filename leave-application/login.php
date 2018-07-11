@@ -40,6 +40,8 @@
             $loginForm.attachEvent('onsubmit', login);            //Old IE
         }
         document.body.className += 'login-body';
+
+        registerServiceWorker();
     })();
 </script>
 

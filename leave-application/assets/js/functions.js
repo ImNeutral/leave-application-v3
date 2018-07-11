@@ -196,3 +196,20 @@ function imageResizeToNewDataUri(img, width, height) {
     // encode image to data-uri with base64 version of compressed image
     return canvas.toDataURL();
 }
+
+function registerServiceWorker() {
+    console.log("Trying....");
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    } else {
+        console.log("Service worker do not exists!");
+    }
+}
