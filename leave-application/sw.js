@@ -33,6 +33,7 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
+                createDatabase();
                 console.log('Opened cache');
                 return cache.addAll(resources);
             })
@@ -43,12 +44,109 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
-                    // Cache hit - return response
-                    if (response) {
-                        return response;
-                    }
-                    return fetch(event.request);
+                // Cache hit - return response
+                if (response) {
+                    return response;
                 }
-            )
+                var requestClone    = event.request.clone();
+
+                // self.registration.showNotification("Hello this is testing!..");
+                testing();
+
+                return fetch(event.request).then(function (response) {
+                    return response;
+                }, function (err) {
+                    if(requestClone.method == 'POST') {
+                        console.log("POST Method");
+                        var str = requestClone.url;
+                        if( str.search("LeaveApplicationAPI.php") != -1) {
+                            var id          = 1;
+                            var url         = str;
+                            var request     = openDatabase();
+                            requestClone.text().then(function (response) {
+                                var data = {
+                                    id      : id,
+                                    url     : url,
+                                    data    : response
+                                };
+
+                                dbAdd(data);
+                            });
+                        } else {
+                            console.log(str);
+                        }
+                    }
+                });
+            })
     );
 });
+
+// self.addEventListener('message', function (event) {
+//     setInterval( function () {
+//         console.log("Message From SW, recieve: ", event.data);
+//         }, 5000 );
+// });
+
+
+function resubmitLeaveApplication(urlData, bodyData) {
+    var url = urlData;
+    var init = {
+        method: 'POST',
+        headers: new Headers({
+        }),
+        body: bodyData
+    };
+    return fetch(url, init);
+}
+
+function createDatabase() {
+    if( indexedDB ) {
+        var request;
+        request = indexedDB.open("LeaveApplication", 2);
+
+        request.onupgradeneeded = function (event) {
+            var db = event.target.result;
+            db.createObjectStore("leave-applications", { keyPath: "id" } );
+        };
+    }
+}
+
+function openDatabase() {
+    if( indexedDB ) {
+        var request;
+        return indexedDB.open("LeaveApplication", 2);
+    }
+}
+
+function dbAdd(data) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["leave-applications"], "readwrite")
+            .objectStore("leave-applications")
+            .add(data);
+    };
+}
+
+function dbGet(key) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["leave-applications"])
+            .objectStore("leave-applications")
+            .get(key)
+            .onsuccess = function (event) {
+            return event.target.result;
+        };
+    };
+}
+
+function dbDelete(key) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["leave-applications"])
+            .objectStore("leave-applications")
+            .delete(key);
+    };
+}

@@ -197,6 +197,7 @@ function imageResizeToNewDataUri(img, width, height) {
     return canvas.toDataURL();
 }
 
+
 function registerServiceWorker() {
     console.log("Trying....");
     if ('serviceWorker' in navigator) {
@@ -213,3 +214,30 @@ function registerServiceWorker() {
         console.log("Service worker do not exists!");
     }
 }
+
+
+var rollOvers = 0;
+testing();
+var interval = setInterval(function () {
+    testing();
+    if(rollOvers == 10) {
+        clearInterval(interval);
+        console.log("Interval Dead!");
+    }
+}, 300);
+
+function testing() {
+    console.log(++rollOvers);
+}
+
+
+
+
+
+
+
+
+
+
+
+
