@@ -29,7 +29,6 @@ var resources = [
 ];
 
 self.addEventListener('install', function(event) {
-    // Perform install steps
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
@@ -51,7 +50,6 @@ self.addEventListener('fetch', function(event) {
                 var requestClone    = event.request.clone();
 
                 // self.registration.showNotification("Hello this is testing!..");
-                testing();
 
                 return fetch(event.request).then(function (response) {
                     return response;
@@ -62,15 +60,15 @@ self.addEventListener('fetch', function(event) {
                         if( str.search("LeaveApplicationAPI.php") != -1) {
                             var id          = 1;
                             var url         = str;
-                            var request     = openDatabase();
+                            dbDelete(id);
                             requestClone.text().then(function (response) {
                                 var data = {
                                     id      : id,
                                     url     : url,
                                     data    : response
                                 };
-
                                 dbAdd(data);
+                                reSubmitLeaveApplicationUntilFinish();
                             });
                         } else {
                             console.log(str);
@@ -81,23 +79,18 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-// self.addEventListener('message', function (event) {
-//     setInterval( function () {
-//         console.log("Message From SW, recieve: ", event.data);
-//         }, 5000 );
-// });
-
-
-function resubmitLeaveApplication(urlData, bodyData) {
-    var url = urlData;
-    var init = {
-        method: 'POST',
-        headers: new Headers({
-        }),
-        body: bodyData
-    };
-    return fetch(url, init);
-}
+self.addEventListener('message', function (msg) {
+    self.registration.showNotification("Successfully submitted Leave Application.", { icon: 'assets/images/icon.ico' });
+    if(msg.data == 'checkUnSubmittedLeaveApplication') {
+        if(typeof timeoutHolder !== 'undefined') {
+            clearInterval(timeoutHolder);
+            reSubmitLeaveApplicationUntilFinish();
+            console.log("Yeah, kind of..");
+        } else {
+            reSubmitLeaveApplicationUntilFinish();
+        }
+    }
+});
 
 function createDatabase() {
     if( indexedDB ) {
@@ -113,7 +106,6 @@ function createDatabase() {
 
 function openDatabase() {
     if( indexedDB ) {
-        var request;
         return indexedDB.open("LeaveApplication", 2);
     }
 }
@@ -145,8 +137,46 @@ function dbDelete(key) {
     var db;
     openDatabase().onsuccess = function (event) {
         db = event.target.result;
-        db.transaction(["leave-applications"])
+        db.transaction(["leave-applications"], "readwrite")
             .objectStore("leave-applications")
             .delete(key);
     };
+}
+
+function resubmitLeaveApplication(urlData, bodyData) {
+    var url = urlData;
+    var init = {
+        method: 'POST',
+        headers: new Headers({
+        }),
+        body: bodyData
+    };
+    return fetch(url, init);
+}
+
+function reSubmitLeaveApplicationUntilFinish() {
+    var db;
+    timeoutHolder = setInterval(function () {
+        openDatabase().onsuccess = function (event) {
+            db = event.target.result;
+            db.transaction(["leave-applications"])
+                .objectStore("leave-applications")
+                .get(1)
+                .onsuccess = function (event) {
+                if( event.target.result ) {
+                    var url     = event.target.result.url;
+                    var data    = event.target.result.data;
+                    resubmitLeaveApplication(url, data).then(function () {
+                        self.registration.showNotification("Successfully submitted Leave Application.", { icon: 'assets/images/icon.ico' });
+                        dbDelete(1);
+                        clearInterval(timeoutHolder);
+                    }, function (err) {
+                        console.log("Failed to submit... retrying in background...");
+                        // reSubmitLeaveApplicationUntilFinish();
+                    });
+                }
+            };
+        };
+    }, 5000);
+
 }

@@ -205,6 +205,7 @@ function registerServiceWorker() {
             navigator.serviceWorker.register('sw.js').then(function(registration) {
                 // Registration was successful
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
             }, function(err) {
                 // registration failed :(
                 console.log('ServiceWorker registration failed: ', err);
@@ -215,24 +216,17 @@ function registerServiceWorker() {
     }
 }
 
-
-var rollOvers = 0;
-testing();
-var interval = setInterval(function () {
-    testing();
-    if(rollOvers == 10) {
-        clearInterval(interval);
-        console.log("Interval Dead!");
-    }
-}, 300);
-
-function testing() {
-    console.log(++rollOvers);
-}
-
-
-
-
+//
+// function startInterval() {
+//     var rollOvers = 0;
+//     var intervals = setInterval(function () {
+//         console.log(rollOvers++);
+//         if(rollOvers == 10) {
+//             clearInterval(intervals);
+//             console.log("Interval Dead!");
+//         }
+//     }, 300);
+// }
 
 
 

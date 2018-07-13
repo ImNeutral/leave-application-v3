@@ -23,6 +23,8 @@
         }
     };
 
+    // recall resubmit function inside serviceworker;
+    navigator.serviceWorker.controller.postMessage('checkUnSubmittedLeaveApplication');
 
 </script>
 <script src="assets/js/change-password.js"></script>
