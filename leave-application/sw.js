@@ -80,7 +80,6 @@ self.addEventListener('fetch', function(event) {
 });
 
 self.addEventListener('message', function (msg) {
-    self.registration.showNotification("Successfully submitted Leave Application.", { icon: 'assets/images/icon.ico' });
     if(msg.data == 'checkUnSubmittedLeaveApplication') {
         if(typeof timeoutHolder !== 'undefined') {
             clearInterval(timeoutHolder);
