@@ -17,12 +17,17 @@ var $dateFromDay            = $id('date_from_day');
 var $accountID              = $id('account_id');
 var $schoolID               = $id('school_id');
 
+var $dateFilled             = $id('date-filled');
+
 var $leaveApplicationForm   = $id('leave-application-form');
 var $fileToUpload           = $id('fileToUpload');
 
 var $confirmModal           = $id('confirmModal');
 var $confirmSubmitModal     = $id('confirmSubmitModal');
 var $confirmSubmitOk        = $id('confirmSubmit_Ok');
+
+var $submittingOfflineMessage   = $id('submitting-offline-message');
+var $formContainer          = $id('form-container');
 
 var $loader                 = $id('loader-container');
 
@@ -31,12 +36,12 @@ var typeOfLeave             = 'Sick';
 var fileDataURI             = '';
 var formContent             = '';
 
-
+checkUnSubmittedApplications();
 selectDateNow($dateFromMonth, $dateFromDay);
 
 initValues();
 selectTypeOfLeave();
-
+$dateFilled.innerText = formatDate(new Date());
 
 $fileToUpload.addEventListener('change', function (e) {
     var file  = $fileToUpload.files[0];
@@ -73,6 +78,12 @@ $confirmSubmitOk.addEventListener('click',function (e) {
             } else {
                 alert("Failed to submit application.");
             }
+        }, function (err) {
+            checkUnSubmittedApplications();
+            closeAllModals();
+            setTimeout(function () {
+                $loader.style.display = "none";
+            }, 1000);
         });
     }
 });
@@ -164,4 +175,31 @@ function toJSONString( form, fileDataURI ) {
     }
 
     return JSON.stringify( obj );
+}
+
+function checkUnSubmittedApplications() {
+    var db;
+    var thereExist = false;
+    timeoutHolder = setInterval(function () {
+        openDatabase().onsuccess = function (event) {
+            db = event.target.result;
+            db.transaction(["leave-applications"])
+                .objectStore("leave-applications")
+                .get(1)
+                .onsuccess = function (event) {
+                if( event.target.result ) {
+                    $submittingOfflineMessage.style.display = "block";
+                    $formContainer.style.display            = "none";
+                    thereExist = true;
+                } else {
+                    $submittingOfflineMessage.style.display = "none";
+                    $formContainer.style.display            = "block";
+                    clearInterval(timeoutHolder);
+                    if(thereExist) {
+                        modalIn($confirmModal);
+                    }
+                }
+            };
+        };
+    }, 1000);
 }

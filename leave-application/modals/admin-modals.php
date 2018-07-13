@@ -263,7 +263,6 @@
         </div>
     </div>
 
-
     <div id="reverse-action-modal" class="modal" style="display: none;">
         <div class="modal-content" style="margin-top: 10%; height: 150px;">
             <span class="close" id="close-cc"></span>
@@ -307,6 +306,23 @@
                     <hr>
                     <div style="float:right;">
                         <button class="button-primary" onclick="closeModal(this)">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="connection-back-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="margin-top: 10%; height: 150px;">
+            <span class="close" id="close-cc"></span>
+            <h5 class="text-center info-modal-title" >Connection is back, reload page?</h5>
+
+            <div class="modal-inside">
+                <div style="text-align: center;">
+                    <hr>
+                    <div style="float:right;">
+                        <button class="button-danger"  onclick="reloadPage()">Reload</button>
+                        <button class="button-primary" onclick="closeModal(this)">No</button>
                     </div>
                 </div>
             </div>

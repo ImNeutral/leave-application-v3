@@ -178,6 +178,8 @@ $addAccountForm.addEventListener('submit', function (form) {
                 createAccountSubmittable = false;
             }
             $loader.style.display = "none";
+        }, function (err) {
+            fetchFailed();
         });
     }  else {
         showMessage($message, 'danger', errorMessages);
@@ -228,7 +230,10 @@ function submitCreateAccount() {
             $createAccountModal.style.display   = "none";
             $confirmActionModal.style.display   = "none";
             $successModal.style.display         = "block";
+        }, function (err) {
+            fetchFailed();
         });
+        console.log("Hello submit");
     }
 }
 

@@ -23,7 +23,6 @@ var resources = [
     'index.php',
     'leave-application.php',
     'login.php',
-    'logout.php',
     'manage-accounts.php',
     'previous-applications.php'
 ];
@@ -84,7 +83,6 @@ self.addEventListener('message', function (msg) {
         if(typeof timeoutHolder !== 'undefined') {
             clearInterval(timeoutHolder);
             reSubmitLeaveApplicationUntilFinish();
-            console.log("Yeah, kind of..");
         } else {
             reSubmitLeaveApplicationUntilFinish();
         }
@@ -176,6 +174,6 @@ function reSubmitLeaveApplicationUntilFinish() {
                 }
             };
         };
-    }, 5000);
+    }, 10000);
 
 }

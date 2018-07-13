@@ -14,13 +14,24 @@
             <?php include('layouts/absolute-nav-user.php'); ?>
             <h6 class="header">Leave Application</h6>
             <hr>
-            <div class="row">
+
+            <div class="row text-center" id="submitting-offline-message" style="display: none;">
+
+                <div class="error-message" id="success-message" style="display: block; ">
+                    Submitting previously filled Leave Application, please connect to internet and wait...
+                </div>
+            </div>
+
+            <div class="row" id="form-container">
                 <form action="" method="POST" class="leave-application" id="leave-application-form">
                     <input type="hidden" name="account_id" id="account_id">
                     <input type="hidden" name="school_id" id="school_id">
+
                     <strong style="margin-left: 10%;">
                         Date Filed:
                     </strong>
+                    <datefilled id="date-filled">....</datefilled>
+
                     <br><br>
                     <div class="row container bigger">
                         <div class="seven columns">

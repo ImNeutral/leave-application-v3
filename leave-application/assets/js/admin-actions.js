@@ -3,6 +3,7 @@ var $respondModal           = $id('respond-modal');
 var $respondSuccessModal    = $id('respond-success-modal');
 var $reverseSuccessModal    = $id('reverse-success-modal');
 var $reverseActionModal     = $id('reverse-action-modal');
+var $connectionBackModal    = $id('connection-back-modal');
 
 var $openReverseAction      = $id('open-reverse-action');
 var $confirmReverseAction   = $id('confirm-reverse-action');
@@ -48,6 +49,7 @@ var reverseActionNow        = false;
 
 populateApplicationsTable();
 addPagination();
+connectionListener();
 
 $confirmAction.addEventListener('click', function (e) {
     if(submitAction) {
@@ -104,6 +106,16 @@ $acceptedApplications.addEventListener('click', function (e) {
 $rejectedApplications.addEventListener('click', function (e) {
     setDefaults(this, '0', 'Rejected Applications');
 });
+
+function connectionListener() {
+    window.addEventListener('online', function () {
+        $connectionBackModal.style.display = "block";
+    });
+
+    window.addEventListener('offline', function () {
+        $connectionBackModal.style.display = "none";
+    });
+}
 
 function setDefaults(element, _status, _textContent) {
     removeActive();

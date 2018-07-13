@@ -1,4 +1,6 @@
 <script>
+    var noInternet      = $id('no-internet');
+    var connection      = navigator.onLine;
 
     (function () {
         $id('fullNameDisplay').text = fullName;
@@ -22,9 +24,19 @@
             }
         }
     };
-
     // recall resubmit function inside serviceworker;
     navigator.serviceWorker.controller.postMessage('checkUnSubmittedLeaveApplication');
+
+
+    if(!connection) {
+        noInternet.style.display = "";
+    }
+    window.addEventListener('online', function () {
+        noInternet.style.display = "none";
+    });
+    window.addEventListener('offline', function () {
+        noInternet.style.display = "";
+    });
 
 </script>
 <script src="assets/js/change-password.js"></script>

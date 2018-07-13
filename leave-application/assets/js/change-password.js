@@ -26,8 +26,12 @@ function checkNewPasswords() {
             } else {
                 submitNewPassword().then(function (response) {
                     $changePasswordSuccess.style.display = "block";
+                }, function (err) {
+                    fetchFailed();
                 });
             }
+        }, function (err) {
+            fetchFailed();
         });
     } else {
         $errorChangePassword.style.display = 'block';

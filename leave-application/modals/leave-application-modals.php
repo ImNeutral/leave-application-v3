@@ -32,4 +32,20 @@
         </div>
     </div>
 
+<!--    <div id="submitOffline" class="modal" style="display: none;">-->
+<!--        <div class="modal-content" style="margin-top: 10%; height: 180px;">-->
+<!--                <span class="close" id="close-cc"></span>-->
+<!--                <h5 class="text-center info-modal-title" id="info-modal-title">No Internet Connection!</h5>-->
+<!--                <div class="modal-inside" style="back">-->
+<!--                    <div style="text-align: center;">-->
+<!--                        <p>Leave Application will be sent when internet is back.</p>-->
+<!--                        <hr>-->
+<!--                    </div>-->
+<!--                    <div style="float:right;">-->
+<!--                        <button class="button-primary" onclick="closeModal(this)">Ok</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
 </section>

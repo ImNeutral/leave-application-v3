@@ -25,6 +25,9 @@
                 <div class="error-message" id="success-message" style="display: none;">
                     Logging in, please wait...
                 </div>
+                <div class="error-message danger" id="error-internet" style="display: none;">
+                    No Internet Connection. Please Try Again.
+                </div>
             </div>
         </div>
     </div>

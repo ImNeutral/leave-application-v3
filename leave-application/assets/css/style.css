@@ -459,6 +459,16 @@ table.accounts td{
     display: none;
 }
 
+.no-internet-container {
+    position: fixed !important;
+    z-index: 1072;
+    height: 20px;
+    color: red;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 8px;
+}
+
 .loader-container {
     position: fixed;
     background-color: white;

@@ -215,7 +215,7 @@ function addClickEvent() {
             var element         = this;
             var applicationId   = element.children[0].textContent;
             hideActionsOnApplication();
-            modalTitle.textContent = element.children[2].textContent + " Leave";
+            // modalTitle.textContent = element.children[2].textContent + " Leave";
             modal.style.display = "block";
             $loader.style.display = 'block';
             leaveApplicationPromise     = GETLeaveApplication(applicationId).then(function (JSONLeaveApplication) {
@@ -258,6 +258,7 @@ function replaceContent(element, newContent) {
 }
 
 function replaceContentLeaveApplication(leaveApplication) {
+    replaceContent($id('type-of-leave'), leaveApplication.type_of_leave)
     replaceContent($numberDaysApplied,  leaveApplication.number_days_applied);
     replaceContent($fromDate,           formatDate(leaveApplication.from_date));
     replaceContent($placeStay,          (placeStay(leaveApplication.place_stay, leaveApplication.place_stay_specify)) );

@@ -18,7 +18,7 @@
                     <thead>
                     <tr>
                         <th width="10%">#</th>
-                        <th width="25%">Type</th>
+                        <th width="30%">Type</th>
                         <th width="10%">Days</th>
                         <th width="20%">Start</th>
                     </tr>
@@ -36,8 +36,9 @@
 </section>
 
 <script>
-    document.title      = "Principal";
+    document.title      = "Leave Application Actions";
     $id('new-applications').classList.add('active');
+
 </script>
 <script src="assets/js/admin-actions.js"></script>
 <?php include ('layouts/footer.php');?>

@@ -39,6 +39,9 @@ $month.addEventListener('change', function () {
        showPrintButton(response.length);
 
        return response;
+   }, function (err) {
+       fetchFailed();
+       $month.value = 0 ;
    });
 });
 

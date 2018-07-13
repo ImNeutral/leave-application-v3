@@ -4,6 +4,7 @@ var $updateSuccessModal             = $id('update-success-modal');
 var $confirmCancelModal             = $id('confirm-cancel-modal');
 var $numberDaysAppliedEdit          = $id('number-days-applied-edit');
 
+var $typeOfLeave                    = $id('type-of-leave-edit');
 var $dateFromYearEdit               = $id('date-from-year-edit');
 var $dateFromMonthEdit              = $id('date-from-month-edit');
 var $dateFromDayEdit                = $id('date-from-day-edit');
@@ -38,6 +39,8 @@ $confirmCancelApplication.addEventListener('click', function () {
                 $latestClickedStatus.textContent = 'Cancelled';
                 $latestClickedStatus.className   = 'danger-font';
                 $confirmCancelModal.style.display = 'none';
+            }, function (err) {
+                fetchFailed();
             });
             return JSONLeaveApplication;
         });
@@ -58,6 +61,8 @@ $editLeaveApplicationForm.addEventListener('submit', function (e) {
             $latestClickedDays.textContent      = response.number_days_applied;
             $latestClickedFromDate.textContent  = formatDate2(response.from_date);
             $updateSuccessModal.style.display = "block";
+        }, function (err) {
+            fetchFailed();
         });
     });
 });
@@ -88,6 +93,7 @@ function editLeaveApplication() {
     leaveApplicationPromise.then(function (JSONLeaveApplication) {
         $dateFrom               = new Date(JSONLeaveApplication.from_date);
 
+        $typeOfLeave.innerText          = JSONLeaveApplication.type_of_leave;
         $numberDaysAppliedEdit.value    = JSONLeaveApplication.number_days_applied;
         $dateFromYearEdit.value         = $dateFrom.getFullYear();
         $dateFromMonthEdit.value        = $dateFrom.getMonth() + 1;

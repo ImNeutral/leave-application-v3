@@ -49,12 +49,17 @@ function isLoggedIn() {
 function logout() {
     localStorage.removeItem('account');
     localStorage.removeItem('employee');
+    dbDelete(1);
     window.location.assign("login.php");
 }
 
 function getAccountType($accountTypeId) {
     $accountTypes = ['', 'User', 'Principal', 'HR', 'SDS', 'Admin'];
     return $accountTypes[$accountTypeId];
+}
+
+function reloadPage() {
+    location.reload();
 }
 
 function toTitleCase(str) {
@@ -197,6 +202,18 @@ function imageResizeToNewDataUri(img, width, height) {
     return canvas.toDataURL();
 }
 
+function closeAllModals() {
+    var $modals = $class('modal');
+    for(var roll = 0; roll < $modals.length; roll++) {
+        $modals.item(roll).style.display = "none";
+    }
+}
+
+function fetchFailed() {
+    $id('loader-container').style.display   = "none";
+    closeAllModals();
+    $id('fetch-failed').style.display       = "block";
+}
 
 function registerServiceWorker() {
     console.log("Trying....");
@@ -216,18 +233,35 @@ function registerServiceWorker() {
     }
 }
 
-//
-// function startInterval() {
-//     var rollOvers = 0;
-//     var intervals = setInterval(function () {
-//         console.log(rollOvers++);
-//         if(rollOvers == 10) {
-//             clearInterval(intervals);
-//             console.log("Interval Dead!");
-//         }
-//     }, 300);
-// }
 
+function openDatabase() {
+    if( indexedDB ) {
+        return indexedDB.open("LeaveApplication", 2);
+    }
+}
+
+function dbGet(key) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["leave-applications"])
+            .objectStore("leave-applications")
+            .get(key)
+            .onsuccess = function (event) {
+            return event.target.result;
+        };
+    };
+}
+
+function dbDelete(key) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["leave-applications"], "readwrite")
+            .objectStore("leave-applications")
+            .delete(key);
+    };
+}
 
 
 

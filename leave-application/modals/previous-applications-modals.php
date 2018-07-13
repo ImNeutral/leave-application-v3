@@ -5,8 +5,8 @@
         <!-- Modal content -->
         <div class="modal-content"  style="margin-top: 5%; width: 60%;">
             <span class="close" onclick="closeModal(this)">&times;</span>
-            <h6 id="modal-title" class="text-center">Sick Leave</h6>
-
+<!--            <h6 id="view-" class="text-center">Sick Leave</h6>-->
+            <br>
             <div  style="overflow: auto; max-height: 350px;">
                 <table width="100%" border="0">
                     <thead>
@@ -14,6 +14,14 @@
                     <th width="50%"></th>
                     </thead>
                     <tbody>
+                    <tr>
+                        <td  style="border:0;">
+                            <div class="float-right bold">
+                                Type of Leave:
+                            </div>
+                        </td>
+                        <td style="border:0;" id="type-of-leave">_</td>
+                    </tr>
                     <tr>
                         <td  style="border:0;">
                             <div class="float-right bold">
@@ -181,11 +189,11 @@
                     <tbody>
                     <tr>
                         <td  style="border:0;">
-                            <div class="float-right bold">
+                            <div class="float-right bold" style="margin-top: 10px;">
                                 Type Of Leave:
                             </div>
                         </td>
-                        <td style="border:0;" id="type-of-leave">
+                        <td style="border:0;" id="type-of-leave-edit">
                             Type of Leave
                         </td>
                     </tr>

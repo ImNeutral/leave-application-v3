@@ -1,11 +1,12 @@
 function login() {
-    var $errorMessage = document.getElementById('error-message');
-    var $successMessage = document.getElementById('success-message');
-    var $submitButton = document.getElementById('submit-button');
+    var $errorMessage       = $id('error-message');
+    var $successMessage     = $id('success-message');
+    var $errorInternet      = $id('error-internet');
+    var $submitButton       = $id('submit-button');
     $submitButton.innerHTML = "Logging in...";
-    var $password = document.getElementById('password');
-    var password = $password.value;
-    var username = document.getElementById('username').value;
+    var $password           = $id('password');
+    var password            = $password.value;
+    var username            = $id('username').value;
 
     var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?username=" + username + "&password=" + password;
 
@@ -25,13 +26,15 @@ function login() {
                         localStorage.setItem('account', JSON.stringify(account));
                         localStorage.setItem('employee', JSON.stringify(employee));
 
-                        $errorMessage.style.display = 'none';
-                        $successMessage.style.display = 'block';
+                        $errorMessage.style.display         = 'none';
+                        $errorInternet.style.display        = 'none';
+                        $successMessage.style.display       = 'block';
                         isAllowed(account.account_type_id);
                     } else {
-                        $errorMessage.style.display = 'block';
-                        $password.value = "";
-                        $submitButton.innerHTML = "Login";
+                        $errorInternet.style.display    = 'none';
+                        $errorMessage.style.display     = 'block';
+                        $password.value                 = "";
+                        $submitButton.innerHTML         = "Login";
                     }
                 }).catch(function (error) {
                     console.log("The Error:", error);
@@ -39,6 +42,11 @@ function login() {
             } else {
                 console.log("Could not connect to server!");
             }
+        }, function (err) {
+            $errorMessage.style.display     = 'none';
+            $errorInternet.style.display    = 'block';
+            $password.value                 = "";
+            $submitButton.innerHTML         = "Login";
         });
     }
 }
