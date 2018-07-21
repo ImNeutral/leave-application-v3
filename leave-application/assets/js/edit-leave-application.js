@@ -64,6 +64,7 @@ $editLeaveApplicationForm.addEventListener('submit', function (e) {
             $updateSuccessModal.style.display   = "block";
             $loader.style.display               = "none";
             $id('file-to-upload-edit').value      = "";
+            checkUnsubmittedInSW();
         }, function (err) {
             fetchFailed('fetch-failed-leave-application');
         });

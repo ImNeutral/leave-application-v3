@@ -216,6 +216,7 @@ function closeAllModals() {
 }
 
 function checkUnsubmittedInSW() {
+    console.log("Checking...");
     navigator.serviceWorker.controller.postMessage('checkUnSubmittedLeaveApplication');
 }
 

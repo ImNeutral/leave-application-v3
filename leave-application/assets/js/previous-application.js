@@ -226,11 +226,15 @@ function addClickEvent() {
                 }
                 replaceContentLeaveApplication(JSONLeaveApplication);
                 return JSONLeaveApplication;
+            }, function (err) {
+                fetchFailed();
             });
             GETActionOnApplication(applicationId).then(function (JSONActionOnApplication) {
                 replaceContentActionOnApplication(JSONActionOnApplication);
             }).then(function () {
                 $loader.style.display = 'none';
+            }, function (err) {
+                fetchFailed();
             });
         });
     });
@@ -250,6 +254,8 @@ function addClickEvent() {
                     } else {
                         hide($loader);
                     }
+                }, function (err) {
+                    fetchFailed();
                 });
             }
         });

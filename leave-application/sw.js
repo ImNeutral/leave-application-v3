@@ -88,9 +88,15 @@ self.addEventListener('fetch', function(event) {
 });
 
 self.addEventListener('message', function (msg) {
+    console.log("Chekking 2...");
     if(msg.data == 'checkUnSubmittedLeaveApplication') {
-        if( typeof timeoutHolder === 'undefined' && typeof fileAttachmentsInterval === 'undefined') {
+        console.log("Checking 3...");
+        if( typeof timeoutHolder === 'undefined') {
             console.log("Timeout Holder is called...");
+            console.log("Checking 4...");
+            if( typeof fileAttachmentsInterval !== 'undefined' ) {
+                clearInterval(fileAttachmentsInterval);
+            }
 
             reSubmitLeaveApplicationUntilFinish();
         }
@@ -176,7 +182,7 @@ function reSubmitLeaveApplicationUntilFinish() {
                         resubmitLeaveApplication(url, data).then(function () {
                             dbDelete(1);
                             clearInterval(timeoutHolder);
-                            self.registration.showNotification("Successfully submitted Leave Application. Checking for file attachments. . . ", { icon: 'assets/images/icon.ico' });
+                            self.registration.showNotification("Successfully submitted Leave Application. Checking attachments", { icon: 'assets/images/icon.ico' });
                             submitFileAttachments();
                         }, function (err) {
                             console.log("Failed to submit... retrying in background...");
@@ -192,8 +198,8 @@ function reSubmitLeaveApplicationUntilFinish() {
 }
 
 function submitFileAttachments() {
+    resubmitCheckerContinue = true;
     fileAttachmentsInterval = setInterval(function () {
-
         if(resubmitCheckerContinue) {
             resubmitCheckerContinue = false;
 

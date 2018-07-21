@@ -65,6 +65,8 @@ $confirmAction.addEventListener('click', function (e) {
                 emptyPagination();
                 addPagination();
                 populateApplicationsTable();
+            }, function (err) {
+                fetchFailed();
             });
         });
         submitAction = false;
@@ -84,6 +86,8 @@ $confirmReverseAction.addEventListener('click', function (e) {
                 emptyPagination();
                 addPagination();
                 populateApplicationsTable();
+            }, function (err) {
+                fetchFailed();
             });
         });
         reverseActionNow = false;
@@ -140,6 +144,7 @@ function hideActionsOnApplication() {
 
 function populateApplicationsTable() {
     empty($leaveApplications);
+    $loader.style.display = "block";
     GETLeaveApplications().then(function (JSONresponse) {
         var num = (page-1) * 10 + 1;
 
@@ -189,7 +194,10 @@ function populateApplicationsTable() {
             $leaveApplications.appendChild(tr);
             num++;
         }
+        $loader.style.display = "none";
         addClickEvent();
+    }, function (err) {
+        fetchFailed();
     });
 }
 
@@ -246,6 +254,8 @@ function addClickEvent() {
                     $id('open-edit-modal').style.display = "";
                 }
                 return JSONLeaveApplication;
+            }, function (err) {
+                fetchFailed();
             });
             GETActionOnApplication(applicationId).then(function (JSONActionOnApplication) {
                 replaceContentActionOnApplication(JSONActionOnApplication);
@@ -262,6 +272,8 @@ function addClickEvent() {
                     }
                 });
                 $loader.style.display = 'none';
+            }, function (err) {
+                fetchFailed();
             });
         });
     });
@@ -277,6 +289,8 @@ function addClickEvent() {
                         hide($loader);
                         show($viewPhoto);
                     });
+                }, function (err) {
+                    fetchFailed();
                 });
             }
         });
