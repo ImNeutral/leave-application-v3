@@ -69,7 +69,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         $account->save();
         echo json_encode(1);
     }
+
+    // PUT noon, POST ngayon.
+    if(isset($input->username) && isset($input->old_password)) {
+        $username   = $input->username;
+        $password   = $input->old_password;
+        $account    = Account::getByUsername($username, $password);
+        if($account) {
+            $account    = Account::get($account[0]['id']);
+            $account->password = $account->encryptPassword( $input->new_password );
+            $account->save();
+            echo json_encode('1');
+        } else {
+            echo json_encode('0');
+        }
+    } else if( isset($input->account_id) && isset($input->account_type_id)) {
+        $account        = Account::get($input->account_id);
+        $account->account_type_id = $input->account_type_id;
+        if( isset($input->password) ) {
+            $account->password      = $account->encryptPassword( $input->password );
+        }
+        $account->save();
+        echo json_encode('1');
+    }
 } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // FETCH
+
     $input = json_decode(file_get_contents("php://input"));
     if(isset($input->username) && isset($input->old_password)) {
         $username   = $input->username;

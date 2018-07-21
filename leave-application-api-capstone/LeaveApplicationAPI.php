@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
     $input = json_decode( file_get_contents("php://input") );
-    if($input) {
+    if( isset($input->type_of_leave) ) {
         $successApplication = 1;
 
         $typeOfLeave = $input->type_of_leave;
@@ -78,13 +78,17 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
         }
 
         $filename = '';
-        if($input->attachment > '') { // check if there is a filename
-            $filename = date("Y-m-d H-i-s") . " " . md5( rand()  ); // generate random string
-            $imageFile = fopen("attachments/" . $filename  , "x");
-            $fileContent = $input->fileDataURI;
-            fwrite($imageFile, $fileContent);
-            fclose($imageFile);
+        if(isset($input->attachmentName)) {
+            fopen("attachments/" . $input->attachmentName  , "x");
+            $filename = $input->attachmentName;
         }
+//        if($input->attachment > '' && isset($input->fileDataURI)) { // check if there is a filename
+//            $filename = $input->attachmentName; // generate random string
+//            $imageFile = fopen("attachments/" . $filename  , "x");
+//            $fileContent = $input->fileDataURI;
+//            fwrite($imageFile, $fileContent);
+//            fclose($imageFile);
+//        }
 
         $commutationRequested = $input->commutation_requested;
 
@@ -103,21 +107,12 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
         $leaveApplication->save();
 
         echo json_encode( 1 );
-    } else {
-        echo json_encode( 0 );
-    }
-}
-else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // UPDATE
-//    parse_str(file_get_contents("php://input"), $post_vars);
-//    echo $post_vars['id'];
-
-    $input = json_decode(file_get_contents("php://input"));
-    if(isset($input->id) && isset($input->cancel)) {
+    } else if( isset($input->id) && isset($input->cancel) ) {
         $leaveApplication = LeaveApplication::get( $input->id );
         $leaveApplication->cancelled = $input->cancel;
         $leaveApplication->save();
         echo json_encode(1);
-    } else {
+    } else if( isset($input->id) ) {
         $leaveApplication = LeaveApplication::get( $input->id );
         if($leaveApplication->number_days_applied != $input->number_days_applied_edit) {
             $leaveApplication->number_days_applied = $input->number_days_applied_edit;
@@ -134,22 +129,35 @@ else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // UPDATE
         $leaveApplication->place_stay_specify = $input->place_stay_specify_edit;
         $leaveApplication->commutation_requested = $input->commutation_requested_edit;
 
-        $filename = '';
-        if($input->attachment > '' && $leaveApplication->filename > ' ') {
-            $leaveApplication->fileAttachment()->setContent($input->fileDataURI);
-        } else if($input->attachment > '') {
-            $filename = date("Y-m-d H-i-s") . " " . md5( rand()  ); // generate random string
-            $imageFile = fopen("attachments/" . $filename  , "x");
-            $fileContent = $input->fileDataURI;
-            fwrite($imageFile, $fileContent);
-            fclose($imageFile);
-            $leaveApplication->filename = $filename;
+        if(isset($input->attachmentName)) {
+            fopen("attachments/" . $input->attachmentName  , "x");
+            $leaveApplication->filename = $input->attachmentName;
         }
-
+//        if($input->attachment > '' && $leaveApplication->filename > ' ') {
+//            $leaveApplication->fileAttachment()->setContent($input->fileDataURI);
+//        } else if($input->fileDataURI > '') {
+//            $filename = $input->attachmentName; // generate random string
+//            $imageFile = fopen("attachments/" . $filename  , "x");
+//            $fileContent = $input->fileDataURI;
+//            fwrite($imageFile, $fileContent);
+//            fclose($imageFile);
+//            $leaveApplication->filename = $filename;
+//        } else if(isset($input->attachmentName)) {
+//            $imageFile = fopen("attachments/" . $input->attachmentName  , "x");
+//            $leaveApplication->
+//        }
         $leaveApplication->save();
 
         echo json_encode($leaveApplication);
     }
+}
+else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // UPDATE
+//    parse_str(file_get_contents("php://input"), $post_vars);
+//    echo $post_vars['id'];
+
+    $input = json_decode(file_get_contents("php://input"));
+
+
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') { // DELETE => use GET
     $leaveApplication = LeaveApplication::get(issetGetValue('id'));

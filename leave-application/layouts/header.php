@@ -33,7 +33,9 @@
 
 <div class="view-photo" id="view-photo" style="display: none;">
     <span class="close" id="close-view-photo" onclick="closeViewPhoto(this)" style="margin-right: 50px;">&times;</span>
-    <img src="" alt="Image" id="photo">
+    <div style="overflow: auto;">
+        <img src="" alt="Image" id="photo">
+    </div>
 </div>
 
 <section>
@@ -51,6 +53,27 @@
             </div>
             <div style="float:right;">
                 <button class="button-primary" onclick="closeModal(this)">Ok</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="fetch-failed-leave-application" class="modal" style="display: none;">
+        <div class="modal-content" style="margin-top: 10%; height: 170px; color: #721c24; border-color: #f5c6cb;">
+            <div style="background-color: #f8d7da; margin: -10px;">
+                <span class="close" id="close-cc"></span>
+                <h5 class="text-center info-modal-title" id="info-modal-title">Transaction Failed, No Connection!</h5>
+                <div class="modal-inside" style="back">
+                    <div style="text-align: center;">
+                        <p>Please connect to the internet and wait while the system is redoing the failed transactions.</p>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div style="float:right;">
+                <a href="leave-application.php">
+                    <button class="button-primary" onclick="closeModal(this)">Ok</button>
+                </a>
             </div>
         </div>
     </div>

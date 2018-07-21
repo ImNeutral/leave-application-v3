@@ -21,6 +21,8 @@ var $confirmCancelApplication       = $id('confirm-cancel-application');
 var cancelApplication               = false;
 var fileDataURI                     = '';
 
+checkUnsubmittedInSW();
+
 $cancelLeaveApplication.addEventListener('click', function () {
     cancelApplication = true;
     $confirmCancelModal.style.display = 'block';
@@ -29,16 +31,16 @@ $cancelLeaveApplication.addEventListener('click', function () {
 $confirmCancelApplication.addEventListener('click', function () {
     if(cancelApplication) {
         leaveApplicationPromise.then(function (JSONLeaveApplication) {
-            $loader.style.display       = "block";
+            $loader.style.display                   = "block";
             cancelLeaveApplication(JSONLeaveApplication.id, 1).then(function () {
                 $editLeaveApplicationModal.style.display = "none";
-                $loader.style.display       = "none";
-                $infoModal.style.display    = "block";
+                $loader.style.display               = "none";
+                $infoModal.style.display            = "block";
 
-                $latestClickedStatus = $latestClicked.querySelector('#status');
-                $latestClickedStatus.textContent = 'Cancelled';
-                $latestClickedStatus.className   = 'danger-font';
-                $confirmCancelModal.style.display = 'none';
+                $latestClickedStatus                = $latestClicked.querySelector('#status');
+                $latestClickedStatus.textContent    = 'Cancelled';
+                $latestClickedStatus.className      = 'danger-font';
+                $confirmCancelModal.style.display   = 'none';
             }, function (err) {
                 fetchFailed();
             });
@@ -55,14 +57,15 @@ $editLeaveApplicationForm.addEventListener('submit', function (e) {
     leaveApplicationPromise.then(function (JSONLeaveApplication) {
         var data = toJSONString(JSONLeaveApplication.id, $submitForm);
         PUTLeaveApplication(data).then(function (response) {
-            $loader.style.display               = "none";
             $latestClickedDays                  = $latestClicked.querySelector('#days');
             $latestClickedFromDate              = $latestClicked.querySelector('#from-date');
             $latestClickedDays.textContent      = response.number_days_applied;
             $latestClickedFromDate.textContent  = formatDate2(response.from_date);
-            $updateSuccessModal.style.display = "block";
+            $updateSuccessModal.style.display   = "block";
+            $loader.style.display               = "none";
+            $id('file-to-upload-edit').value      = "";
         }, function (err) {
-            fetchFailed();
+            fetchFailed('fetch-failed-leave-application');
         });
     });
 });
@@ -124,7 +127,11 @@ function toJSONString( id, form ) {
     }
     obj[ 'id' ] = id;
 
-    obj[ 'fileDataURI' ] = fileDataURI;
+    // obj[ 'fileDataURI' ] = fileDataURI;
+    if(fileDataURI > ' ') {
+        obj['attachmentName'] = randomAttachmentName();
+        saveAttachmentForLater(obj['attachmentName'], fileDataURI);
+    }
 
     return JSON.stringify( obj );
 }
@@ -140,9 +147,9 @@ function cancelLeaveApplication(id, cancel) {
 
 function PUTLeaveApplication(data) {
     // var data = toJSONString( $form );
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php";
+    var url = getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php";
     var init = {
-        method: 'PUT',
+        method: 'POST',
         headers: new Headers({
         }),
         body: data

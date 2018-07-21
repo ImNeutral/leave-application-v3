@@ -18,7 +18,7 @@
             <div class="row text-center" id="submitting-offline-message" style="display: none;">
 
                 <div class="error-message" id="success-message" style="display: block; ">
-                    Submitting previously filled Leave Application, please connect to internet and wait...
+                    Submitting/Updating Leave Application, please connect to internet and wait...
                 </div>
             </div>
 

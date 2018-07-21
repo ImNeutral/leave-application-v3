@@ -25,7 +25,6 @@
         }
     };
     // recall resubmit function inside serviceworker;
-    navigator.serviceWorker.controller.postMessage('checkUnSubmittedLeaveApplication');
 
 
     if(!connection) {

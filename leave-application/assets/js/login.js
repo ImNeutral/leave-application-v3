@@ -8,7 +8,7 @@ function login() {
     var password            = $password.value;
     var username            = $id('username').value;
 
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?username=" + username + "&password=" + password;
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php?username=" + username + "&password=" + password;
 
     fetchAccount(url);
 

@@ -82,26 +82,34 @@ $searchGo.addEventListener('click', function () {
     if($searchBy.value == 'school') {
         if(selectedSchoolId > -1) {
             $searchMessage.textContent = "Showing results for '" + $search.value + "'";
+            $loader.style.display = "block";
             accountsPromise = GETSchoolAccounts(selectedSchoolId).then(function (response) {
                 populateAccountsTable(response);
 
                 currentTotalPages  = Math.ceil( response.length / 10 );
                 addPagination(currentTotalPages);
 
+                $loader.style.display = "none";
                 return response;
+            }, function (err) {
+                fetchFailed();
             });
         } else {
             $searchMessage.textContent = "'" + $search.value + "' is not on school list.";
         }
     } else {
         $searchMessage.textContent = "Showing results for '" + $search.value + "'";
+        $loader.style.display = "block";
         accountsPromise = GETSearchByUsername($search.value).then(function (response) {
             populateAccountsTable(response);
 
             currentTotalPages  = Math.ceil( response.length / 10 );
             addPagination(currentTotalPages);
 
+            $loader.style.display = "none";
             return response;
+        }, function (err) {
+            fetchFailed();
         });
     }
 });
@@ -125,6 +133,7 @@ $confirmEditAction.addEventListener('click', function () {
                 $obj[ 'password' ] = password;
             }
             var data = JSON.stringify($obj);
+            $loader.style.display = "block";
             PUTEditAccount(data).then(function () {
                 response[clickedAccountId].account_type_id = accountType;
                 populateAccountsTable(response);
@@ -134,6 +143,9 @@ $confirmEditAction.addEventListener('click', function () {
                 $messages.push("Successfully Saved Changed!");
                 showMessage($editMessage, 'success', $messages);
                 $confirmEditModal.style.display = "none";
+                $loader.style.display = "none";
+            }, function (err) {
+                fetchFailed();
             });
         });
     }
@@ -376,7 +388,7 @@ function populateSchoolsList() {
 }
 
 function POSTCreateAccount(data) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php";
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php";
     var init = {
         method: 'POST',
         headers: new Headers({
@@ -389,9 +401,9 @@ function POSTCreateAccount(data) {
 }
 
 function PUTEditAccount(data) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php";
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php";
     var init = {
-        method: 'PUT',
+        method: 'POST',
         headers: new Headers({
         }),
         body: data
@@ -402,7 +414,7 @@ function PUTEditAccount(data) {
 }
 
 function GETSchools() {
-    var url = "http://" + getHost() + "/leave-application-api-deped/SchoolAPI.php?all=true";
+    var url = getHostDeped() + "/leave-application-api-deped/SchoolAPI.php?all=true";
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -414,7 +426,7 @@ function GETSchools() {
 }
 
 function GETSchoolAccounts(selectedSchoolId) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?";
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php?";
     url     += "school_id=" + selectedSchoolId;
     url     += "&employees=true";
     var init = {
@@ -428,7 +440,7 @@ function GETSchoolAccounts(selectedSchoolId) {
 }
 
 function GETSearchByUsername(username) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?";
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php?";
     url     += "username=" + username;
     url     += "&search=true";
     var init = {
@@ -442,7 +454,7 @@ function GETSearchByUsername(username) {
 }
 
 function GETSearchByFixedUsername(username) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?";
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php?";
     url     += "username=" + username;
     url     += "&fixed_search=true";
     var init = {
@@ -456,7 +468,7 @@ function GETSearchByFixedUsername(username) {
 }
 
 function GETSearchByEmployeeFullName($name) {
-    var url = "http://" + getHost() + "/leave-application-api-deped/EmployeeAPI.php?";
+    var url = getHostDeped() + "/leave-application-api-deped/EmployeeAPI.php?";
     url     += "searchType=fullName";
     url     += "&name=" + $name;
     var init = {

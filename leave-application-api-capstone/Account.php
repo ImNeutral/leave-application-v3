@@ -24,7 +24,7 @@ class Account extends DBQueries {
             if (md5($password) == $account['password']) {
                 $employee_id = $account['employee_id'];
 
-                $employee_data = file_get_contents('http://' . SERVICE_HOST . '/leave-application-api-deped/EmployeeAPI.php?id=' . $employee_id);
+                $employee_data = file_get_contents('http://' . SERVICE_HOST_2 . '/leave-application-api-deped/EmployeeAPI.php?id=' . $employee_id);
                 $employee_data = json_decode($employee_data);
 
                 $accountData = [$account, $employee_data];
@@ -72,13 +72,13 @@ class Account extends DBQueries {
     }
 
     public static function accountOwner($employee_id) {
-        $employee_data  = file_get_contents('http://' . SERVICE_HOST . '/leave-application-api-deped/EmployeeAPI.php?id=' . $employee_id);
+        $employee_data  = file_get_contents('http://' . SERVICE_HOST_2 . '/leave-application-api-deped/EmployeeAPI.php?id=' . $employee_id);
         $employee_data  = json_decode($employee_data);
         return ucwords(strtolower( $employee_data->first_name . ' ' . $employee_data->middle_name . ' ' . $employee_data->last_name ));
     }
 
     public function owner() {
-        return json_decode(file_get_contents('http://' . SERVICE_HOST . '/leave-application-api-deped/EmployeeAPI.php?id=' . $this->employee_id . '&school=true'));
+        return json_decode(file_get_contents('http://' . SERVICE_HOST_2 . '/leave-application-api-deped/EmployeeAPI.php?id=' . $this->employee_id . '&school=true'));
     }
 
     public function getPassword() {

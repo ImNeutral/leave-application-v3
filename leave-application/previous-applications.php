@@ -44,16 +44,7 @@
     var modal           = document.getElementById('myModal');
 //    var span            = document.getElementsByClassName("close")[0];
     var modalTitle      = document.getElementById("modal-title");
-
-//    span.onclick = function() {
-//        modal.style.display = "none";
-//    };
-//
-//    modal.onclick = function(event) {
-//        if (event.target == modal) {
-//            modal.style.display = "none";
-//        }
-//    }
+    
 </script>
 
 <script src="assets/js/previous-application.js"></script>

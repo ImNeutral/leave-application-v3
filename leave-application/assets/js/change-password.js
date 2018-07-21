@@ -12,19 +12,21 @@ function showChangePasswordModal() {
 }
 
 function changePassword() {
-    $loader.style.display = "block";
     checkNewPasswords();
 }
 
 function checkNewPasswords() {
     if($newPassword.value == $newPassword2.value && $newPassword.value > '') {
         $errorChangePassword.style.display = 'none';
+        $loader.style.display = "block";
         isPasswordCorrect().then(function (response) {
             if(!response) {
+                $loader.style.display = "none";
                 $errorChangePassword.style.display = 'block';
                 $errorChangePassword.innerText = "Wrong old password entered.";
             } else {
                 submitNewPassword().then(function (response) {
+                    $loader.style.display = "none";
                     $changePasswordSuccess.style.display = "block";
                 }, function (err) {
                     fetchFailed();
@@ -36,14 +38,12 @@ function checkNewPasswords() {
     } else {
         $errorChangePassword.style.display = 'block';
         $errorChangePassword.innerText = "New password does not match.";
-
     }
-    $loader.style.display = "none";
 }
 
 function isPasswordCorrect() {
     // var data = toJSONString( $form );
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?username=" + accountUsername + "&password=" + $oldPassword.value;
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php?username=" + accountUsername + "&password=" + $oldPassword.value;
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -61,9 +61,9 @@ function submitNewPassword() {
         'new_password' : $newPassword.value
     };
     var accountData = JSON.stringify( accountObj );
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php";
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php";
     var init = {
-        method: 'PUT',
+        method: 'POST',
         headers: new Headers({
         }),
         body: accountData

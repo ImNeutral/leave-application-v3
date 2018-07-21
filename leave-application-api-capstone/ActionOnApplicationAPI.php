@@ -42,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
     }
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT
-}
-else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // UPDATE
+
+    // PUT noon POST ngayon
     $input = json_decode(file_get_contents("php://input"));
 
     if(isset($input->leave_application_id) && isset($input->admin_type_id) && isset($input->approved)) {
@@ -79,6 +79,10 @@ else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // UPDATE
         }
         echo json_encode('1');
     }
+
+}
+else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // UPDATE
+
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') { // DELETE => use GET
 }

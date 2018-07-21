@@ -511,7 +511,21 @@ table.accounts td{
     background-color: #fefefe;
     margin-top: 50px;
     padding: 10px;
+    height: 570px;
 }
+
+@media (max-width: 750px) {
+    .view-photo img {
+        height: 450px;
+    }
+}
+
+@media (max-width: 500px) {
+    .view-photo img {
+        height: 350px;
+    }
+}
+
 
 .tab-cursor {
     cursor: pointer !important;

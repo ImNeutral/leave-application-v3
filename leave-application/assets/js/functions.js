@@ -1,3 +1,6 @@
+var thereWasFileAttachmentCursor    = false;
+var resubmitCheckerInterval;
+
 function $id(el) {
     return document.getElementById(el);
 }
@@ -28,9 +31,12 @@ function findAncestor (el, cls) {
 }
 
 function getHost() {
-    return window.location.hostname + '/leave-application-v3';
+    return 'http://' + window.location.hostname + '/leave-application-v3';
     // return "localhost/leave-application-v3";
+}
 
+function getHostDeped () {
+    return 'http://' + window.location.hostname + '/leave-application-v3';
 }
 
 function getLoginDetails() {
@@ -49,7 +55,7 @@ function isLoggedIn() {
 function logout() {
     localStorage.removeItem('account');
     localStorage.removeItem('employee');
-    dbDelete(1);
+    dbClear();
     window.location.assign("login.php");
 }
 
@@ -209,10 +215,43 @@ function closeAllModals() {
     }
 }
 
-function fetchFailed() {
+function checkUnsubmittedInSW() {
+    navigator.serviceWorker.controller.postMessage('checkUnSubmittedLeaveApplication');
+}
+
+function randomAttachmentName() {
+    var date = new Date();
+    return date.getFullYear() + date.getMonth() + date.getDate() + parseInt(Math.random() * 1000000000000);
+}
+
+function saveAttachmentForLater(filename, dataURI) {
+    var roll                = 1;
+    var datas               = [];
+    var dataChunksLength    = 100000;
+    while(dataURI) {
+        var sub = dataURI.substr(0, dataChunksLength);
+        dataURI = dataURI.slice( dataChunksLength );
+
+        var data = {
+            id : roll++,
+            filename: filename,
+            content: sub
+        };
+        datas.push(data);
+        if(!dataURI) {
+            dbAddFileAttachments(datas);
+        }
+    }
+}
+
+function fetchFailed(fetchFailed) {
+    if(!fetchFailed) {
+        fetchFailed = 'fetch-failed';
+    } 
+
     $id('loader-container').style.display   = "none";
     closeAllModals();
-    $id('fetch-failed').style.display       = "block";
+    $id(fetchFailed).style.display       = "block";
 }
 
 function registerServiceWorker() {
@@ -236,7 +275,7 @@ function registerServiceWorker() {
 
 function openDatabase() {
     if( indexedDB ) {
-        return indexedDB.open("LeaveApplication", 2);
+        return indexedDB.open("LeaveApplication", 5);
     }
 }
 
@@ -263,9 +302,69 @@ function dbDelete(key) {
     };
 }
 
+function dbAdd(data) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["leave-applications"], "readwrite")
+            .objectStore("leave-applications")
+            .add(data);
+    };
+}
 
+function dbClear() {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["leave-applications"], "readwrite")
+            .objectStore("leave-applications").clear();
+        db.transaction(["file_attachments"], "readwrite")
+            .objectStore("file_attachments").clear();
+    };
 
+}
 
+function dbDeleteFileAttachments(key) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["file_attachments"], "readwrite")
+            .objectStore("file_attachments")
+            .delete(key);
+    };
+}
+
+function dbGetFileAttachments() {
+    openDatabase().onsuccess = function (event) {
+        var db = event.target.result;
+        var request = db.transaction(["file_attachments"], "readwrite")
+            .objectStore("file_attachments");
+
+        request.openCursor().onsuccess = function(event) {
+            var cursor = event.target.result;
+            if(cursor) {
+                console.log("... -> ", cursor.value.content.length);
+                request.delete(cursor.value.id);
+                cursor.continue();
+            } else {
+                // no more results
+            }
+        };
+    };
+}
+
+function dbAddFileAttachments(data) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        var request = db.transaction(["file_attachments"], "readwrite")
+            .objectStore("file_attachments");
+
+        for(var roll = 0; roll < data.length; roll++) {
+          request.add(data[roll]);
+        }
+    };
+}
 
 
 

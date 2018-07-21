@@ -284,7 +284,7 @@ function addClickEvent() {
 }
 
 function GETActionOnApplication(id) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" + id;
+    var url = getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" + id;
     url += "&allData=true";
     var init = {
         method: 'GET',
@@ -297,7 +297,7 @@ function GETActionOnApplication(id) {
 }
 
 function GETLeaveApplicationOwner(accId) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/AccountAPI.php?";
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php?";
     url     += "account_id=" + accId;
     url     += "&owner=true";
     var init = {
@@ -311,7 +311,7 @@ function GETLeaveApplicationOwner(accId) {
 }
 
 function GETLeaveApplication(id) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?id=" + id;
+    var url = getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?id=" + id;
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -323,7 +323,7 @@ function GETLeaveApplication(id) {
 }
 
 function GETPhotoAttachment(filename) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/FileAttachmentAPI.php?filename=" + filename;
+    var url = getHost() + "/leave-application-api-capstone/FileAttachmentAPI.php?filename=" + filename;
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -335,7 +335,7 @@ function GETPhotoAttachment(filename) {
 }
 
 function GETLeaveApplications() {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?";
+    var url = getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?";
     url     += "admin_type_id=" + accountTypeID;
     url     += "&status=" + status;
     url     += "&page=" + page;
@@ -350,7 +350,7 @@ function GETLeaveApplications() {
 }
 
 function GETLeaveApplicationCount() {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?";
+    var url = getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?";
     url     += "admin_type_id=" + accountTypeID;
     url     += "&status=" + status;
     url     += "&count=true";
@@ -388,9 +388,9 @@ function reverseAction(leaveApplicationId) {
 }
 
 function PUTApplicationAction(data) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php";
+    var url = getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php";
     var init = {
-        method: 'PUT',
+        method: 'POST',
         headers: new Headers({
         }),
         body: data
@@ -401,9 +401,9 @@ function PUTApplicationAction(data) {
 }
 
 function PUTReverseAction(data) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php";
+    var url = getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php";
     var init = {
-        method: 'PUT',
+        method: 'POST',
         headers: new Headers({
         }),
         body: data

@@ -32,6 +32,10 @@ class FileAttachment {
         $this->openFile();
     }
 
+    public function appendContent($newContent) {
+        file_put_contents($this->folderName . $this->fileName, $newContent , FILE_APPEND | LOCK_EX);
+    }
+
     public function __destruct()
     {
         fclose($this->file);

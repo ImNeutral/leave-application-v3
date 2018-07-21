@@ -242,7 +242,7 @@ function dayDefault() {
 }
 
 function GETLeaveApplications(year, month) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?";
+    var url = getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?";
     url     += "year=" + year;
     url     += "&month=" + month;
     var init = {

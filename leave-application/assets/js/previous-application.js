@@ -146,7 +146,7 @@ function populatePreviousApplicationsTable() {
 }
 
 function GET(type, number, accountId) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?" + type + "=" + number;
+    var url = getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?" + type + "=" + number;
     url += "&accountId=" + accountId;
     var init = {
         method: 'GET',
@@ -159,7 +159,7 @@ function GET(type, number, accountId) {
 }
 
 function GETActionOnApplication(id) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" + id;
+    var url = getHost() + "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" + id;
     url += "&allData=true";
     var init = {
         method: 'GET',
@@ -172,7 +172,7 @@ function GETActionOnApplication(id) {
 }
 
 function GETLeaveApplication(id) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?id=" + id;
+    var url = getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?id=" + id;
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -184,7 +184,7 @@ function GETLeaveApplication(id) {
 }
 
 function GETLeaveApplicationCount() {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?count=true&accountId=" + accountID;
+    var url = getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php?count=true&accountId=" + accountID;
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -196,7 +196,7 @@ function GETLeaveApplicationCount() {
 }
 
 function GETPhotoAttachment(filename) {
-    var url = "http://" + getHost() + "/leave-application-api-capstone/FileAttachmentAPI.php?filename=" + filename;
+    var url = getHost() + "/leave-application-api-capstone/FileAttachmentAPI.php?filename=" + filename;
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -241,11 +241,15 @@ function addClickEvent() {
         leaveApplicationPromise.then( function (response) {
             if(response.filename > " ") {
                 GETPhotoAttachment(response.filename).then(function (JSONPhoto) {
-                    $photo.src = JSONPhoto;
-                    $photo.addEventListener('load', function () {
+                    if(JSONPhoto) {
+                        $photo.src = JSONPhoto;
+                        $photo.addEventListener('load', function () {
+                            hide($loader);
+                            show($viewPhoto);
+                        });
+                    } else {
                         hide($loader);
-                        show($viewPhoto);
-                    });
+                    }
                 });
             }
         });

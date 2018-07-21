@@ -1,4 +1,8 @@
-var CACHE_NAME = 'sw-tester-v2';
+var CACHE_NAME                      = 'sw-tester-v2';
+var DB_VERSION                      = 5;
+var thereWasFileAttachmentCursor    = false;
+var thereWasLeaveApplication        = false;
+var resubmitCheckerContinue         = true;
 var resources = [
     'assets/css/normalize.css',
     'assets/css/skeleton.css',
@@ -48,13 +52,16 @@ self.addEventListener('fetch', function(event) {
                 }
                 var requestClone    = event.request.clone();
 
-                // self.registration.showNotification("Hello this is testing!..");
-
                 return fetch(event.request).then(function (response) {
+
+                    if( requestClone.url.search("LeaveApplicationAPI.php") != -1) { // POST to Leave Appplication API but success
+                        thereWasFileAttachmentCursor = false;
+                        submitFileAttachments();
+                    }
                     return response;
+
                 }, function (err) {
                     if(requestClone.method == 'POST') {
-                        console.log("POST Method");
                         var str = requestClone.url;
                         if( str.search("LeaveApplicationAPI.php") != -1) {
                             var id          = 1;
@@ -70,8 +77,10 @@ self.addEventListener('fetch', function(event) {
                                 reSubmitLeaveApplicationUntilFinish();
                             });
                         } else {
-                            console.log(str);
+                            console.log("POST is from PUT. ^_^");
                         }
+                    } else {
+                        console.log("PUT/DELETE Failed. No Internet.", err);
                     }
                 });
             })
@@ -80,10 +89,9 @@ self.addEventListener('fetch', function(event) {
 
 self.addEventListener('message', function (msg) {
     if(msg.data == 'checkUnSubmittedLeaveApplication') {
-        if(typeof timeoutHolder !== 'undefined') {
-            clearInterval(timeoutHolder);
-            reSubmitLeaveApplicationUntilFinish();
-        } else {
+        if( typeof timeoutHolder === 'undefined' && typeof fileAttachmentsInterval === 'undefined') {
+            console.log("Timeout Holder is called...");
+
             reSubmitLeaveApplicationUntilFinish();
         }
     }
@@ -92,18 +100,19 @@ self.addEventListener('message', function (msg) {
 function createDatabase() {
     if( indexedDB ) {
         var request;
-        request = indexedDB.open("LeaveApplication", 2);
+        request = indexedDB.open("LeaveApplication", DB_VERSION);
 
         request.onupgradeneeded = function (event) {
             var db = event.target.result;
             db.createObjectStore("leave-applications", { keyPath: "id" } );
+            db.createObjectStore("file_attachments", { keyPath: "id" } );
         };
     }
 }
 
 function openDatabase() {
     if( indexedDB ) {
-        return indexedDB.open("LeaveApplication", 2);
+        return indexedDB.open("LeaveApplication", DB_VERSION);
     }
 }
 
@@ -160,20 +169,92 @@ function reSubmitLeaveApplicationUntilFinish() {
                 .objectStore("leave-applications")
                 .get(1)
                 .onsuccess = function (event) {
-                if( event.target.result ) {
-                    var url     = event.target.result.url;
-                    var data    = event.target.result.data;
-                    resubmitLeaveApplication(url, data).then(function () {
-                        self.registration.showNotification("Successfully submitted Leave Application.", { icon: 'assets/images/icon.ico' });
-                        dbDelete(1);
+
+                    if( event.target.result ) {
+                        var url     = event.target.result.url;
+                        var data    = event.target.result.data;
+                        resubmitLeaveApplication(url, data).then(function () {
+                            dbDelete(1);
+                            clearInterval(timeoutHolder);
+                            self.registration.showNotification("Successfully submitted Leave Application. Checking for file attachments. . . ", { icon: 'assets/images/icon.ico' });
+                            submitFileAttachments();
+                        }, function (err) {
+                            console.log("Failed to submit... retrying in background...");
+                        });
+                    } else {
                         clearInterval(timeoutHolder);
-                    }, function (err) {
-                        console.log("Failed to submit... retrying in background...");
-                        // reSubmitLeaveApplicationUntilFinish();
-                    });
-                }
+                        thereWasFileAttachmentCursor = false;
+                        submitFileAttachments();
+                    }
             };
         };
-    }, 10000);
+    }, 2000);
+}
 
+function submitFileAttachments() {
+    fileAttachmentsInterval = setInterval(function () {
+
+        if(resubmitCheckerContinue) {
+            resubmitCheckerContinue = false;
+
+            openDatabase().onsuccess = function (event) {
+                var db = event.target.result;
+                var request = db.transaction(["file_attachments"], "readwrite")
+                    .objectStore("file_attachments");
+
+                request.openCursor().onsuccess = function (event) {
+                    var cursor = event.target.result;
+                    if (cursor) {
+                        thereWasFileAttachmentCursor = true;
+                        var data = {
+                            append: true,
+                            filename: cursor.value.filename,
+                            content: cursor.value.content
+                        };
+                        var key = cursor.value.id;
+
+                        POSTAppendFileAttachment(data).then(function () {
+                            dbDeleteFileAttachments(key);
+                            setResubmitCheckerContinue();
+                        }, function (err) {
+                            setResubmitCheckerContinue();
+                        });
+                    } else {
+                        if (thereWasFileAttachmentCursor) {
+                            self.registration.showNotification("Successfully submitted File Attachment.", { icon: 'assets/images/icon.ico' });
+                        }
+                        clearInterval(fileAttachmentsInterval);
+                    }
+                }
+            };
+        }
+
+    }, 200);
+}
+
+function setResubmitCheckerContinue() {
+    resubmitCheckerContinue = true;
+}
+
+function POSTAppendFileAttachment(data) {
+    data = JSON.stringify(data);
+
+    var url = '../leave-application-api-capstone/FileAttachmentAPI.php';
+    var init = {
+        method: 'POST',
+        headers: new Headers({
+        }),
+        body: data
+    };
+    return fetch(url, init);
+}
+
+function dbDeleteFileAttachments(key) {
+    var db;
+    openDatabase().onsuccess = function (event) {
+        db = event.target.result;
+        db.transaction(["file_attachments"], "readwrite")
+            .objectStore("file_attachments")
+            .delete(key);
+    };
 }

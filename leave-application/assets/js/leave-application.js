@@ -32,11 +32,15 @@ var $formContainer          = $id('form-container');
 var $loader                 = $id('loader-container');
 
 var submit                  = false;
+var thereWasLeaveApplication = false;
 var typeOfLeave             = 'Sick';
 var fileDataURI             = '';
 var formContent             = '';
 
+
+checkUnsubmittedInSW();
 checkUnSubmittedApplications();
+
 selectDateNow($dateFromMonth, $dateFromDay);
 
 initValues();
@@ -74,16 +78,15 @@ $confirmSubmitOk.addEventListener('click',function (e) {
         }).then(function (responseJson) {
             if(responseJson) {
                 $loader.style.display = 'none';
-                modalIn($confirmModal);
+                // modalIn($confirmModal);
+                submitFileAttachments();
             } else {
                 alert("Failed to submit application.");
             }
         }, function (err) {
+            fetchFailed('fetch-failed-leave-application');
+            checkUnsubmittedInSW();
             checkUnSubmittedApplications();
-            closeAllModals();
-            setTimeout(function () {
-                $loader.style.display = "none";
-            }, 1000);
         });
     }
 });
@@ -138,7 +141,7 @@ function POST($form, fileDataURI) {
     // var data = new FormData(form);
     var data = toJSONString($form, fileDataURI);
 
-    var url = "http://" + getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php";
+    var url = getHost() + "/leave-application-api-capstone/LeaveApplicationAPI.php";
     var init = {
         method: 'POST',
         headers: new Headers({
@@ -147,7 +150,6 @@ function POST($form, fileDataURI) {
     }; 
     return fetch(url, init);
 }
-
 
 function toJSONString( form, fileDataURI ) {
     var obj = {};
@@ -161,7 +163,12 @@ function toJSONString( form, fileDataURI ) {
         }
     }
 
-    obj[ 'fileDataURI' ] = fileDataURI;
+    if(fileDataURI > ' ') {
+        obj['attachmentName'] = randomAttachmentName();
+        saveAttachmentForLater(obj['attachmentName'], fileDataURI);
+    }
+    // obj[ 'fileDataURI' ] = fileDataURI;
+
     if( document.querySelector('input[name="place"]:checked') ) {
         obj[ 'place' ] = document.querySelector('input[name="place"]:checked').value;
     } else {
@@ -180,7 +187,8 @@ function toJSONString( form, fileDataURI ) {
 function checkUnSubmittedApplications() {
     var db;
     var thereExist = false;
-    timeoutHolder = setInterval(function () {
+    thereWasLeaveApplication = false;
+    var timeoutHolder = setInterval(function () {
         openDatabase().onsuccess = function (event) {
             db = event.target.result;
             db.transaction(["leave-applications"])
@@ -188,18 +196,138 @@ function checkUnSubmittedApplications() {
                 .get(1)
                 .onsuccess = function (event) {
                 if( event.target.result ) {
+                    $id('success-message').innerText = "Submitting/Updating Leave Application, please connect to internet and wait...";
+                    $submittingOfflineMessage.style.display = "block";
+                    $formContainer.style.display            = "none";
+                    thereExist                              = true;
+                    thereWasLeaveApplication                = true;
+                } else {
+                    clearInterval(timeoutHolder);
+                    if(thereExist) {
+                        $submittingOfflineMessage.style.display = "none";
+                        $formContainer.style.display            = "block";
+                    }
+                    submitFileAttachments();
+                }
+            };
+        };
+    }, 500);
+}
+
+function submitFileAttachments() {
+    var thereExist = false;
+    var timeoutHolder = setInterval(function () {
+        openDatabase().onsuccess = function (event) {
+            var db = event.target.result;
+            var request = db.transaction(["file_attachments"], "readwrite")
+                .objectStore("file_attachments");
+
+            request.openCursor().onsuccess = function(event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    $id('success-message').innerText = "Submitting/Updating File Attachments, please connect to internet and wait...";
                     $submittingOfflineMessage.style.display = "block";
                     $formContainer.style.display            = "none";
                     thereExist = true;
                 } else {
-                    $submittingOfflineMessage.style.display = "none";
-                    $formContainer.style.display            = "block";
                     clearInterval(timeoutHolder);
                     if(thereExist) {
+                        $submittingOfflineMessage.style.display = "none";
+                        $formContainer.style.display            = "block";
+                        modalIn($confirmModal);
+                    }
+                    if(thereWasLeaveApplication) {
+                        $submittingOfflineMessage.style.display = "none";
+                        $formContainer.style.display            = "block";
                         modalIn($confirmModal);
                     }
                 }
-            };
+            }
         };
-    }, 1000);
+    }, 2000);
 }
+
+
+// function checkUnSubmittedApplications() {
+//     var db;
+//     checkConnectionLabelInterval();
+//
+//     timeoutHolder = setInterval(function () {
+//         openDatabase().onsuccess = function (event) {
+//             db = event.target.result;
+//             db.transaction( ["leave-applications"])
+//                 .objectStore("leave-applications")
+//                 .get(1)
+//                 .onsuccess = function (event) {
+//                     if( !event.target.result ) {
+//                         console.log("Testing for leave apps", event.target.result);
+//                         $submittingOfflineMessage.style.display = "none";
+//                         $formContainer.style.display            = "block";
+//                         clearInterval(timeoutHolder);
+//                         submitFileAttachments();
+//                     }
+//             };
+//         };
+//     }, 2000);
+// }
+
+
+// function submitFileAttachments() {
+//     openDatabase().onsuccess = function (event) {
+//         var db = event.target.result;
+//         var request = db.transaction(["file_attachments"], "readwrite")
+//             .objectStore("file_attachments");
+//
+//         request.openCursor().onsuccess = function(event) {
+//             var cursor = event.target.result;
+//             if (cursor) {
+//                 checkConnection();
+//                 submitFileAttachments();
+//             } else {
+//                 checkConnectionStop();
+//             }
+//         }
+//     };
+// }
+//
+//
+// function checkConnectionStop() {
+//     $id('now-offline').style.display = "none";
+//     $id('connection-back').style.display = "none";
+// }
+//
+// function checkConnection() {
+//     if (!navigator.onLine) {
+//         $id('now-offline').style.display = "block";
+//         $id('connection-back').style.display = "none";
+//     } else {
+//         $id('now-offline').style.display = "none";
+//         $id('connection-back').style.display = "block";
+//     }
+//     window.addEventListener('online', function () {
+//         $id('now-offline').style.display = "none";
+//         $id('connection-back').style.display = "block";
+//     });
+//     window.addEventListener('offline', function () {
+//         $id('now-offline').style.display = "block";
+//         $id('connection-back').style.display = "none";
+//     });
+// }
+//
+// function checkConnectionLabelInterval() {
+//     var $label = $id('connection-back-label');
+//     var roll = 1;
+//     setInterval(function () {
+//         var label = "";
+//         for(roll2 = 1; roll2 <= roll; roll2++) {
+//             label += ' *'
+//         }
+//         $label.innerText = label;
+//         if(roll == 5) {
+//             roll = 1;
+//         } else {
+//             roll++;
+//         }
+//     }, 1000);
+// }
+//

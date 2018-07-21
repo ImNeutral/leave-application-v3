@@ -6,7 +6,7 @@
 
             <div class="seven columns form-container">
                 <form action="#" method="POST" class="loginform-contents" id="login-form" onsubmit="return false">
-                    <h4>Please Login</h4>
+                    <h4>Leave Application Login</h4>
                     <div>
                         <label>Username:</label>
                         <input type="text" class="u-full-width" id="username">
