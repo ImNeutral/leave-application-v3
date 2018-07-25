@@ -1,5 +1,5 @@
 var CACHE_NAME                      = 'sw-tester-v2';
-var DB_VERSION                      = 5;
+var DB_VERSION                      = 6;
 var thereWasFileAttachmentCursor    = false;
 var thereWasLeaveApplication        = false;
 var resubmitCheckerContinue         = true;
@@ -54,7 +54,7 @@ self.addEventListener('fetch', function(event) {
 
                 return fetch(event.request).then(function (response) {
 
-                    if( requestClone.url.search("LeaveApplicationAPI.php") != -1) { // POST to Leave Appplication API but success
+                    if( requestClone.method == 'POST' && requestClone.url.search("LeaveApplicationAPI.php") != -1) { // POST to Leave Appplication API but success
                         thereWasFileAttachmentCursor = false;
                         submitFileAttachments();
                     }
@@ -88,12 +88,9 @@ self.addEventListener('fetch', function(event) {
 });
 
 self.addEventListener('message', function (msg) {
-    console.log("Chekking 2...");
     if(msg.data == 'checkUnSubmittedLeaveApplication') {
-        console.log("Checking 3...");
         if( typeof timeoutHolder === 'undefined') {
             console.log("Timeout Holder is called...");
-            console.log("Checking 4...");
             if( typeof fileAttachmentsInterval !== 'undefined' ) {
                 clearInterval(fileAttachmentsInterval);
             }
@@ -110,7 +107,7 @@ function createDatabase() {
 
         request.onupgradeneeded = function (event) {
             var db = event.target.result;
-            db.createObjectStore("leave-applications", { keyPath: "id" } );
+            // db.createObjectStore("leave-applications", { keyPath: "id" } );
             db.createObjectStore("file_attachments", { keyPath: "id" } );
         };
     }
@@ -199,7 +196,9 @@ function reSubmitLeaveApplicationUntilFinish() {
 
 function submitFileAttachments() {
     resubmitCheckerContinue = true;
+
     fileAttachmentsInterval = setInterval(function () {
+
         if(resubmitCheckerContinue) {
             resubmitCheckerContinue = false;
 
@@ -221,14 +220,15 @@ function submitFileAttachments() {
 
                         POSTAppendFileAttachment(data).then(function () {
                             dbDeleteFileAttachments(key);
-                            setResubmitCheckerContinue();
+                            setResubmitContinue();
                         }, function (err) {
-                            setResubmitCheckerContinue();
+                            setResubmitContinue();
                         });
                     } else {
                         if (thereWasFileAttachmentCursor) {
                             self.registration.showNotification("Successfully submitted File Attachment.", { icon: 'assets/images/icon.ico' });
                         }
+                        resubmitCheckerContinue = false;
                         clearInterval(fileAttachmentsInterval);
                     }
                 }
@@ -238,8 +238,9 @@ function submitFileAttachments() {
     }, 200);
 }
 
-function setResubmitCheckerContinue() {
+function setResubmitContinue() {
     resubmitCheckerContinue = true;
+    console.log("Resubmit value ", resubmitCheckerContinue);
 }
 
 function POSTAppendFileAttachment(data) {

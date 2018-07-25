@@ -77,8 +77,7 @@ $confirmSubmitOk.addEventListener('click',function (e) {
             return response.json();
         }).then(function (responseJson) {
             if(responseJson) {
-                $loader.style.display = 'none';
-                // modalIn($confirmModal);
+                thereWasLeaveApplication = true;
                 submitFileAttachments();
             } else {
                 alert("Failed to submit application.");
@@ -226,10 +225,11 @@ function submitFileAttachments() {
                 var cursor = event.target.result;
                 if (cursor) {
                     $id('success-message').innerText = "Submitting/Updating File Attachments, please connect to internet and wait...";
-                    $submittingOfflineMessage.style.display = "block";
-                    $formContainer.style.display            = "none";
+                    $submittingOfflineMessage.style.display     = "block";
+                    $formContainer.style.display                = "none";
                     thereExist = true;
                 } else {
+                    $loader.style.display       = "none";
                     clearInterval(timeoutHolder);
                     if(thereExist) {
                         $submittingOfflineMessage.style.display = "none";
@@ -244,7 +244,7 @@ function submitFileAttachments() {
                 }
             }
         };
-    }, 2000);
+    }, 1000);
 }
 
 

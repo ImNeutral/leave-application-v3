@@ -31,12 +31,14 @@ function findAncestor (el, cls) {
 }
 
 function getHost() {
-    return 'http://' + window.location.hostname + '/leave-application-v3';
+    // return 'http://' + window.location.hostname + '/leave-application-v3';
     // return "localhost/leave-application-v3";
+    return '../';
 }
 
 function getHostDeped () {
-    return 'http://' + window.location.hostname + '/leave-application-v3';
+    // return 'http://' + window.location.hostname + '/leave-application-v3';
+    return '../';
 }
 
 function getLoginDetails() {
@@ -216,7 +218,6 @@ function closeAllModals() {
 }
 
 function checkUnsubmittedInSW() {
-    console.log("Checking...");
     navigator.serviceWorker.controller.postMessage('checkUnSubmittedLeaveApplication');
 }
 
@@ -228,7 +229,7 @@ function randomAttachmentName() {
 function saveAttachmentForLater(filename, dataURI) {
     var roll                = 1;
     var datas               = [];
-    var dataChunksLength    = 100000;
+    var dataChunksLength    = 50000;
     while(dataURI) {
         var sub = dataURI.substr(0, dataChunksLength);
         dataURI = dataURI.slice( dataChunksLength );
@@ -276,7 +277,7 @@ function registerServiceWorker() {
 
 function openDatabase() {
     if( indexedDB ) {
-        return indexedDB.open("LeaveApplication", 5);
+        return indexedDB.open("LeaveApplication", 6);
     }
 }
 

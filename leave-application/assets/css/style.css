@@ -376,6 +376,11 @@ table.accounts td{
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
@@ -591,6 +596,11 @@ table.accounts td{
 
     #search {
         width: 150px !important;
+    }
+
+    .modal-title {
+        font-size: 1.75rem;
+        font-weight: bold;
     }
 
     input[type='radio'] {
