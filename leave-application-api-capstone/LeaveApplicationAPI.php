@@ -29,9 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         $offset             = ($page - 1) * $limit;
         $leaveApplications  = LeaveApplication::getAllPaginated($limit, $offset);
         foreach ($leaveApplications as $leaveApplication) {
-            $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $leaveApplication->id . "&status=true");
-            $status = json_decode($status);
-            $leaveApplication->status = $status;
+            $leaveApplication->status = LeaveApplication::getStatus($leaveApplication->id);
         }
         echo json_encode( $leaveApplications );
     } else if ( isset($_GET['year']) && isset($_GET['month']) ){
@@ -39,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         $month = secureString($_GET['month']);
 
         echo json_encode( LeaveApplication::getAllByYearMonth( $year, $month ) );
+    } else if (isset($_GET['check_unfinished_application'])) {
+        echo json_encode( LeaveApplication::thereIsUnfinishedApplication() );
     }
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT

@@ -47,7 +47,7 @@
                             </select>
                         </div>
                         <div class="five columns" id="days_applied_holder">
-                            <strong>Number of working days applied:</strong>
+                            <strong>Number of days applied:</strong>
                             <input type="number" name="days_applied" id="days_applied" min="1" max="15" placeholder="1-15" required>
                         </div>
                         <div class="twelve columns others-reason-style" id="others_reason_holder">

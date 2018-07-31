@@ -3,6 +3,7 @@ require_once ("DBQueries.php");
 require_once ("Functions.php");
 require_once ("FileAttachment.php");
 require_once ("Account.php");
+require_once ("ActionOnApplication.php");
 
 class LeaveApplication extends DBQueries {
     public static $table        = "leave_applications";
@@ -37,8 +38,8 @@ class LeaveApplication extends DBQueries {
     }
 
     public function status() {
-        $status = file_get_contents("http://" . SERVICE_HOST . "/leave-application-api-capstone/ActionOnApplicationAPI.php?leave_application_id=" . $this->id . "&status=true");
-        $status = json_decode($status);
+        $aoa = ActionOnApplication::getByLeaveApplicationId( $this->id );
+        $status = $aoa->getStatus();
         if($this->cancelled) {
             $status = "Cancelled";
         }
@@ -52,6 +53,24 @@ class LeaveApplication extends DBQueries {
     public function getOwner() {
         $account    = Account::get($this->account_id);
         return $account->accountOwner($account->employee_id);
+    }
+
+    public static function thereIsUnfinishedApplication() {
+        $where = " ORDER BY id DESC LIMIT 1";
+        $leaveApplication        = LeaveApplication::getAll($where);
+        $id                      = 0;
+        if($leaveApplication) {
+            $id = $leaveApplication[0]->id;
+            $aoa = ActionOnApplication::getByLeaveApplicationId($id);
+            return $aoa->finishedApplication();
+        } else {
+            return 0;
+        }
+    }
+
+    public static function getStatus($id) {
+        $aoa = ActionOnApplication::getByLeaveApplicationId($id);
+        return $aoa->getStatus();
     }
 
     public static function getAllByYearMonth($year, $month) {

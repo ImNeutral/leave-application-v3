@@ -47,7 +47,7 @@
                     <h5 class="text-center info-modal-title" id="info-modal-title" style="font-size: 17px; font-weight: bold;">Transaction Failed, No Connection!</h5>
                     <div class="modal-inside" style="back">
                         <div style="text-align: center; font-size: 16px;">
-                            <p>Please connect to the internet and do the operation again.</p>
+                            <p>Connect to the internet and do the operation again.</p>
                             <hr>
                         </div>
                     </div>
@@ -66,10 +66,10 @@
         <div class="modal-content" style="margin-top: 10%; height: 170px; color: #721c24; border-color: #f5c6cb;  width: 60%;">
             <div style="background-color: #f8d7da; margin: -10px;">
                 <span class="close" id="close-cc"></span>
-                <h5 class="text-center info-modal-title" id="info-modal-title"  style="font-size: 17px; font-weight: bold;">Transaction Failed, No Connection!</h5>
+                <h5 class="text-center info-modal-title" id="info-modal-title"  style="font-size: 17px; font-weight: bold;">No Connection!</h5>
                 <div class="modal-inside" style="back">
                     <div style="text-align: center; font-size: 16px;">
-                        <p>Please connect to the internet and wait while the system is redoing the failed transactions.</p>
+                        <p>Connect to the internet and wait while the system is redoing the transactions.</p>
                         <hr>
                     </div>
                 </div>
@@ -81,6 +81,26 @@
             </div>
         </div>
     </div>
+
+
+    <div id="connection-lost" class="modal" style="display: none;">
+        <div class="modal-content" style="margin-top: 10%; height: 170px; color: #721c24; border-color: #f5c6cb;  width: 60%;">
+            <div style="background-color: #f8d7da; margin: -10px;">
+                <span class="close" id="close-cc"></span>
+                <h5 class="text-center info-modal-title" id="info-modal-title"  style="font-size: 17px; font-weight: bold;">Connection Lost!</h5>
+                <div class="modal-inside" style="back">
+                    <div style="text-align: center; font-size: 16px;">
+                        <p>When you apply for leave, the system will send it until your back online.</p>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div style="float:right;">
+                <button class="button-primary" onclick="closeModal(this)">Ok</button>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 <?php include ('modals/change-password-modal.php'); ?>

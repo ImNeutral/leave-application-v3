@@ -22,6 +22,7 @@ var $dateFromYearEdit       = $id('date-from-year-edit');
 var $dateFromMonthEdit      = $id('date-from-month-edit');
 var $dateFromDayEdit        = $id('date-from-day-edit');
 
+var $printGo                = $id('print-go');
 
 var page                    = 1;
 
@@ -34,6 +35,28 @@ var leaveApplicationCountPromise;
 
 populatePreviousApplicationsTable();
 addPagination();
+
+
+
+$printGo.addEventListener('click', function () {
+
+    var title           = "Print Applications";
+    var content         = "";
+    content             += '<html><head><title>' + title + '</title>';
+    content             += '<link rel="stylesheet" type="text/css" href="assets/css/style.css"></head>';
+    content             += '<body>';
+
+    content             += '<p class="header">Previous Applications</p>';
+    content             += $id('previous-applications-printable').outerHTML;
+
+    content             += '</body>';
+    content             += '<script>window.print(); window.close(); </script>';
+    content             += '</html>';
+
+    newWin= window.open('');
+    newWin.document.write( content );
+});
+
 
 function clickedPageButton($e) {
 

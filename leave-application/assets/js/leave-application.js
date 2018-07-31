@@ -38,6 +38,7 @@ var fileDataURI             = '';
 var formContent             = '';
 
 
+connectionLost();
 checkUnsubmittedInSW();
 checkUnSubmittedApplications();
 
@@ -89,6 +90,16 @@ $confirmSubmitOk.addEventListener('click',function (e) {
         });
     }
 });
+
+function connectionLost() {
+    var $connectionLost = $id('connection-lost');
+    window.addEventListener('online', function () {
+        $connectionLost.style.display = "none";
+    });
+    window.addEventListener('offline', function () {
+        $connectionLost.style.display = "block";
+    });
+}
 
 function initValues() {
     $accountID.value = accountID;

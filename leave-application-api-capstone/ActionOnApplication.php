@@ -49,6 +49,11 @@ class ActionOnApplication extends DBQueries {
         return $status;
     }
 
+    public function finishedApplication() {
+        $status = $this->getStatus();
+        return ($status == 'Accepted' || $status == 'Rejected')? 1: 0;
+    }
+
     public static function leaveApplications($adminTypeId, $status, $page) {
         $limit              = 10;
         $offset             = ($page - 1) * $limit;

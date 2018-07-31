@@ -15,8 +15,17 @@
             <h6 class="header">Previous Applications</h6>
 
             <hr>
+
+            <div class="twelve columns">
+                <div class="six columns float-right">
+                    <div class="">
+                        <button class="button-primary button-sm small-radius float-right" id="print-go">Print</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="">
-                <table class="u-full-width accounts" >
+                <table class="u-full-width accounts" id="previous-applications-printable">
                     <thead>
                     <tr>
                         <th width="10%">#</th>
