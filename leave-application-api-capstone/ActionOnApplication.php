@@ -51,7 +51,7 @@ class ActionOnApplication extends DBQueries {
 
     public function finishedApplication() {
         $status = $this->getStatus();
-        return ($status == 'Accepted' || $status == 'Rejected')? 1: 0;
+        return ($status != 'Accepted' && $status != 'Rejected' )? 1: 0;
     }
 
     public static function leaveApplications($adminTypeId, $status, $page) {
@@ -65,7 +65,7 @@ class ActionOnApplication extends DBQueries {
         } else if($adminTypeId == 4) {
             $where .= self::sdsWhere($status);
         }
-        $where              .= " ) ORDER BY id DESC";
+        $where              .= " ) AND cancelled=0 ORDER BY id DESC";
         return LeaveApplication::getAllPaginated($limit, $offset, $where);
     }
 

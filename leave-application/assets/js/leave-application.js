@@ -27,6 +27,7 @@ var $confirmSubmitModal     = $id('confirmSubmitModal');
 var $confirmSubmitOk        = $id('confirmSubmit_Ok');
 
 var $submittingOfflineMessage   = $id('submitting-offline-message');
+var $thereIsUnsubmittedMessage  = $id('thereIsUnsubmitted-message');
 var $formContainer          = $id('form-container');
 
 var $loader                 = $id('loader-container');
@@ -41,6 +42,7 @@ var formContent             = '';
 connectionLost();
 checkUnsubmittedInSW();
 checkUnSubmittedApplications();
+checkUnfinishedApplication();
 
 selectDateNow($dateFromMonth, $dateFromDay);
 
@@ -258,6 +260,31 @@ function submitFileAttachments() {
     }, 1000);
 }
 
+function checkUnfinishedApplication() {
+    var url = getHost() + "leave-application-api-capstone/LeaveApplicationAPI.php?check_unfinished_application=true";
+    url += "&account_id=" + accountID ;
+    var init = {
+        method: 'GET',
+        headers: new Headers({
+        })
+    };
+    console.log(url);
+    fetch(url, init).then(function(response){
+        return response.json();
+    }).then(function (response) {
+        localStorage.setItem('thereIsUnfinished', response);
+        console.log(response);
+        if( response ) {
+            $leaveApplicationForm.style.display         = "none";
+            $thereIsUnsubmittedMessage.style.display    = "block";
+        }
+    }, function (err) {
+        if( localStorage.getItem('thereIsUnfinished') ) {
+            $leaveApplicationForm.style.display = "none";
+            $thereIsUnsubmittedMessage.style.display    = "block";
+        }
+    });
+}
 
 // function checkUnSubmittedApplications() {
 //     var db;

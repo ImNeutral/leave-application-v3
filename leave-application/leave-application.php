@@ -22,6 +22,14 @@
                 </div>
             </div>
 
+
+            <div class="row text-center" id="thereIsUnsubmitted-message" style="display: none;">
+
+                <div class="error-message" id="success-message" style="display: block; ">
+                    You cannot apply until you have no pending applications...
+                </div>
+            </div>
+
             <div class="row" id="form-container">
                 <form action="" method="POST" class="leave-application" id="leave-application-form">
                     <input type="hidden" name="account_id" id="account_id">

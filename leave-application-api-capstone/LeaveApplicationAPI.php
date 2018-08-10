@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         $month = secureString($_GET['month']);
 
         echo json_encode( LeaveApplication::getAllByYearMonth( $year, $month ) );
-    } else if (isset($_GET['check_unfinished_application'])) {
-        echo json_encode( LeaveApplication::thereIsUnfinishedApplication() );
+    } else if ( isset($_GET['check_unfinished_application']) && isset($_GET['account_id']) ) {
+        echo json_encode( LeaveApplication::thereIsUnfinishedApplication( $_GET['account_id'] ) );
     }
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // INSERT

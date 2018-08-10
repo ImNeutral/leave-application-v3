@@ -36,8 +36,6 @@ var leaveApplicationCountPromise;
 populatePreviousApplicationsTable();
 addPagination();
 
-
-
 $printGo.addEventListener('click', function () {
 
     var title           = "Print Applications";

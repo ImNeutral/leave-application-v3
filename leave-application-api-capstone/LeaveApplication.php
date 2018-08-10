@@ -55,14 +55,20 @@ class LeaveApplication extends DBQueries {
         return $account->accountOwner($account->employee_id);
     }
 
-    public static function thereIsUnfinishedApplication() {
-        $where = " ORDER BY id DESC LIMIT 1";
+    public static function thereIsUnfinishedApplication($accountId) {
+        $where = " WHERE account_id=" . $accountId;
+        $where .= " ORDER BY id DESC LIMIT 1";
+
         $leaveApplication        = LeaveApplication::getAll($where);
-        $id                      = 0;
+
         if($leaveApplication) {
             $id = $leaveApplication[0]->id;
-            $aoa = ActionOnApplication::getByLeaveApplicationId($id);
-            return $aoa->finishedApplication();
+            if($leaveApplication[0]->cancelled) {
+                return 0;
+            } else {
+                $aoa = ActionOnApplication::getByLeaveApplicationId($id);
+                return $aoa->finishedApplication();
+            }
         } else {
             return 0;
         }
