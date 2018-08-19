@@ -78,4 +78,46 @@
             </div>
         </div>
     </div>
+
+    <div id="change-profile-picture-success" class="modal" style="display: none;">
+        <div class="modal-content" style="margin-top: 10%; height: 130px;">
+            <span class="close" id="close-cc"></span>
+            <h5 class="text-center info-modal-title" id="info-modal-title">Successfully changed your profile picture!</h5>
+            <div class="modal-inside">
+                <div style="text-align: center;"
+                    <hr>
+                    <div style="float:right;">
+                        <button class="button-primary" onclick="closeModal(this)">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="view-profile-modal" class="modal" style="display: none;">
+        <!-- Modal content -->
+        <div class="modal-content"  style="margin-top: 5%; width: 60%;">
+            <span class="close" onclick="closeModal(this)">&times;</span>
+            <h6 id="modal-title" class="text-center">Profile Picture</h6>
+
+            <div class="text-center " >
+                <img src="" alt="" id="profile-picture" height="300px">
+                <br><br>
+                <p style="cursor: pointer">
+                    <input type="file" id="profile-upload">
+                    <u id="submit-new-profile-picture">Submit</u>
+                </p>
+            </div>
+
+            <div class="error-message danger" id="error-change-password" style="display: none;">
+            </div>
+
+            <hr>
+            <div style="text-align: center;">
+                <button class="" onclick="closeModal(this)" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
 </section>

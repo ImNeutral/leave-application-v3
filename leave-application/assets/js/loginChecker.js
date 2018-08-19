@@ -4,6 +4,7 @@ if(isLoggedIn()) {
     var accountID           = loginDetails[0].id;
     var accountTypeID       = loginDetails[0].account_type_id;
     var accountUsername     = loginDetails[0].username;
+    var profilePicture      = loginDetails[0].profile_picture;
 
     var employeeID          = loginDetails[1].id;
     var schoolID            = loginDetails[1].school_id;

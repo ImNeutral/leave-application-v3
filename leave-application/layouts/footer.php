@@ -37,6 +37,11 @@
         noInternet.style.display = "";
     });
 
+    function getProfilePictureVal() {
+        return profilePicture;
+    }
+
+
 </script>
 <script src="assets/js/change-password.js"></script>
 </body>

@@ -28,6 +28,7 @@ var $commutationRequested   = $id('commutation-requested');
 var $photoAttachmentHolder  = $id('photo-attachment-holder');
 var $photoAttachment        = $id('photo-attachment');
 var $viewPhoto              = $id('view-photo');
+var $applicantPhoto         = $id('applicant-photo');
 
 var $loader                 = $id('loader-container');
 
@@ -46,6 +47,7 @@ var submitAction            = false;
 var rejected                = false;
 var rejectedBy              = "";
 var reverseActionNow        = false;
+var leaveApplicationOwnerPromise;
 
 populateApplicationsTable();
 addPagination();
@@ -295,6 +297,23 @@ function addClickEvent() {
             }
         });
     });
+
+    $applicantPhoto.addEventListener("click", function (e) {
+        $loader.style.display = "block";
+        var $photo = $viewPhoto.querySelector('#photo');
+        leaveApplicationPromise.then( function (response) {
+            var accountId = response.account_id;
+            GETPhotoAttachmentByAccountId(accountId).then(function (JSONPhoto) {
+                $photo.src = JSONPhoto;
+                $photo.addEventListener('load', function () {
+                    hide($loader);
+                    show($viewPhoto);
+                });
+            }, function (err) {
+                fetchFailed();
+            });
+        });
+    });
 }
 
 function GETActionOnApplication(id) {
@@ -338,6 +357,18 @@ function GETLeaveApplication(id) {
 
 function GETPhotoAttachment(filename) {
     var url = getHost() + "/leave-application-api-capstone/FileAttachmentAPI.php?filename=" + filename;
+    var init = {
+        method: 'GET',
+        headers: new Headers({
+        })
+    };
+    return fetch(url, init).then(function(response){
+        return response.json();
+    });
+}
+
+function GETPhotoAttachmentByAccountId(accountId) {
+    var url = getHost() + "/leave-application-api-capstone/AccountAPI.php?account_id=" + accountId + "&get_profile_pic=true";
     var init = {
         method: 'GET',
         headers: new Headers({
@@ -475,12 +506,14 @@ function replaceContent(element, newContent) {
 }
 
 function replaceContentLeaveApplication(leaveApplication) {
-    GETLeaveApplicationOwner(leaveApplication.account_id).then(function (response) {
+    leaveApplicationOwnerPromise = GETLeaveApplicationOwner(leaveApplication.account_id).then(function (response) {
         var first_name  = toTitleCase(response.employee.first_name);
         var middle_name = toTitleCase(response.employee.middle_name);
         var last_name   = toTitleCase(response.employee.last_name);
         replaceContent($applicantName, first_name + " " + middle_name + " " + last_name);
         replaceContent($applicantSchool, response.school.school_name);
+
+        return response;
     });
     replaceContent($numberDaysApplied,  leaveApplication.number_days_applied);
     replaceContent($fromDate,           formatDate(leaveApplication.from_date));

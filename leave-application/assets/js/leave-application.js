@@ -18,6 +18,7 @@ var $accountID              = $id('account_id');
 var $schoolID               = $id('school_id');
 
 var $dateFilled             = $id('date-filled');
+var $endDate                = $id('end_date');
 
 var $leaveApplicationForm   = $id('leave-application-form');
 var $fileToUpload           = $id('fileToUpload');
@@ -92,6 +93,7 @@ $confirmSubmitOk.addEventListener('click',function (e) {
         });
     }
 });
+
 
 function connectionLost() {
     var $connectionLost = $id('connection-lost');
@@ -194,6 +196,23 @@ function toJSONString( form, fileDataURI ) {
     }
 
     return JSON.stringify( obj );
+}
+
+$dateFromDay.addEventListener('change', function () {
+    changeEndDate();
+});
+
+$daysApplied.addEventListener('change', function () {
+    changeEndDate();
+});
+
+function changeEndDate() { 
+    var days        = $daysApplied.value;
+    var day         = $dateFromDay.value;
+    var month       = $dateFromMonth.value;
+    var year        = $dateFromYear.value;
+
+    $endDate.innerText = formatDate( calculateEndDate(year, month, day, days) );
 }
 
 function checkUnSubmittedApplications() {

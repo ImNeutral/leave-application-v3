@@ -1,5 +1,5 @@
 var CACHE_NAME                      = 'sw-tester-v2';
-var DB_VERSION                      = 6;
+var DB_VERSION                      = 8;
 var thereWasFileAttachmentCursor    = false;
 var thereWasLeaveApplication        = false;
 var resubmitCheckerContinue         = true;
@@ -107,7 +107,7 @@ function createDatabase() {
 
         request.onupgradeneeded = function (event) {
             var db = event.target.result;
-            // db.createObjectStore("leave-applications", { keyPath: "id" } );
+            db.createObjectStore("leave-applications", { keyPath: "id" } );
             db.createObjectStore("file_attachments", { keyPath: "id" } );
         };
     }

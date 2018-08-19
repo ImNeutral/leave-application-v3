@@ -88,7 +88,7 @@
                         <tr id="reason-holder">
                             <td style="border:0;" >
                                 <div class="float-right bold">
-                                    For:
+                                    Remarks:
                                 </div>
                             </td>
                             <td style="border:0;" id="reason"></td>

@@ -126,13 +126,21 @@ function setDayValue(year, month, $day){
     }
 
     for(var i = 1; i <= daysVal[month-1]; i++) {
-        var $textNode = document.createTextNode(i);
+        var $textNode   = document.createTextNode(i);
         var $optionElementClone = $optionElement.cloneNode(true);
+        var date       = new Date(year + "-" + month + "-" + i);
+        if(date.getDay() == 6 || date.getDay() == 0) {
+            $optionElementClone.setAttribute('disabled', 'true');
+            $optionElementClone.setAttribute('class', 'danger-font');
+        }
+
         $optionElementClone.value = i;
+
         $optionElementClone.appendChild($textNode);
         $day.appendChild($optionElementClone)
     }
 }
+
 
 function showMessage($el, type, message) {
     var $br             = document.createElement('br');
@@ -169,6 +177,20 @@ function formatDate2(strDate) {
     var date    = new Date(strDate);
     var month   = ['Jan','Feb','Mar','Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+}
+
+function calculateEndDate(year, month, day, days) {
+    var date        = year + "-" + month + "-" + day;
+    var startDate   = new Date(date);
+    var endDate     = "";
+    var counter     = 1;
+    while(counter <= days) {
+        endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+        if(endDate.getDay() != 0 && endDate.getDay() != 6){
+            counter++;
+        }
+    }
+    return endDate;
 }
 
 function empty($element) {
@@ -277,7 +299,7 @@ function registerServiceWorker() {
 
 function openDatabase() {
     if( indexedDB ) {
-        return indexedDB.open("LeaveApplication", 6);
+        return indexedDB.open("LeaveApplication", 8);
     }
 }
 
@@ -367,6 +389,7 @@ function dbAddFileAttachments(data) {
         }
     };
 }
+
 
 
 

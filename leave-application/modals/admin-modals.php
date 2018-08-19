@@ -34,6 +34,14 @@
                     <tr>
                         <td  style="border:0;">
                             <div class="float-right bold">
+                                Applicant Photo:
+                            </div>
+                        </td>
+                        <td style="border:0; cursor: pointer" id="applicant-photo"><u>View</u></td>
+                    </tr>
+                    <tr>
+                        <td  style="border:0;">
+                            <div class="float-right bold">
                                 Applicant School:
                             </div>
                         </td>
@@ -107,7 +115,7 @@
                         <tr id="reason-holder">
                             <td style="border:0;" >
                                 <div class="float-right bold">
-                                    For:
+                                    Remarks:
                                 </div>
                             </td>
                             <td style="border:0;" id="reason"></td>

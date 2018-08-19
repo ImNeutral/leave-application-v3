@@ -60,7 +60,7 @@
                         </div>
                         <div class="twelve columns others-reason-style" id="others_reason_holder">
                             <strong>Others (Specify)</strong>
-                            <input type="text" name="others_reason" id="others_reason" placeholder="Specify reasons for leave" maxlength="150" disabled required>
+                            <input type="text" name="others_reason" id="others_reason" autocomplete="off" list="other-leave-types" placeholder="Specify reasons for leave" maxlength="150" disabled required>
                         </div>
                         <div class="twelve columns">
                             <div class="seven columns">
@@ -91,6 +91,16 @@
                                         <select name="date_from_day" id="date_from_day" class="four columns columns-sm">
                                             <option value="1">1</option>
                                         </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="four columns">
+                                <div class="twelve columns">
+                                    <strong>End date:</strong>
+                                    <div class="offset-by-two">
+                                        <p id="end_date">-- --, ----</p>
                                     </div>
                                 </div>
 
@@ -156,6 +166,19 @@
     </div>
 
 </section>
+
+<datalist id="other-leave-types">
+    <option value="Special Privilege Leave (SPL)"></option>
+    <option value="Paternity Leave (PL)"></option>
+    <option value="Parental Leave (SOLO PARENT ACT)"></option>
+    <option value="REHABILITATION LEAVE"></option>
+    <option value="TEN (10) DAYS LEAVE(VIOLENCE AGAINST WOMEN AND THEIR CHILDREN ACT OF 2004)"></option>
+    <option value="SPECIAL LEAVE BENEFITS FOR WOMEN"></option>
+    <option value="Gynaecological Disorder"></option>
+    <option value="STUDY LEAVE"></option>
+    <option value="TERMINAL LEAVE"></option>
+    <option value="SPECIAL EMERGENCY LEAVE "></option>
+</datalist>
 
 
 <script src="assets/js/leave-application.js"></script>

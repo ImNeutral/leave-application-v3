@@ -56,6 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         echo json_encode($employeeAccounts);
     } else if( isset($_GET['username']) && isset($_GET['fixed_search']) ) {
         echo json_encode( Account::isUsernameExist($_GET['username']) );
+    } else if( isset($_GET['account_id']) && isset($_GET['get_profile_pic']) ) {
+        $account = Account::get($_GET['account_id']);
+        return $account->getProfilePicture();
     }
 } else if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Create
     $input = json_decode(file_get_contents("php://input"));
@@ -91,6 +94,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { // FETCH
         }
         $account->save();
         echo json_encode('1');
+    } else if( isset($input->changeProfilePicture) && isset($input->newProfilePicture) && isset($input->accountId)) {
+        $account        = Account::get($input->accountId);
+        $account->profile_picture   = $input->newProfilePicture;
+        fopen("attachments/" . $input->newProfilePicture  , "x");
+        $account->save();
     }
 } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') { // FETCH
 

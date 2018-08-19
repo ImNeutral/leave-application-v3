@@ -1,15 +1,17 @@
 <?php
 require_once ("DBQueries.php");
+require_once ("FileAttachment.php");
 
 class Account extends DBQueries {
     public static $table        = "accounts";
-    public static $table_fields = array('id', 'account_type_id', 'employee_id', 'username', 'password');
+    public static $table_fields = array('id', 'account_type_id', 'employee_id', 'username', 'password', 'profile_picture');
 
     public $id;
     public $account_type_id;
     public $employee_id;
     public $username;
     public $password;
+    public $profile_picture;
 
     public static function getByUsername($username, $password) {
         $username = self::secureString($username);
@@ -142,5 +144,11 @@ class Account extends DBQueries {
         } else {
             return 0;
         }
+    }
+
+    public function getProfilePicture() {
+        $fileName = $this->profile_picture;
+        $file = new FileAttachment($fileName);
+        echo json_encode($file->getContent());
     }
 }
