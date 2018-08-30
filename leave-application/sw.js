@@ -51,15 +51,12 @@ self.addEventListener('fetch', function(event) {
                     return response;
                 }
                 var requestClone    = event.request.clone();
-
                 return fetch(event.request).then(function (response) {
-
                     if( requestClone.method == 'POST' && requestClone.url.search("LeaveApplicationAPI.php") != -1) { // POST to Leave Appplication API but success
                         thereWasFileAttachmentCursor = false;
                         submitFileAttachments();
                     }
                     return response;
-
                 }, function (err) {
                     if(requestClone.method == 'POST') {
                         var str = requestClone.url;
